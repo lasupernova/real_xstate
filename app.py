@@ -138,7 +138,8 @@ def calculate_payment(n_clicks, mortgage_period, interest_rate, downpayment, off
                         'data': [
                             {'x': [k for k, v in loan_balance.items()], 'y': [v[1] for k, v in loan_balance.items()], 'name':"Paid"},
                             {'x': [k for k, v in loan_balance.items()], 'y': [v[0] for k, v in loan_balance.items()], 'name':"Outstanding"},
-                                ]
+                                ],
+                        'layout': dict(title='Amortization over Time', margin={'l':30, 'r':30, 't':30, 'b':30}) 
                         }
 
         #create Checkbox
