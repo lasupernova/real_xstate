@@ -41,24 +41,21 @@ app.layout = html.Div([
                         html.Button('Submit', id='submit-val'),
                         html.Hr(),
                         dbc.Row(id='monthly_payment',
-                                children='Enter desired values and press submit'),
+                                children='Enter desired values and press submit',
+                                style={"height":"20vh"}),
                         dbc.Row(
                                 [
-                                dcc.Loading(id="loading-1",
-                                            type="default",
-                                            children=[
-                                                dcc.Checklist(
-                                                    options=[
-                                                        {'label': 'Show amortization', 'value': 'show_loan_balance'}
-                                                    ],
-                                                    id="amortization_checkbox",
-                                                    value=[],
-                                                    style={"display":"none"}
-                                                ),
-                                                dcc.Graph(id='viz_loan_balance',
-                                                    style={'margin': "10px", "display":"none"}
-                                                    )
-                                                ])
+                                dcc.Checklist(
+                                    options=[
+                                        {'label': 'Show amortization', 'value': 'show'}
+                                    ],
+                                    id="amortization_checkbox",
+                                    value=[],
+                                    style={"display":"none"}
+                                ),
+                                dcc.Graph(id='viz_loan_balance',
+                                    style={'margin': "10px", "visibility":"hidden"}
+                                    )
                                 ], style={"margin": "15px", "height":"40vh", "justify":"center", "align":"center"})
                             ], width=4, style={"margin": "15px"}),
                     dbc.Col([
@@ -91,8 +88,8 @@ app.layout = html.Div([
                         dbc.Row(id='monthly_payment2',
                                         children='Enter desired values and press submit')
                             ], style={"margin": "15px"})
-                ], style={"overflow":"hidden", "height":"60vh"})
-], style={"overflow":"hidden", "height":"100vh"})
+                ]) #, style={"overflow":"hidden", "height":"60vh"}
+], style={"overflow":"hidden", "height":"100vh"}) #
 
 
 # callbacks
@@ -145,7 +142,7 @@ def calculate_payment(n_clicks, mortgage_period, interest_rate, downpayment, off
                         }
 
         #create Checkbox
-        amortization_style = {"display":"inline-block"}
+        amortization_style = {"display":"block"}
         return info, amortization_style, loan_balance_viz
 
 
@@ -154,10 +151,12 @@ def calculate_payment(n_clicks, mortgage_period, interest_rate, downpayment, off
     Input('amortization_checkbox', 'value')
 )
 def show_amortization(check_value):
-    if check_value=="show_loan_balance":
-        return {"margin":"15px",'display':'block'}
-    else:
+    print(check_value)
+    if check_value:
         return {"margin":"15px"}
+    else:
+        return {"margin":"15px",'visibility':'hidden'}
+        
 
 if __name__ == '__main__':
     print("Imports done!")
