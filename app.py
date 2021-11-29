@@ -13,6 +13,7 @@ app = Dash(__name__, external_stylesheets=external_stylesheets)
 INPUT_WIDTH = 4
 app.layout = html.Div([
                 dbc.Row([
+                    # MORTGAGE
                     dbc.Col([
                         dbc.Row([
                             dbc.Col([dcc.Input(id='mortgage_period', type='number', placeholder="Mortgage period", min=1, max=30, step=1, value=30)], 
@@ -58,36 +59,70 @@ app.layout = html.Div([
                                     )
                                 ], style={"margin": "15px", "height":"40vh", "justify":"center", "align":"center"})
                             ], width=4, style={"margin": "15px"}),
+                    # EXPENSES
                     dbc.Col([
                         dbc.Row([
-                            dbc.Col([dcc.Input(id='mortgage_period2', type='number', placeholder="Mortgage period", min=1, max=30, step=1, value=30)], 
-                                    width=INPUT_WIDTH),
-                            dbc.Col([html.Label(id='mortgage_period_text2', children=["years"], title="Mortgage period")],
-                            width=3)
-                        ]),
+                            dbc.Col([
+                                dbc.Row([
+                                    dbc.Col([dcc.Input(id='garbage', type='number', placeholder="Garbage Costs", min=0, max=1000, step=0.01)], 
+                                            width=INPUT_WIDTH+4),
+                                    dbc.Col([html.Label(id='garbage_text', children=["$"], title="Garbage Costs")],
+                                    width=1)
+                                ]),
+                                dbc.Row([
+                                    dbc.Col([dcc.Input(id='water', type='number', placeholder="Water Costs", min=0, max=1000, step=0.01)], 
+                                            width=INPUT_WIDTH+4),
+                                    dbc.Col([html.Label(id='water_text', children=["$"], title="Water Costs")],
+                                    width=1)
+                                ]),
+                                dbc.Row([
+                                    dbc.Col([dcc.Input(id='lawn_care', type='number', placeholder="Lawn Care", min=0, max=1000, step=0.01)], 
+                                            width=INPUT_WIDTH+4),
+                                    dbc.Col([html.Label(id='lawn_care_text', children=["$"], title="Lawn Care")],
+                                    width=1)
+                                ]),
+                                dbc.Row([
+                                    dbc.Col([dcc.Input(id='sewage', type='number', placeholder="Sewage", min=0, max=1000, step=0.01)], 
+                                            width=INPUT_WIDTH+4),
+                                    dbc.Col([html.Label(id='sewage_text', children=["$"], title="Sewage")],
+                                    width=1)
+                                ])
+                            ], width=3),
+                            dbc.Col([
+                                dbc.Row([
+                                    dbc.Col([dcc.Input(id='rental1', type='number', placeholder="Rental Income", min=0, max=2000, step=0.1)], 
+                                            width=INPUT_WIDTH),
+                                    dbc.Col([html.Label(id='rental1_text', children=["$"], title="Rental Income From Unit 1")],
+                                    width=2)
+                                ]),
+                                dbc.Row([
+                                    dbc.Col([dcc.Input(id='rental2', type='number', placeholder="Rental Income", min=0, max=2000, step=0.1)], 
+                                            width=INPUT_WIDTH),
+                                    dbc.Col([html.Label(id='rental2_text', children=["$"], title="Rental Income From Unit 12")],
+                                    width=2)
+                                ]),
+                                dbc.Row([
+                                        dbc.Col([dcc.Input(id='taxes', type='number', placeholder="Taxes", min=0, max=10000, step=0.01)], 
+                                                width=INPUT_WIDTH),
+                                        dbc.Col([html.Label(id='taxes_text', children=["$"], title="Taxes")],
+                                        width=1)
+                                    ]),
+                                dbc.Row([
+                                        dbc.Col([dcc.Input(id='insurance', type='number', placeholder="Insurance", min=0, max=1000, step=0.01)], 
+                                                width=INPUT_WIDTH),
+                                        dbc.Col([html.Label(id='insurance_text', children=["$"], title="Insurance")],
+                                        width=1)
+                                    ]),
+                            ], width=6)
+                        ], justify="start"),
                         dbc.Row([
-                            dbc.Col([dcc.Input(id='interest_rate_yearly2', type='number', placeholder="Interest rate", min=0, max=100, step=0.005, value=3.375)], 
-                                    width=INPUT_WIDTH),
-                            dbc.Col([html.Label(id='interest_rate_text2', children=["%"], title="Yearly Interest Rate")],
-                            width=3)
-                        ]),
-                        dbc.Row([
-                            dbc.Col([dcc.Input(id='downpayment2', type='number', placeholder="Downpayment [%]", min=0, max=100, step=1, value=25)], 
-                                    width=INPUT_WIDTH),
-                            dbc.Col([html.Label(id='downpayment_text2', children=["%"], title="Downpayment")],
-                            width=3),
-                        ]),
-                        dbc.Row([
-                            dbc.Col([dcc.Input(id='offer2', type='number', placeholder="Offer Amount")], 
-                                    width=INPUT_WIDTH),
-                            dbc.Col([html.Label(id='offer_text2', children=["$"], title="Offer Amount")],
-                            width=3)
-                        ]),
-                        html.Button('Submit', id='submit-val2'),
-                        html.Hr(),
-                        dbc.Row(id='monthly_payment2',
-                                        children='Enter desired values and press submit')
-                            ], style={"margin": "15px"})
+                            html.Button('Get Cashflow!', id='submit-expenses', 
+                                        style={"horizontalAlign":"right", "width":"20%", "margin-left":"5%", "margin-left":"10%"}),
+                            html.Hr(),
+                            dbc.Row(id='monthly_payment2',
+                                            children='Enter desired values and press button')
+                        ], justify="right")
+                    ], style={"margin": "15px"})
                 ]) #, style={"overflow":"hidden", "height":"60vh"}
 ], style={"overflow":"hidden", "height":"100vh"}) #
 
