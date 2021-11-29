@@ -3,6 +3,7 @@ from dash import Dash, dcc, html, Input, Output, State
 from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
 import mortgage_calc
+import cashflow_calc
 
 
 # app initiation
@@ -116,10 +117,10 @@ app.layout = html.Div([
                             ], width=6)
                         ], justify="start"),
                         dbc.Row([
-                            html.Button('Get Cashflow!', id='submit-expenses', 
+                            html.Button('Get Cashflow!', id='submit_expenses', 
                                         style={"horizontalAlign":"right", "width":"20%", "margin-left":"5%", "margin-left":"10%"}),
                             html.Hr(),
-                            dbc.Row(id='monthly_payment2',
+                            dbc.Row(id='expenses_prompt',
                                             children='Enter desired values and press button')
                         ], justify="right")
                     ], style={"margin": "15px"})
@@ -193,6 +194,44 @@ def show_amortization(check_value):
     else:
         return {"margin":"15px",'visibility':'hidden'}
         
+
+@app.callback(
+    Output('expenses_prompt', 'children'),
+    Input('submit_expenses', 'n_clicks'),
+    [State('garbage', 'value'),
+    State('water', 'value'),
+    State('lawn_care', 'value'),
+    State('sewage', 'value'),
+    State('rental1', 'value'),
+    State('rental2', 'value'),
+    State('taxes', 'value'),
+    State('insurance', 'value')]
+)
+def summarize_expenses(n_clicks, garbage, water, lawn_care, sewage, rental1, rental2, taxes, insurance):
+    if n_clicks is None:
+        raise PreventUpdate
+    else:
+        all_expenses = sum([garbage, water, lawn_care, sewage, taxes, insurance])
+        rental_assoc_exp = cashflow_calc.rental_assoc_expenses([rental1, rental2])
+        info_col_width = 3
+        info=[dbc.Col([
+                dbc.Row([html.Label(id='total_monthly_expenses', children=[f'Mthly. Expenses'])], style={'height': '10vh'}),
+                dbc.Row([html.Label(id='total_monthly_expenses_result', children=[f'${all_expenses/12:.0f}'])], style={'height': '15vh'})
+                ], width=info_col_width),
+             dbc.Col([
+                dbc.Row([html.Label(id='prop_mgmt', children=[f'Property Management Costs'])], style={'height': '10vh'}),
+                dbc.Row([html.Label(id='prop_mgmt_result', children=[f'${rental_assoc_exp[0]:.0f}'])], style={'height': '15vh', "font-size":"26"})
+                ], width=info_col_width),
+            dbc.Col([
+                dbc.Row([html.Label(id='vacancy_costs', children=[f'Vacancy Costs'])], style={'height': '10vh'}),
+                dbc.Row([html.Label(id='vacancy_costs_result', children=[f'${rental_assoc_exp[1]:.0f}'])], style={'height': '15vh', "font-size":"26"})
+                ], width=info_col_width),
+            dbc.Col([
+                dbc.Row([html.Label(id='capital_expenditure', children=[f'Capital Expenditure'])], style={'height': '10vh'}),
+                dbc.Row([html.Label(id='capital_expenditure_result', children=[f'${rental_assoc_exp[2]:.0f}'])], style={'height': '15vh', "font-size":"26"})
+                ], width=info_col_width)
+            ]
+        return info
 
 if __name__ == '__main__':
     print("Imports done!")
