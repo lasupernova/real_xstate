@@ -270,7 +270,7 @@ def cashflow_overview(rents:list, costs:list, downpayment, legal, home_insp, pro
             Total Monthly Expenses: $ {tot_exp_MO_hypo:.2f}
 
     [i] Cashflow Stats:
-            Cashflow: $ {cashflow_MO_hypo} (MO) / $ {cashflow_YR_hypo} (YR)
+            Cashflow: $ {cashflow_MO_hypo:.2f} (MO) / $ {cashflow_YR_hypo:.2f} (YR)
             Cash-on-cash ROI (year): {coc_ROI_hypo:.2%}
             Rent-to-price Ratio: {rent_to_price:.2%}
             Cap rate: {cap_rate_hypo:.2%}
