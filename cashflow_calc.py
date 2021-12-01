@@ -232,7 +232,7 @@ def cashflow_overview(rents:list, costs:list, downpayment, legal, home_insp, pro
 
 
     General Expenses:
-        Rental Associated Expenses: $ {rental_assoc_exp}
+        Rental Associated Expenses: {", ".join([f'$ {cost} ({name})' for cost, name in zip(rental_assoc_exp, ['Property Mgmt', 'Vacancy (5%)', 'Capital Expenditures / Repairs (5%)'])])}
 
 
     General Income:
