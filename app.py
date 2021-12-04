@@ -41,7 +41,7 @@ app.layout = html.Div([
                             dbc.Col([html.Label(id='offer_text', children=["$"], title="Offer Amount")],
                             width=3)
                         ]),
-                        html.Button('Submit', id='submit-val', style={"margin-top":"1%"}),
+                        html.Button('Submit', id='submit-val', style={"margin-top":"1%", "margin-bottom":"2%"}),
                         html.Hr(),
                         dbc.Row(id='monthly_payment',
                                 children='Enter desired values and press submit',
@@ -144,7 +144,8 @@ app.layout = html.Div([
                             dbc.Row(id='expenses_prompt',
                                             children='Enter desired values and press button'),
                             html.Button('Fill default values!', id='fill_default_vals', style={"background-color":"inherit", "border":"none", 
-                                                                                               "color":"white", "text-align":"right"},
+                                                                                               "text-align":"right", "padding-top": "20px",
+                                                                                               "margin-left":"80%","width":"15%"},
                                         className="undercover")
                         ], justify="right")
                     ], style={"margin": "15px"})
