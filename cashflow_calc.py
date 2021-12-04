@@ -218,6 +218,67 @@ def cashflow_overview(rents:list, costs:list, downpayment, legal, home_insp, pro
     breakeven_real = calculate_RTI(investment, cashflow_YR_real)
     cap_rate_hypo = calculate_cap_rate(monthly_payment, cashflow_YR_hypo, offer)
     breakeven_hypo = calculate_RTI(investment, cashflow_YR_hypo)
+
+    print(downpayment)
+    print(f"investment: {investment}")
+
+    info_dict = {
+        "general":
+            {"total_investment": investment,
+            "rental_assoc_exp": rental_assoc_exp,
+            "rent_to_price_ratio":rent_to_price},
+        "real":
+            {"net_op_income_MO": income_MO_real,
+            "net_op_income_YR": income_YR_real,
+            "net_op_cost": op_expenses_real,
+            "total_monthly_exp": tot_exp_MO_real,
+            "cashflow_MO": cashflow_MO_real,
+            "cashflow_YR": cashflow_YR_real,
+            "coc_ROI": coc_ROI_real,
+            "CAP": cap_rate_real,
+            "ROI": breakeven_real,
+            "ROI_date": now + datetime.timedelta(days=breakeven_real*365)},
+        "hypo":
+            {"net_op_income_MO": income_MO_hypo,
+            "net_op_income_YR": income_YR_hypo,
+            "net_op_cost": op_expenses_hypo,
+            "total_monthly_exp":tot_exp_MO_hypo,
+            "cashflow_MO": cashflow_MO_hypo,
+            "cashflow_YR": cashflow_YR_hypo,
+            "coc_ROI": coc_ROI_hypo,
+            "CAP": cap_rate_hypo,
+            "ROI": breakeven_hypo,
+            "ROI_date": now + datetime.timedelta(days=breakeven_hypo*365)}
+
+    }
+
+    return info_dict
+
+
+def cashflow_overview_print(rents:list, costs:list, downpayment, legal, home_insp, prop_mgmt_signup, bank, offer):
+    loan_amount = offer-downpayment
+    monthly_payment = mortgage_calc.mortgage_calc(P=loan_amount, i=0.03375/12, n=30)
+    rental_assoc_exp = rental_assoc_expenses(rents)
+    tot_exp_MO_real = total_expenses_MO(rents, costs, monthly_payment)
+    tot_exp_MO_hypo = total_expenses_MO(rents, costs, monthly_payment, hypo=True)
+    op_expenses_real = calculate_net_op_costs_MO(rents, costs)
+    op_expenses_hypo = calculate_net_op_costs_MO(rents, costs, hypo=True)
+    income_MO_real = calculate_net_op_income(rents, op_expenses_real, "m")
+    income_MO_hypo = calculate_net_op_income(rents, op_expenses_hypo, "m")
+    income_YR_real = calculate_net_op_income(rents, op_expenses_real, "y")
+    income_YR_hypo = calculate_net_op_income(rents, op_expenses_hypo, "y")
+    cashflow_MO_real = calculate_cashflow(rents, tot_exp_MO_real)
+    cashflow_YR_real = calculate_cashflow(rents, tot_exp_MO_real, period="y")
+    cashflow_MO_hypo = calculate_cashflow(rents, tot_exp_MO_hypo)
+    cashflow_YR_hypo = calculate_cashflow(rents, tot_exp_MO_hypo, period="y")
+    investment = total_investment(downpayment, legal, home_insp, prop_mgmt_signup, bank)
+    coc_ROI_real = calculate_coc_ROI(cashflow_YR_real, investment)
+    coc_ROI_hypo = calculate_coc_ROI(cashflow_YR_hypo, investment)
+    rent_to_price = calculate_rent_to_price(rents, offer)
+    cap_rate_real = calculate_cap_rate(monthly_payment, cashflow_YR_real, offer)
+    breakeven_real = calculate_RTI(investment, cashflow_YR_real)
+    cap_rate_hypo = calculate_cap_rate(monthly_payment, cashflow_YR_hypo, offer)
+    breakeven_hypo = calculate_RTI(investment, cashflow_YR_hypo)
     print(f"""
     ###########################################
                  CASHFLOW OVERVIEW
@@ -282,5 +343,5 @@ def cashflow_overview(rents:list, costs:list, downpayment, legal, home_insp, pro
 
 
 if __name__=="__main__":
-    cashflow_overview([750, 850], [400, 3157, 400, 400,400], 20500, 700, 450, 0, 9260, 82000)
+    cashflow_overview_print([950, 800], [250, 400, 3400, 400, 400,400], 94000*0.25, 700, 450, 0, 9260, 94000)
 
