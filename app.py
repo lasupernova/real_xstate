@@ -4,10 +4,11 @@ from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
 import mortgage_calc
 import cashflow_calc
+import os
 
 
 # app initiation
-external_stylesheets = [dbc.themes.SOLAR]
+external_stylesheets = [dbc.themes.SOLAR, f"assets{os.sep}evaluation_page.css"]
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 # layout
@@ -143,8 +144,8 @@ app.layout = html.Div([
                             dbc.Row(id='expenses_prompt',
                                             children='Enter desired values and press button'),
                             html.Button('Fill default values!', id='fill_default_vals', style={"background-color":"inherit", "border":"none", 
-                                                                                               "color":"white", "text-align":"right",
-                                                                                               'hover': { 'color': '#ff1a66'}})
+                                                                                               "color":"white", "text-align":"right"},
+                                        className="undercover")
                         ], justify="right")
                     ], style={"margin": "15px"})
                 ]) #, style={"overflow":"hidden", "height":"60vh"}
