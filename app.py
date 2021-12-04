@@ -40,7 +40,7 @@ app.layout = html.Div([
                             dbc.Col([html.Label(id='offer_text', children=["$"], title="Offer Amount")],
                             width=3)
                         ]),
-                        html.Button('Submit', id='submit-val'),
+                        html.Button('Submit', id='submit-val', style={"margin-top":"1%"}),
                         html.Hr(),
                         dbc.Row(id='monthly_payment',
                                 children='Enter desired values and press submit',
@@ -88,40 +88,63 @@ app.layout = html.Div([
                                     dbc.Col([html.Label(id='sewage_text', children=["$"], title="Sewage")],
                                     width=1)
                                 ])
-                            ], width=3),
+                            ], width=2),
                             dbc.Col([
                                 dbc.Row([
                                     dbc.Col([dcc.Input(id='rental1', type='number', placeholder="Rental Income", min=0, max=2000, step=0.1)], 
-                                            width=INPUT_WIDTH),
+                                            width=INPUT_WIDTH+4),
                                     dbc.Col([html.Label(id='rental1_text', children=["$"], title="Rental Income From Unit 1")],
                                     width=2)
                                 ]),
                                 dbc.Row([
                                     dbc.Col([dcc.Input(id='rental2', type='number', placeholder="Rental Income", min=0, max=2000, step=0.1)], 
-                                            width=INPUT_WIDTH),
+                                            width=INPUT_WIDTH+4),
                                     dbc.Col([html.Label(id='rental2_text', children=["$"], title="Rental Income From Unit 12")],
                                     width=2)
                                 ]),
                                 dbc.Row([
                                         dbc.Col([dcc.Input(id='taxes', type='number', placeholder="Taxes", min=0, max=10000, step=0.01)], 
-                                                width=INPUT_WIDTH),
+                                                width=INPUT_WIDTH+4),
                                         dbc.Col([html.Label(id='taxes_text', children=["$"], title="Taxes")],
                                         width=1)
                                     ]),
                                 dbc.Row([
                                         dbc.Col([dcc.Input(id='insurance', type='number', placeholder="Insurance", min=0, max=1000, step=0.01)], 
-                                                width=INPUT_WIDTH),
+                                                width=INPUT_WIDTH+4),
                                         dbc.Col([html.Label(id='insurance_text', children=["$"], title="Insurance")],
                                         width=1)
                                     ]),
-                            ], width=6)
+                            ], width=2),
+                            dbc.Col([
+                                dbc.Row([
+                                    dbc.Col([dcc.Input(id='legal', type='number', placeholder="Legal Fees", min=0, max=5000, step=0.1)], 
+                                            width=INPUT_WIDTH+4),
+                                    dbc.Col([html.Label(id='legal_text', children=["$"], title="Legal Fees (contributing to 'Total Investment')")],
+                                    width=2)
+                                ]),
+                                dbc.Row([
+                                    dbc.Col([dcc.Input(id='home_insp', type='number', placeholder="Home Inspection Fees", min=0, max=5000, step=0.1)], 
+                                            width=INPUT_WIDTH+4),
+                                    dbc.Col([html.Label(id='home_insp_text', children=["$"], title="Home Inspection Fees (contributing to 'Total Investment')")],
+                                    width=2)
+                                ]),
+                                dbc.Row([
+                                        dbc.Col([dcc.Input(id='bank', type='number', placeholder="Bank Fees", min=0, max=20000, step=0.01)], 
+                                                width=INPUT_WIDTH+4),
+                                        dbc.Col([html.Label(id='bank_text', children=["$"], title="Bank Fees (contributing to 'Total Investment')")],
+                                        width=1)
+                                    ])
+                                    ], width=2)
                         ], justify="start"),
                         dbc.Row([
                             html.Button('Get Cashflow!', id='submit_expenses', 
-                                        style={"horizontalAlign":"right", "width":"20%", "margin-left":"5%", "margin-left":"10%"}),
+                                        style={"horizontalAlign":"right", "width":"20%","margin-left":"10%","margin-bottom":"2%","margin-top":"1%"}),
                             html.Hr(),
                             dbc.Row(id='expenses_prompt',
-                                            children='Enter desired values and press button')
+                                            children='Enter desired values and press button'),
+                            html.Button('Fill default values!', id='fill_default_vals', style={"background-color":"inherit", "border":"none", 
+                                                                                               "color":"white", "text-align":"right",
+                                                                                               'hover': { 'color': '#ff1a66'}})
                         ], justify="right")
                     ], style={"margin": "15px"})
                 ]) #, style={"overflow":"hidden", "height":"60vh"}
@@ -156,16 +179,16 @@ def calculate_payment(n_clicks, mortgage_period, interest_rate, downpayment, off
         #info_texts
         info_col_width = 4
         info=[dbc.Col([
-                dbc.Row([html.Label(id='monthly_pay_label', children=[f'Mthly. Payment'])], style={'height': '10vh'}),
-                dbc.Row([html.Label(id='monthly_pay_result', children=[f'${result:.2f}'])], style={'height': '15vh'})
+                dbc.Row([html.Label(id='monthly_pay_label', children=[f'Mthly. Payment'])], style={'height': '5vh'}),
+                dbc.Row([html.Label(id='monthly_pay_result', children=[f'${result:.2f}'])], style={'height': '10vh'})
                 ], width=info_col_width),
              dbc.Col([
-                dbc.Row([html.Label(id='downpayment_label', children=[f'Downpayment'])], style={'height': '10vh'}),
-                dbc.Row([html.Label(id='downpayment_result', children=[f'${offer*(downpayment/100):.0f}'])], style={'height': '15vh', "font-size":"26"})
+                dbc.Row([html.Label(id='downpayment_label', children=[f'Downpayment'])], style={'height': '5vh'}),
+                dbc.Row([html.Label(id='downpayment_result', children=[f'${offer*(downpayment/100):.0f}'])], style={'height': '10vh'})
                 ], width=info_col_width),
             dbc.Col([
-                dbc.Row([html.Label(id='loan_label', children=[f'Loan'])], style={'height': '10vh'}),
-                dbc.Row([html.Label(id='loan_result', children=[f'${loan:.0f}'])], style={'height': '15vh', "font-size":"26"})
+                dbc.Row([html.Label(id='loan_label', children=[f'Loan'])], style={'height': '5vh'}),
+                dbc.Row([html.Label(id='loan_result', children=[f'${loan:.0f}'])], style={'height': '10vh'})
                 ], width=info_col_width)]
 
         ## mortgage viz
@@ -193,7 +216,29 @@ def show_amortization(check_value):
         return {"margin":"15px"}
     else:
         return {"margin":"15px",'visibility':'hidden'}
-        
+
+
+@app.callback(
+    [Output('garbage', 'value'),
+    Output('water', 'value'),
+    Output('lawn_care', 'value'),
+    Output('sewage', 'value'),
+    Output('rental1', 'value'),
+    Output('rental2', 'value'),
+    Output('taxes', 'value'),
+    Output('insurance', 'value'),
+    Output('legal', 'value'),
+    Output('home_insp', 'value'),
+    Output('bank', 'value'),
+    Output('offer', 'value')],
+    Input('fill_default_vals', 'n_clicks')
+)
+def fill_defaults(n_clicks):
+    if n_clicks is None:
+        raise PreventUpdate
+    else:
+        return 0, 400, 400, 400, 750, 850, 3260, 400, 700, 450, 9620, 100000
+
 
 @app.callback(
     Output('expenses_prompt', 'children'),
@@ -205,32 +250,117 @@ def show_amortization(check_value):
     State('rental1', 'value'),
     State('rental2', 'value'),
     State('taxes', 'value'),
-    State('insurance', 'value')]
+    State('insurance', 'value'),
+    State('legal', 'value'),
+    State('home_insp', 'value'),
+    State('bank', 'value'),
+    State('downpayment', 'value'),
+    State('offer', 'value')]
 )
-def summarize_expenses(n_clicks, garbage, water, lawn_care, sewage, rental1, rental2, taxes, insurance):
+def summarize_expenses(n_clicks, garbage, water, lawn_care, sewage, rental1, rental2, taxes, insurance,
+                        legal, home_insp, bank, downpayment, offer):
     if n_clicks is None:
         raise PreventUpdate
     else:
         all_expenses = sum([garbage, water, lawn_care, sewage, taxes, insurance])
         rental_assoc_exp = cashflow_calc.rental_assoc_expenses([rental1, rental2])
+        downpayment = offer*downpayment/100  # downpayment is inserted in percent of offer - but cashflow_calc function takes dollar amount
+        test_all = cashflow_calc.cashflow_overview([rental1, rental2], 
+                                                   [garbage, water, lawn_care, sewage, taxes, insurance],
+                                                   downpayment, 
+                                                   legal, home_insp, 0, bank,
+                                                   offer)
         info_col_width = 3
-        info=[dbc.Col([
-                dbc.Row([html.Label(id='total_monthly_expenses', children=[f'Mthly. Expenses'])], style={'height': '10vh'}),
-                dbc.Row([html.Label(id='total_monthly_expenses_result', children=[f'${all_expenses/12:.0f}'])], style={'height': '15vh'})
-                ], width=info_col_width),
-             dbc.Col([
-                dbc.Row([html.Label(id='prop_mgmt', children=[f'Property Management Costs'])], style={'height': '10vh'}),
-                dbc.Row([html.Label(id='prop_mgmt_result', children=[f'${rental_assoc_exp[0]:.0f}'])], style={'height': '15vh', "font-size":"26"})
-                ], width=info_col_width),
-            dbc.Col([
-                dbc.Row([html.Label(id='vacancy_costs', children=[f'Vacancy Costs'])], style={'height': '10vh'}),
-                dbc.Row([html.Label(id='vacancy_costs_result', children=[f'${rental_assoc_exp[1]:.0f}'])], style={'height': '15vh', "font-size":"26"})
-                ], width=info_col_width),
-            dbc.Col([
-                dbc.Row([html.Label(id='capital_expenditure', children=[f'Capital Expenditure'])], style={'height': '10vh'}),
-                dbc.Row([html.Label(id='capital_expenditure_result', children=[f'${rental_assoc_exp[2]:.0f}'])], style={'height': '15vh', "font-size":"26"})
-                ], width=info_col_width)
-            ]
+        text_row_height = 3
+        info_row_height = 6
+        info=[dbc.Row(
+                [
+                    dbc.Col([
+                        dbc.Row([html.Label(id='total_monthly_expenses', children=[f'Mthly. Expenses'])], style={'height': f'{text_row_height}vh'}),
+                        dbc.Row([html.Label(id='total_monthly_expenses_result', children=[f'${all_expenses/12:.0f}'])], style={'height': f'{info_row_height}vh'})
+                        ], width=info_col_width),
+                    dbc.Col([
+                        dbc.Row([html.Label(id='prop_mgmt', children=[f'Property Management Costs'])], style={'height': f'{text_row_height}vh'}),
+                        dbc.Row([html.Label(id='prop_mgmt_result', children=[f'${rental_assoc_exp[0]:.0f}'])], style={'height': f'{info_row_height}vh', "font-size":"26"})
+                        ], width=info_col_width),
+                    dbc.Col([
+                        dbc.Row([html.Label(id='vacancy_costs', children=[f'Vacancy Costs'])], style={'height': f'{text_row_height}vh'}),
+                        dbc.Row([html.Label(id='vacancy_costs_result', children=[f'${rental_assoc_exp[1]:.0f}'])], style={'height': f'{info_row_height}vh', "font-size":"26"})
+                        ], width=info_col_width),
+                    dbc.Col([
+                        dbc.Row([html.Label(id='capital_expenditure', children=[f'Capital Expenditure'])], style={'height': f'{text_row_height}vh'}),
+                        dbc.Row([html.Label(id='capital_expenditure_result', children=[f'${rental_assoc_exp[2]:.0f}'])], style={'height': f'{info_row_height}vh', "font-size":"26"})
+                        ], width=info_col_width)
+                ]),
+            dbc.Row(
+                [
+                    dbc.Col([
+                        dbc.Row(["  "], style={'height': f'4vh'}),
+                        dbc.Row(["Net Operating Income"]),
+                        dbc.Row(["Net Operating Costs"]),
+                        dbc.Row(["Total Monthly Expenses"]),
+                        dbc.Row(["Cashflow"]),
+                        dbc.Row(["Cash-o-Cash ROI"]),
+                        dbc.Row(["Cap Rate"]),
+                        dbc.Row(["ROI"]),
+                        dbc.Row(["ROI Date"]),
+                    ], width=2),
+                    dbc.Col([
+                        dbc.Row([html.Label(id='real', children=[f'REAL'])], justify="center", style={'height': f'4vh', 'text-align': 'center'}),
+                        dbc.Row([
+                            html.Label(children=[f"$ {test_all['real']['net_op_income_MO']:.2f} (MO.) / $ {test_all['real']['net_op_income_YR']:.2f} (YR.)"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"$ {test_all['real']['net_op_cost']:.2f}"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"$ {test_all['real']['total_monthly_exp']:.2f}"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"$ {test_all['real']['cashflow_MO']:.2f} (MO.) / {test_all['real']['cashflow_YR']:.2f} (YR.)"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"{test_all['real']['coc_ROI']:.2%}"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"{test_all['real']['CAP']:.2%}"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"{test_all['real']['ROI']:.2f} years"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"{test_all['real']['ROI_date']}"], style={'text-align': 'center'})
+                            ])
+                        ], width=4),
+                    dbc.Col([
+                        dbc.Row([html.Label(id='hypo', children=[f'HYPO'])], justify="center", style={'height': f'4vh', 'text-align': 'center'}),
+                        dbc.Row([
+                            html.Label(children=[f"$ {test_all['hypo']['net_op_income_MO']:.2f} (MO.) / $ {test_all['hypo']['net_op_income_YR']:.2f} (YR.)"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"$ {test_all['hypo']['net_op_cost']:.2f}"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"$ {test_all['hypo']['total_monthly_exp']:.2f}"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"$ {test_all['hypo']['cashflow_MO']:.2f} (MO.) / $ {test_all['hypo']['cashflow_YR']:.2f} (YR.)"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"{test_all['hypo']['coc_ROI']:.2%}"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"{test_all['hypo']['CAP']:.2%}"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"{test_all['hypo']['ROI']:.2f} years"], style={'text-align': 'center'})
+                            ]),
+                        dbc.Row([
+                            html.Label(children=[f"{test_all['hypo']['ROI_date']}"], style={'text-align': 'center'})
+                            ])
+                        ], width=4)
+                ], justify="around")
+        ]
         return info
 
 if __name__ == '__main__':
