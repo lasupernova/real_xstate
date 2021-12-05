@@ -2,6 +2,22 @@ button:hover {
   color: blue
 }
 
-.undercover:hover {
+.utility_switch {
+  color: inherit
+}
+
+.utility_switch:hover {
+  color: white
+}
+
+.utility_switch:active {
+  color: inherit
+}
+
+.undercover, #export_results_button {
+    color: white
+  }
+
+.undercover:hover, #export_results_button:hover {
     color: #ff1a66
   }
