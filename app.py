@@ -10,6 +10,7 @@ import os
 # app initiation
 external_stylesheets = [dbc.themes.SOLAR, f"assets{os.sep}evaluation_page.css"]
 app = Dash(__name__, external_stylesheets=external_stylesheets)
+app.config['suppress_callback_exceptions'] = True  # suppress callbck exception created by "export_results()", as Output-ID does not exist in initial state
 
 # layout
 INPUT_WIDTH = 4
@@ -243,6 +244,41 @@ def fill_defaults(n_clicks):
 
 
 @app.callback(
+    Output('export_output', 'children'),
+    Input('export_results_button', 'n_clicks'),
+    [State('garbage', 'value'),
+    State('water', 'value'),
+    State('lawn_care', 'value'),
+    State('sewage', 'value'),
+    State('rental1', 'value'),
+    State('rental2', 'value'),
+    State('taxes', 'value'),
+    State('insurance', 'value'),
+    State('legal', 'value'),
+    State('home_insp', 'value'),
+    State('bank', 'value'),
+    State('downpayment', 'value'),
+    State('offer', 'value')]
+)
+def export_results(n_clicks, garbage, water, lawn_care, sewage, rental1, rental2, taxes, insurance,
+                        legal, home_insp, bank, downpayment, offer):
+    if n_clicks is None:
+        raise PreventUpdate
+    else:
+        downpayment = offer*downpayment/100
+        export_path = cashflow_calc.cashflow_overview_print([rental1, rental2], 
+                                                   [garbage, water, lawn_care, sewage, taxes, insurance],
+                                                   downpayment, 
+                                                   legal, home_insp, 0, bank,
+                                                   offer)
+
+        return [
+            f"""Analysis exported to:
+            {export_path}"""
+            ]
+
+
+@app.callback(
     Output('expenses_prompt', 'children'),
     Input('submit_expenses', 'n_clicks'),
     [State('garbage', 'value'),
@@ -278,7 +314,7 @@ def summarize_expenses(n_clicks, garbage, water, lawn_care, sewage, rental1, ren
         info=[dbc.Row(
                 [
                     dbc.Col([
-                        dbc.Row([html.Label(id='total_monthly_expenses', children=[f'Mthly. Expenses'])], style={'height': f'{text_row_height}vh'}),
+                        dbc.Row([html.Label(id='total_monthly_expenses', children=[f'Mthly. Utilities+'])], style={'height': f'{text_row_height}vh'}),
                         dbc.Row([html.Label(id='total_monthly_expenses_result', children=[f'${all_expenses/12:.0f}'])], style={'height': f'{info_row_height}vh'})
                         ], width=info_col_width),
                     dbc.Col([
@@ -331,9 +367,9 @@ def summarize_expenses(n_clicks, garbage, water, lawn_care, sewage, rental1, ren
                             html.Label(children=[f"{test_all['real']['ROI']:.2f} years"], style={'text-align': 'center'})
                             ]),
                         dbc.Row([
-                            html.Label(children=[f"{test_all['real']['ROI_date']}"], style={'text-align': 'center'})
+                            html.Label(children=[f"{test_all['real']['ROI_date'].strftime('%Y-%b-%d')}"], style={'text-align': 'center'})
                             ])
-                        ], width=4),
+                        ], width=3),
                     dbc.Col([
                         dbc.Row([html.Label(id='hypo', children=[f'HYPO'])], justify="center", style={'height': f'4vh', 'text-align': 'center'}),
                         dbc.Row([
@@ -358,9 +394,19 @@ def summarize_expenses(n_clicks, garbage, water, lawn_care, sewage, rental1, ren
                             html.Label(children=[f"{test_all['hypo']['ROI']:.2f} years"], style={'text-align': 'center'})
                             ]),
                         dbc.Row([
-                            html.Label(children=[f"{test_all['hypo']['ROI_date']}"], style={'text-align': 'center'})
+                            html.Label(children=[f"{test_all['hypo']['ROI_date'].strftime('%Y-%b-%d')}"], style={'text-align': 'center'})
                             ])
-                        ], width=4)
+                        ], width=3),
+                    dbc.Col([
+                        dbc.Row([
+                            html.Button('Export Results', id='export_results_button', style={"background-color":"inherit", 
+                                                                                               "text-align":"center", "margin-top": "10vh",
+                                                                                               "width":"50%"})
+                        ]),
+                        dbc.Row([
+                            html.Label(id="export_output", children=[], style={'text-align': 'center', "width":"85%"})
+                        ])
+                    ], width=3)
                 ], justify="around")
         ]
         return info
