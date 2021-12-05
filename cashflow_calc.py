@@ -325,7 +325,7 @@ def cashflow_overview_print(rents:list, costs:list, downpayment, legal, home_ins
                 Rent-to-price Ratio: {rent_to_price:.2%}
                 Cap rate: {cap_rate_real:.2%}
                 ROI: {breakeven_real:.2f} years 
-                Breakeven Date: {now + datetime.timedelta(days=breakeven_real*365)}
+                Breakeven Date: {(now + datetime.timedelta(days=breakeven_real*365)).strftime('%Y-%b-%d')}
         
         --------------------------------------------
         
@@ -344,7 +344,7 @@ def cashflow_overview_print(rents:list, costs:list, downpayment, legal, home_ins
                 Rent-to-price Ratio: {rent_to_price:.2%}
                 Cap rate: {cap_rate_hypo:.2%}
                 ROI: {breakeven_hypo:.2f} years 
-                Breakeven Date: {now + datetime.timedelta(days=breakeven_hypo*365)}
+                Breakeven Date: {(now + datetime.timedelta(days=breakeven_hypo*365)).strftime('%Y-%b-%d')}
         
         --------------------------------------------
         """)
