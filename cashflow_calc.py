@@ -1,5 +1,6 @@
 import mortgage_calc
 import datetime
+import os
 
 now = datetime.datetime.now()
 
@@ -256,6 +257,7 @@ def cashflow_overview(rents:list, costs:list, downpayment, legal, home_insp, pro
 
 
 def cashflow_overview_print(rents:list, costs:list, downpayment, legal, home_insp, prop_mgmt_signup, bank, offer):
+
     loan_amount = offer-downpayment
     monthly_payment = mortgage_calc.mortgage_calc(P=loan_amount, i=0.03375/12, n=30)
     rental_assoc_exp = rental_assoc_expenses(rents)
@@ -279,67 +281,75 @@ def cashflow_overview_print(rents:list, costs:list, downpayment, legal, home_ins
     breakeven_real = calculate_RTI(investment, cashflow_YR_real)
     cap_rate_hypo = calculate_cap_rate(monthly_payment, cashflow_YR_hypo, offer)
     breakeven_hypo = calculate_RTI(investment, cashflow_YR_hypo)
-    print(f"""
-    ###########################################
-                 CASHFLOW OVERVIEW
-    ###########################################
-                                  
 
-    General Info:
-        Loan Amount: $ {loan_amount}
-        Downpayment: $ {downpayment}
-        Monthly Mortgage Payment: $ {monthly_payment:.2f}
-        Total Investment: $ {investment}
+    name_tag = now.strftime('%Y%b%d_%H%M%S')
+    f_name = f"output{os.sep}{name_tag}_{offer}_{int(downpayment*100/offer)}.txt"
 
+    with open(f_name, "w") as f:
+        f.writelines(f"""
+        ###########################################
+                    CASHFLOW OVERVIEW
+        ###########################################
+                                    
 
-    General Expenses:
-        Rental Associated Expenses: {", ".join([f'$ {cost} ({name})' for cost, name in zip(rental_assoc_exp, ['Property Mgmt', 'Vacancy (5%)', 'Capital Expenditures / Repairs (5%)'])])}
-
-
-    General Income:
-        Rents: {", ".join(['$ '+str(rent) for rent in rents])}
+        General Info:
+            Offer      : $ {offer}
+                Loan Amount: $ {loan_amount}
+                Downpayment: $ {downpayment}
+            Monthly Mortgage Payment: $ {monthly_payment:.2f}
+            Total Investment: $ {investment}
 
 
-    -------------------------------------------
+        General Expenses:
+            Rental Associated Expenses: {", ".join([f'$ {cost} ({name})' for cost, name in zip(rental_assoc_exp, ['Property Mgmt', 'Vacancy (5%)', 'Capital Expenditures / Repairs (5%)'])])}
 
-    *******************REAL:*******************
 
-    [+] Income:
-            Net Operating Income: $ {income_MO_real:.2f} (MO) / ${income_YR_real:.2f} (YR)
+        General Income:
+            Rents: {", ".join(['$ '+str(rent) for rent in rents])}
 
-    [-] Expenses:
-            Net Operating Costs: $ {op_expenses_real:.2f}
-            Total Monthly Expenses: $ {tot_exp_MO_real:.2f}
 
-    [i] Cashflow Stats:
-            Cashflow: $ {cashflow_MO_real:.2f} (MO) / $ {cashflow_YR_real:.2f} (YR)
-            Cash-on-cash ROI (year): {coc_ROI_real:.2%}
-            Rent-to-price Ratio: {rent_to_price:.2%}
-            Cap rate: {cap_rate_real:.2%}
-            ROI: {breakeven_real:.2f} years 
-            Breakeven Date: {now + datetime.timedelta(days=breakeven_real*365)}
-    
-    --------------------------------------------
-    
-    *******************HYPO:*******************
+        -------------------------------------------
 
-    [+] Income:
-            Net Operating Income: $ {income_MO_hypo:.2f} (MO) / ${income_YR_hypo:.2f} (YR)
+        *******************REAL:*******************
 
-    [-] Expenses:
-            Net Operating Costs: $ {op_expenses_hypo:.2f}
-            Total Monthly Expenses: $ {tot_exp_MO_hypo:.2f}
+        [+] Income:
+                Net Operating Income: $ {income_MO_real:.2f} (MO) / ${income_YR_real:.2f} (YR)
 
-    [i] Cashflow Stats:
-            Cashflow: $ {cashflow_MO_hypo:.2f} (MO) / $ {cashflow_YR_hypo:.2f} (YR)
-            Cash-on-cash ROI (year): {coc_ROI_hypo:.2%}
-            Rent-to-price Ratio: {rent_to_price:.2%}
-            Cap rate: {cap_rate_hypo:.2%}
-            ROI: {breakeven_hypo:.2f} years 
-            Breakeven Date: {now + datetime.timedelta(days=breakeven_hypo*365)}
-    
-    --------------------------------------------
-    """)
+        [-] Expenses:
+                Net Operating Costs: $ {op_expenses_real:.2f}
+                Total Monthly Expenses: $ {tot_exp_MO_real:.2f}
+
+        [i] Cashflow Stats:
+                Cashflow: $ {cashflow_MO_real:.2f} (MO) / $ {cashflow_YR_real:.2f} (YR)
+                Cash-on-cash ROI (year): {coc_ROI_real:.2%}
+                Rent-to-price Ratio: {rent_to_price:.2%}
+                Cap rate: {cap_rate_real:.2%}
+                ROI: {breakeven_real:.2f} years 
+                Breakeven Date: {now + datetime.timedelta(days=breakeven_real*365)}
+        
+        --------------------------------------------
+        
+        *******************HYPO:*******************
+
+        [+] Income:
+                Net Operating Income: $ {income_MO_hypo:.2f} (MO) / ${income_YR_hypo:.2f} (YR)
+
+        [-] Expenses:
+                Net Operating Costs: $ {op_expenses_hypo:.2f}
+                Total Monthly Expenses: $ {tot_exp_MO_hypo:.2f}
+
+        [i] Cashflow Stats:
+                Cashflow: $ {cashflow_MO_hypo:.2f} (MO) / $ {cashflow_YR_hypo:.2f} (YR)
+                Cash-on-cash ROI (year): {coc_ROI_hypo:.2%}
+                Rent-to-price Ratio: {rent_to_price:.2%}
+                Cap rate: {cap_rate_hypo:.2%}
+                ROI: {breakeven_hypo:.2f} years 
+                Breakeven Date: {now + datetime.timedelta(days=breakeven_hypo*365)}
+        
+        --------------------------------------------
+        """)
+
+        return f_name
 
 
 if __name__=="__main__":
