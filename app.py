@@ -125,12 +125,12 @@ app.layout = html.Div([
                             ], width=3),
                             dbc.Col([
                                 dbc.Row([
-                                    dbc.Col([html.Label(id='rental1_label', children=["Rent 1"])], 
+                                    dbc.Col([html.Label(id='rental1_label', children=["Rent 1"])],   # TODO: combine two rent-switches into one
                                             width=INPUT_WIDTH),
                                     dbc.Col([dcc.Input(id={'type': 'input','group':'rents', 'index': 0}, type='number', placeholder="Rental Income", min=0, max=10000, step=0.1),
                                             html.Button('$/Month', className="interval_switch", id={'type': 'switch','group':'rents', 'index': 0}, title="Click to switch between year/month intervals",
                                                                 value="month",
-                                                                style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
+                                                                style={"text-align":"center", "width":"20%","margin-left":"8%", "padding-left":"3px",
                                                                     "background-color":"inherit", "border":"None"})], 
                                             width=INPUT_WIDTH+4),
                                 ], justify="around"),
@@ -140,7 +140,7 @@ app.layout = html.Div([
                                     dbc.Col([dcc.Input(id={'type': 'input','group':'rents', 'index': 1}, type='number', placeholder="Rental Income", min=0, max=10000, step=0.1),
                                             html.Button('$/Month', className="interval_switch", id={'type': 'switch','group':'rents', 'index': 1}, title="Click to switch between year/month intervals",
                                                                 value="month",
-                                                                style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
+                                                                style={"text-align":"center", "width":"20%","margin-left":"8%", "padding-left":"3px",
                                                                     "background-color":"inherit", "border":"None"})], 
                                             width=INPUT_WIDTH+4)
                                 ], justify="around"),
