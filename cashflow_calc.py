@@ -4,16 +4,19 @@ import os
 
 now = datetime.datetime.now()
 
-def rental_assoc_expenses(rents:list):
+def rental_assoc_expenses(rents:list, interval="month"):
     """
     Calculates rent associated expenses.
 
     Params:
-        rents (list)    - list of monthly rents in property
+        rents (list)    - list of rents in property
+        interval (str)  - indicate interval for rents value ("year" or "month"; default: "month")
 
     Returns
         x, y, z (tuple) - tuple containing x=property managment fees, y=vacancy and z=capital expenditures
     """
+    if interval == "year":
+        [rents/12 for rent in rents]
     total_rent = sum(rents)
     prop_mgmt = total_rent*0.09
     vacancy_loss = capital_exp = total_rent*0.05
