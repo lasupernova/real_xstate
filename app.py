@@ -78,7 +78,7 @@ app.layout = html.Div([
                                     dbc.Col([html.Label(id='garbage_label', children=["Garbage"], style={"margin-right": "15px"})], 
                                             width=INPUT_WIDTH),
                                     dbc.Col([dcc.Input(id={'type': 'input','group':'utilities', 'index': 'garbage'}, type='number', placeholder="yearly", min=0, max=1000, step=0.01, style={"text-align":"center"}),
-                                            html.Button('$/Year', className="utility_switch", id={'type': 'switch','group':'utilities', 'index': 'garbage'}, title="Click to switch between year/month intervals",
+                                            html.Button('$/Year', className="interval_switch", id={'type': 'switch','group':'utilities', 'index': 'garbage'}, title="Click to switch between year/month intervals",
                                                         value="year",
                                                         style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
                                                             "background-color":"inherit", "border":"None"})], 
@@ -90,7 +90,7 @@ app.layout = html.Div([
                                     dbc.Col([html.Label(id="water_label", children=["Water"])], 
                                             width=INPUT_WIDTH),
                                     dbc.Col([dcc.Input(id={'type': 'input','group':'utilities', 'index': 'water'}, type='number', placeholder="yearly", min=0, max=1000, step=0.01, style={"text-align":"center"}),
-                                            html.Button('$/Year', className="utility_switch", id={'type': 'switch','group':'utilities', 'index': 'water'}, title="Click to switch between year/month intervals",
+                                            html.Button('$/Year', className="interval_switch", id={'type': 'switch','group':'utilities', 'index': 'water'}, title="Click to switch between year/month intervals",
                                                         value="year",
                                                         style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
                                                             "background-color":"inherit", "border":"None"})], 
@@ -102,7 +102,7 @@ app.layout = html.Div([
                                     dbc.Col([html.Label(id='lawn_label', children=["Lawn Care"])], 
                                             width=INPUT_WIDTH),
                                     dbc.Col([dcc.Input(id={'type': 'input','group':'utilities', 'index': 'lawn_care'}, type='number', placeholder="yearly", min=0, max=1000, step=0.01, style={"text-align":"center"}),
-                                            html.Button('$/Year', className="utility_switch", id={'type': 'switch','group':'utilities', 'index': 'lawn_care'}, title="Click to switch between year/month intervals",
+                                            html.Button('$/Year', className="interval_switch", id={'type': 'switch','group':'utilities', 'index': 'lawn_care'}, title="Click to switch between year/month intervals",
                                                        value="year",
                                                        style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
                                                             "background-color":"inherit", "border":"None"})], 
@@ -114,7 +114,7 @@ app.layout = html.Div([
                                     dbc.Col([html.Label(id='sewage_label', children=["Sewage"])], 
                                             width=INPUT_WIDTH),
                                     dbc.Col([dcc.Input(id={'type': 'input','group':'utilities', 'index': 'sewage'}, type='number', placeholder="yearly", min=0, max=1000, step=0.01, style={"text-align":"center"}),
-                                            html.Button('$/Year', className="utility_switch", id={'type': 'switch','group':'utilities', 'index': 'sewage'}, title="Click to switch between year/month intervals",
+                                            html.Button('$/Year', className="interval_switch", id={'type': 'switch','group':'utilities', 'index': 'sewage'}, title="Click to switch between year/month intervals",
                                                         value="year",
                                                         style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
                                                             "background-color":"inherit", "border":"None"})], 
@@ -127,34 +127,42 @@ app.layout = html.Div([
                                 dbc.Row([
                                     dbc.Col([html.Label(id='rental1_label', children=["Rent 1"])], 
                                             width=INPUT_WIDTH),
-                                    dbc.Col([dcc.Input(id='rental1', type='number', placeholder="Rental Income", min=0, max=2000, step=0.1)], 
-                                            width=INPUT_WIDTH+1),
-                                    dbc.Col([html.Label(id='rental1_text', children=["$"], title="Rental Income From Unit 1")],
-                                    width=3)
+                                    dbc.Col([dcc.Input(id={'type': 'input','group':'rents', 'index': 0}, type='number', placeholder="Rental Income", min=0, max=10000, step=0.1),
+                                            html.Button('$/Month', className="interval_switch", id={'type': 'switch','group':'rents', 'index': 0}, title="Click to switch between year/month intervals",
+                                                                value="month",
+                                                                style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
+                                                                    "background-color":"inherit", "border":"None"})], 
+                                            width=INPUT_WIDTH+4),
                                 ], justify="around"),
                                 dbc.Row([
                                     dbc.Col([html.Label(id='rental2_label', children=["Rent 2"])], 
                                             width=INPUT_WIDTH),
-                                    dbc.Col([dcc.Input(id='rental2', type='number', placeholder="Rental Income", min=0, max=2000, step=0.1)], 
-                                            width=INPUT_WIDTH+1),
-                                    dbc.Col([html.Label(id='rental2_text', children=["$"], title="Rental Income From Unit 12")],
-                                    width=3)
+                                    dbc.Col([dcc.Input(id={'type': 'input','group':'rents', 'index': 1}, type='number', placeholder="Rental Income", min=0, max=10000, step=0.1),
+                                            html.Button('$/Month', className="interval_switch", id={'type': 'switch','group':'rents', 'index': 1}, title="Click to switch between year/month intervals",
+                                                                value="month",
+                                                                style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
+                                                                    "background-color":"inherit", "border":"None"})], 
+                                            width=INPUT_WIDTH+4)
                                 ], justify="around"),
                                 dbc.Row([
                                     dbc.Col([html.Label(id='taxes1_label', children=["Taxes"])], 
                                             width=INPUT_WIDTH),
-                                    dbc.Col([dcc.Input(id='taxes', type='number', placeholder="Taxes", min=0, max=10000, step=0.01)], 
-                                            width=INPUT_WIDTH+1),
-                                    dbc.Col([html.Label(id='taxes_text', children=["$"], title="Taxes")],
-                                    width=3)
+                                    dbc.Col([dcc.Input(id={'type': 'input','group':'tax', 'index': 0}, type='number', placeholder="yearly", min=0, max=10000, step=0.01),
+                                            html.Button('$/Year', className="interval_switch", id={'type': 'switch','group':'tax', 'index': 0}, title="Click to switch between year/month intervals",
+                                                                value="year",
+                                                                style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
+                                                                    "background-color":"inherit", "border":"None"})], 
+                                            width=INPUT_WIDTH+4),
                                 ], justify="around"),
                                 dbc.Row([
                                     dbc.Col([html.Label(id='insurance_label', children=["Insurance"])], 
                                             width=INPUT_WIDTH),
-                                    dbc.Col([dcc.Input(id='insurance', type='number', placeholder="Insurance", min=0, max=1000, step=0.01)], 
-                                            width=INPUT_WIDTH+1),
-                                    dbc.Col([html.Label(id='insurance_text', children=["$"], title="Insurance")],
-                                    width=3)
+                                    dbc.Col([dcc.Input(id={'type': 'input','group':'insurance', 'index': 0}, type='number', placeholder="yearly", min=0, max=10000, step=0.01),
+                                            html.Button('$/Year', className="interval_switch", id={'type': 'switch','group':'insurance', 'index': 0}, title="Click to switch between year/month intervals",
+                                                                value="year",
+                                                                style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
+                                                                    "background-color":"inherit", "border":"None"})], 
+                                            width=INPUT_WIDTH+4),
                                 ], justify="around"),
                             ], width=3),
                             dbc.Col([
@@ -272,10 +280,10 @@ def show_amortization(check_value):
     Output({'type': 'input','group':'utilities', 'index': 'water'}, 'value'),
     Output({'type': 'input','group':'utilities', 'index': 'lawn_care'}, 'value'),
     Output({'type': 'input','group':'utilities', 'index': 'sewage'}, 'value'),
-    Output('rental1', 'value'),
-    Output('rental2', 'value'),
-    Output('taxes', 'value'),
-    Output('insurance', 'value'),
+    Output({'type': 'input','group':'rents', 'index': 0}, 'value'),
+    Output({'type': 'input','group':'rents', 'index': 1}, 'value'),
+    Output({'type': 'input','group':'tax', 'index': 0}, 'value'),
+    Output({'type': 'input','group':'insurance', 'index': 0}, 'value'),
     Output('legal', 'value'),
     Output('home_insp', 'value'),
     Output('bank', 'value'),
@@ -292,28 +300,35 @@ def fill_defaults(n_clicks):
 @app.callback(
     Output('export_output', 'children'),
     Input('export_results_button', 'n_clicks'),
-    [State({'type': 'input','group':'utilities', 'index': 'garbage'}, 'value'),
-    State({'type': 'input','group':'utilities', 'index': 'water'}, 'value'),
-    State({'type': 'input','group':'utilities', 'index': 'lawn_care'}, 'value'),
-    State({'type': 'input','group':'utilities', 'index': 'sewage'}, 'value'),
-    State('rental1', 'value'),
-    State('rental2', 'value'),
-    State('taxes', 'value'),
-    State('insurance', 'value'),
+    [State({'type': 'input','group':'utilities', 'index': ALL}, 'value'),
+    State({'type': 'switch','group':'utilities', 'index': ALL}, 'value'),
+    State({'type': 'input','group':'rents', 'index': ALL}, 'value'),
+    State({'type': 'switch','group':'rents', 'index': ALL}, 'value'),
+    State({'type': 'input','group':'tax', 'index': 0}, 'value'),
+    State({'type': 'switch','group':'tax', 'index': 0}, 'value'),
+    State({'type': 'input','group':'insurance', 'index': 0}, 'value'),
+    State({'type': 'switch','group':'insurance', 'index': 0}, 'value'),
     State('legal', 'value'),
     State('home_insp', 'value'),
     State('bank', 'value'),
     State('downpayment', 'value'),
     State('offer', 'value')]
 )
-def export_results(n_clicks, garbage, water, lawn_care, sewage, rental1, rental2, taxes, insurance,
+def export_results(n_clicks, utilities, utilities_intervals, rents, rents_intervals, taxes, tax_interval, insurance, insurance_interval,
                         legal, home_insp, bank, downpayment, offer):
     if n_clicks is None:
         raise PreventUpdate
     else:
         downpayment = offer*downpayment/100
-        export_path = cashflow_calc.cashflow_overview_print([rental1, rental2], 
-                                                   [garbage, water, lawn_care, sewage, taxes, insurance],
+
+        # convert value to interval-value needed by cashflow_calc.cashflow_overview()  based on intervals passed  -- TODO: create function to avoid redundancy
+        utilities = [val if interval=="year" else val*12 for val, interval in zip(utilities, utilities_intervals)]  # yearly costs for utilities used in cashflow-funcs per default
+        rents = [val if interval=="month" else val/12 for val, interval in zip(rents, rents_intervals)]  # monthly costs for rents used in cashflow-funcs per default
+        taxes = taxes if tax_interval=="year" else taxes*12
+        insurance = insurance if insurance_interval=="year" else insurance*12
+
+        export_path = cashflow_calc.cashflow_overview_print(rents, 
+                                                   utilities + [taxes, insurance],
                                                    downpayment, 
                                                    legal, home_insp, 0, bank,
                                                    offer)
@@ -329,33 +344,36 @@ def export_results(n_clicks, garbage, water, lawn_care, sewage, rental1, rental2
     Input('submit_expenses', 'n_clicks'),
     [State({'type': 'input','group':'utilities', 'index': ALL}, 'value'),
     State({'type': 'switch','group':'utilities', 'index': ALL}, 'value'),
-    State('rental1', 'value'),
-    State('rental2', 'value'),
-    State('taxes', 'value'),
-    State('insurance', 'value'),
+    State({'type': 'input','group':'rents', 'index': ALL}, 'value'),
+    State({'type': 'switch','group':'rents', 'index': ALL}, 'value'),
+    State({'type': 'input','group':'tax', 'index': 0}, 'value'),
+    State({'type': 'switch','group':'tax', 'index': 0}, 'value'),
+    State({'type': 'input','group':'insurance', 'index': 0}, 'value'),
+    State({'type': 'switch','group':'insurance', 'index': 0}, 'value'),
     State('legal', 'value'),
     State('home_insp', 'value'),
     State('bank', 'value'),
     State('downpayment', 'value'),
     State('offer', 'value')]
 )
-def summarize_expenses(n_clicks, utilities, intervals, rental1, rental2, taxes, insurance,
+def summarize_expenses(n_clicks, utilities, utilities_intervals, rents, rents_intervals, taxes, tax_interval, insurance, insurance_interval,
                         legal, home_insp, bank, downpayment, offer):
     if n_clicks is None:
         raise PreventUpdate
     else:
         # convert value to interval-value needed by cashflow_calc.cashflow_overview()  based on intervals passed
-        print(f"Utilities before: {utilities}")
-        utilities = [val if interval=="year" else val*12 for val, interval in zip(utilities, intervals)]
-        print(f"Utilities AFTER: {utilities}")
+        utilities = [val if interval=="year" else val*12 for val, interval in zip(utilities, utilities_intervals)]  # yearly costs for utilities used in cashflow-funcs per default
+        rents = [val if interval=="month" else val/12 for val, interval in zip(rents, rents_intervals)]  # monthly costs for rents used in cashflow-funcs per default
+        taxes = taxes if tax_interval=="year" else taxes*12
+        insurance = insurance if insurance_interval=="year" else insurance*12
 
         # calculate combined specs
         all_expenses = sum(utilities) + sum([taxes, insurance])
-        rental_assoc_exp = cashflow_calc.rental_assoc_expenses([rental1, rental2])
+        rental_assoc_exp = cashflow_calc.rental_assoc_expenses(rents)
         downpayment = offer*downpayment/100  # downpayment is inserted in percent of offer - but cashflow_calc function takes dollar amount
 
         # get cashflow values
-        test_all = cashflow_calc.cashflow_overview([rental1, rental2], 
+        test_all = cashflow_calc.cashflow_overview(rents, 
                                                    utilities + [taxes, insurance],
                                                    downpayment, 
                                                    legal, home_insp, 0, bank,
@@ -479,6 +497,7 @@ def switch_utility_interval(n_clicks, switch_val):
         raise PreventUpdate
     else:
         if switch_val=="year":
+            print("CONVERTED TO MONTH")
             return ("monthly", "month" , "$/Month")
         else:
             return ("yearly", "year", "$/Year")
