@@ -1,7 +1,8 @@
 # imports
-from dash import Dash, dcc, html, Input, Output, State
+from dash import Dash, dcc, html, Input, Output, State, ALL, MATCH
 from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
+import dash_daq as daq
 import mortgage_calc
 import cashflow_calc
 import os
@@ -19,28 +20,33 @@ app.layout = html.Div([
                     # MORTGAGE
                     dbc.Col([
                         dbc.Row([
-                            dbc.Col([dcc.Input(id='mortgage_period', type='number', placeholder="Mortgage period", min=1, max=30, step=1, value=30)], 
-                                    width=INPUT_WIDTH),
-                            dbc.Col([html.Label(id='mortgage_period_text', children=["years"], title="Mortgage period")],
-                            width=3)
+                            dbc.Col([html.Label(id='mortgage_period_label', children=["Term"], style={"margin-right": "15px"})], 
+                                    width=INPUT_WIDTH+1),
+                            dbc.Col([dcc.Input(id='mortgage_period', type='number', placeholder="Mortgage period", min=1, max=30, step=1, value=30),
+                                    html.Label(id='mortgage_period_text', children=["years"], title="Mortgage period", style={"margin-left":"25%", "padding-left":"5px"})],
+                                    width=INPUT_WIDTH+3)
                         ]),
                         dbc.Row([
-                            dbc.Col([dcc.Input(id='interest_rate_yearly', type='number', placeholder="Interest rate", min=0, max=100, step=0.005, value=3.375)], 
-                                    width=INPUT_WIDTH),
-                            dbc.Col([html.Label(id='interest_rate_text', children=["%"], title="Yearly Interest Rate")],
-                            width=3)
+                            dbc.Col([html.Label(id='interest_rate_label', children=["Interest Rate"], style={"margin-right": "15px"})], 
+                                    width=INPUT_WIDTH+1),
+                            dbc.Col([dcc.Input(id='interest_rate_yearly', type='number', placeholder="Interest rate", min=0, max=100, step=0.005, value=3.375),
+                                    html.Label(id='interest_rate_text', children=["%"], title="Yearly Interest Rate", style={"margin-left":"5%", "padding-left":"3px"})],
+                                    width=INPUT_WIDTH+3)
+                        ], justify="around"),
+                        dbc.Row([
+                            dbc.Col([html.Label(id='downpayment_label', children=["Downpayment"], style={"margin-right": "15px"})], 
+                                    width=INPUT_WIDTH+1),
+                            dbc.Col([dcc.Input(id='downpayment', type='number', placeholder="Downpayment [%]", min=0, max=100, step=1, value=25),
+                                    html.Label(id='downpayment_text', children=["%"], title="Downpayment", style={"margin-left":"25%"})],
+                                    width=INPUT_WIDTH+3)
                         ]),
                         dbc.Row([
-                            dbc.Col([dcc.Input(id='downpayment', type='number', placeholder="Downpayment [%]", min=0, max=100, step=1, value=25)], 
+                            dbc.Col([html.Label(id='offer_label', children=["Offer Amount"], style={"margin-right": "15px"})], 
+                                    width=INPUT_WIDTH+1),
+                            dbc.Col([dcc.Input(id='offer', type='number', placeholder="Offer Amount")],
                                     width=INPUT_WIDTH),
-                            dbc.Col([html.Label(id='downpayment_text', children=["%"], title="Downpayment")],
-                            width=3)
-                        ]),
-                        dbc.Row([
-                            dbc.Col([dcc.Input(id='offer', type='number', placeholder="Offer Amount")], 
-                                    width=INPUT_WIDTH),
-                            dbc.Col([html.Label(id='offer_text', children=["$"], title="Offer Amount")],
-                            width=3)
+                            dbc.Col([html.Label(id='offer_text', children=["$"], title="Offer Amount", style={"padding-left":"15px"})],
+                                    width=1)
                         ]),
                         html.Button('Submit', id='submit-val', style={"margin-top":"1%", "margin-bottom":"2%"}),
                         html.Hr(),
@@ -61,43 +67,60 @@ app.layout = html.Div([
                                     style={'margin': "10px", "visibility":"hidden"}
                                     )
                                 ], style={"margin": "15px", "height":"40vh", "justify":"center", "align":"center"})
-                            ], width=4, style={"margin": "15px"}),
+                            ], width=2, style={"margin": "15px"}),
+                    # Spaceholder
+                    dbc.Col([], width=1),
                     # EXPENSES
                     dbc.Col([
                         dbc.Row([
                             dbc.Col([
                                 dbc.Row([
-                                    dbc.Col([html.Label(id='garbage_label', children=["Garbage"])], 
+                                    dbc.Col([html.Label(id='garbage_label', children=["Garbage"], style={"margin-right": "15px"})], 
                                             width=INPUT_WIDTH),
-                                    dbc.Col([dcc.Input(id='garbage', type='number', placeholder="Garbage Costs", min=0, max=1000, step=0.01)], 
-                                            width=INPUT_WIDTH+1),
-                                    dbc.Col([html.Label(id='garbage_text', children=["$"], title="Garbage Costs"),
-                                    ],
-                                            width=3, align="left")
+                                    dbc.Col([dcc.Input(id={'type': 'input','group':'utilities', 'index': 'garbage'}, type='number', placeholder="yearly", min=0, max=1000, step=0.01, style={"text-align":"center"}),
+                                            html.Button('$/Year', className="utility_switch", id={'type': 'switch','group':'utilities', 'index': 'garbage'}, title="Click to switch between year/month intervals",
+                                                        value="year",
+                                                        style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
+                                                            "background-color":"inherit", "border":"None"})], 
+                                            width=INPUT_WIDTH+4),
+                                    # dbc.Col([html.Label(id='garbage_text', children=["$"], title="Garbage Costs")],
+                                    #         width=1, align="left"),
                                 ], justify="around"),
                                 dbc.Row([
-                                    dbc.Col([html.Label(id='water_label', children=["Water"])], 
+                                    dbc.Col([html.Label(id="water_label", children=["Water"])], 
                                             width=INPUT_WIDTH),
-                                    dbc.Col([dcc.Input(id='water', type='number', placeholder="Water Costs", min=0, max=1000, step=0.01)], 
-                                            width=INPUT_WIDTH+1),
-                                    dbc.Col([html.Label(id='water_text', children=["$"], title="Water Costs")],
-                                    width=3)
+                                    dbc.Col([dcc.Input(id={'type': 'input','group':'utilities', 'index': 'water'}, type='number', placeholder="yearly", min=0, max=1000, step=0.01, style={"text-align":"center"}),
+                                            html.Button('$/Year', className="utility_switch", id={'type': 'switch','group':'utilities', 'index': 'water'}, title="Click to switch between year/month intervals",
+                                                        value="year",
+                                                        style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
+                                                            "background-color":"inherit", "border":"None"})], 
+                                            width=INPUT_WIDTH+4),
+                                    # dbc.Col([html.Label(id='water_text', children=["$"], title="Water Costs")],
+                                    # width=3)
                                 ], justify="around"),
                                 dbc.Row([
                                     dbc.Col([html.Label(id='lawn_label', children=["Lawn Care"])], 
                                             width=INPUT_WIDTH),
-                                    dbc.Col([dcc.Input(id='lawn_care', type='number', placeholder="Lawn Care", min=0, max=1000, step=0.01)], 
-                                            width=INPUT_WIDTH+1),
-                                    dbc.Col([html.Label(id='lawn_care_text', children=["$"], title="Lawn Care")],
-                                    width=3)
+                                    dbc.Col([dcc.Input(id={'type': 'input','group':'utilities', 'index': 'lawn_care'}, type='number', placeholder="yearly", min=0, max=1000, step=0.01, style={"text-align":"center"}),
+                                            html.Button('$/Year', className="utility_switch", id={'type': 'switch','group':'utilities', 'index': 'lawn_care'}, title="Click to switch between year/month intervals",
+                                                       value="year",
+                                                       style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
+                                                            "background-color":"inherit", "border":"None"})], 
+                                            width=INPUT_WIDTH+4),
+                                    # dbc.Col([html.Label(id='lawn_care_text', children=["$"], title="Lawn Care")],
+                                    # width=3)
                                 ], justify="around"),
                                 dbc.Row([
                                     dbc.Col([html.Label(id='sewage_label', children=["Sewage"])], 
                                             width=INPUT_WIDTH),
-                                    dbc.Col([dcc.Input(id='sewage', type='number', placeholder="Sewage", min=0, max=1000, step=0.01)], 
-                                            width=INPUT_WIDTH+1),
-                                    dbc.Col([html.Label(id='sewage_text', children=["$"], title="Sewage")],
-                                    width=3)
+                                    dbc.Col([dcc.Input(id={'type': 'input','group':'utilities', 'index': 'sewage'}, type='number', placeholder="yearly", min=0, max=1000, step=0.01, style={"text-align":"center"}),
+                                            html.Button('$/Year', className="utility_switch", id={'type': 'switch','group':'utilities', 'index': 'sewage'}, title="Click to switch between year/month intervals",
+                                                        value="year",
+                                                        style={"text-align":"center", "width":"20%","margin-left":"5%", "padding-left":"3px",
+                                                            "background-color":"inherit", "border":"None"})], 
+                                            width=INPUT_WIDTH+4),
+                                    # dbc.Col([html.Label(id='sewage_text', children=["$"], title="Sewage")],
+                                    # width=3)
                                 ], justify="around")
                             ], width=3),
                             dbc.Col([
@@ -245,10 +268,10 @@ def show_amortization(check_value):
 
 
 @app.callback(
-    [Output('garbage', 'value'),
-    Output('water', 'value'),
-    Output('lawn_care', 'value'),
-    Output('sewage', 'value'),
+    [Output({'type': 'input','group':'utilities', 'index': 'garbage'}, 'value'),
+    Output({'type': 'input','group':'utilities', 'index': 'water'}, 'value'),
+    Output({'type': 'input','group':'utilities', 'index': 'lawn_care'}, 'value'),
+    Output({'type': 'input','group':'utilities', 'index': 'sewage'}, 'value'),
     Output('rental1', 'value'),
     Output('rental2', 'value'),
     Output('taxes', 'value'),
@@ -269,10 +292,10 @@ def fill_defaults(n_clicks):
 @app.callback(
     Output('export_output', 'children'),
     Input('export_results_button', 'n_clicks'),
-    [State('garbage', 'value'),
-    State('water', 'value'),
-    State('lawn_care', 'value'),
-    State('sewage', 'value'),
+    [State({'type': 'input','group':'utilities', 'index': 'garbage'}, 'value'),
+    State({'type': 'input','group':'utilities', 'index': 'water'}, 'value'),
+    State({'type': 'input','group':'utilities', 'index': 'lawn_care'}, 'value'),
+    State({'type': 'input','group':'utilities', 'index': 'sewage'}, 'value'),
     State('rental1', 'value'),
     State('rental2', 'value'),
     State('taxes', 'value'),
@@ -304,10 +327,8 @@ def export_results(n_clicks, garbage, water, lawn_care, sewage, rental1, rental2
 @app.callback(
     Output('expenses_prompt', 'children'),
     Input('submit_expenses', 'n_clicks'),
-    [State('garbage', 'value'),
-    State('water', 'value'),
-    State('lawn_care', 'value'),
-    State('sewage', 'value'),
+    [State({'type': 'input','group':'utilities', 'index': ALL}, 'value'),
+    State({'type': 'switch','group':'utilities', 'index': ALL}, 'value'),
     State('rental1', 'value'),
     State('rental2', 'value'),
     State('taxes', 'value'),
@@ -318,16 +339,24 @@ def export_results(n_clicks, garbage, water, lawn_care, sewage, rental1, rental2
     State('downpayment', 'value'),
     State('offer', 'value')]
 )
-def summarize_expenses(n_clicks, garbage, water, lawn_care, sewage, rental1, rental2, taxes, insurance,
+def summarize_expenses(n_clicks, utilities, intervals, rental1, rental2, taxes, insurance,
                         legal, home_insp, bank, downpayment, offer):
     if n_clicks is None:
         raise PreventUpdate
     else:
-        all_expenses = sum([garbage, water, lawn_care, sewage, taxes, insurance])
+        # convert value to interval-value needed by cashflow_calc.cashflow_overview()  based on intervals passed
+        print(f"Utilities before: {utilities}")
+        utilities = [val if interval=="year" else val*12 for val, interval in zip(utilities, intervals)]
+        print(f"Utilities AFTER: {utilities}")
+
+        # calculate combined specs
+        all_expenses = sum(utilities) + sum([taxes, insurance])
         rental_assoc_exp = cashflow_calc.rental_assoc_expenses([rental1, rental2])
         downpayment = offer*downpayment/100  # downpayment is inserted in percent of offer - but cashflow_calc function takes dollar amount
+
+        # get cashflow values
         test_all = cashflow_calc.cashflow_overview([rental1, rental2], 
-                                                   [garbage, water, lawn_care, sewage, taxes, insurance],
+                                                   utilities + [taxes, insurance],
                                                    downpayment, 
                                                    legal, home_insp, 0, bank,
                                                    offer)
@@ -433,6 +462,26 @@ def summarize_expenses(n_clicks, garbage, water, lawn_care, sewage, rental1, ren
                 ], justify="around")
         ]
         return info
+
+
+## month-year-switch
+@app.callback(
+    [
+    Output({'type': 'input','group': MATCH, 'index': MATCH}, 'placeholder'),
+    Output({'type': 'switch','group': MATCH, 'index': MATCH}, 'value'),
+    Output({'type': 'switch','group': MATCH, 'index': MATCH}, 'children')
+    ],
+    Input({'type': 'switch','group': MATCH, 'index': MATCH}, 'n_clicks'),
+    State({'type': 'switch','group': MATCH, 'index': MATCH}, 'value')
+)
+def switch_utility_interval(n_clicks, switch_val):
+    if n_clicks is None:
+        raise PreventUpdate
+    else:
+        if switch_val=="year":
+            return ("monthly", "month" , "$/Month")
+        else:
+            return ("yearly", "year", "$/Year")
 
 if __name__ == '__main__':
     print("Imports done!")
