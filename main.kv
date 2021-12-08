@@ -17,21 +17,33 @@
                 multiline: False
                 input_filter: 'float'
                 cursor_color: (230/255.0, 23/255.0, 109/255.0 ,1)
+                font_size: app.txt_input_size
+                padding: [0, (self.height-self.line_height)/2]
+                halign: "center"
             TextInput:
                 id: interest_rate
                 hint_text: "Interest Rate [%]"
                 multiline: False
                 input_filter: 'float'
+                font_size: app.txt_input_size
+                padding: [0, (self.height-self.line_height)/2]
+                halign: "center"
             TextInput:
                 id: downpayment
                 hint_text: "Downpayment [%]"
                 multiline: False
                 input_filter: 'float'
+                font_size: app.txt_input_size
+                padding: [0, (self.height-self.line_height)/2]
+                halign: "center"
             TextInput:
                 id: offer
                 hint_text: "Offer [$]"
                 multiline: False
                 input_filter: 'float'
+                font_size: app.txt_input_size
+                padding: [0, (self.height-self.line_height)/2]
+                halign: "center"
             RelativeLayout:
                 Button:
                     text: "Calculate"
