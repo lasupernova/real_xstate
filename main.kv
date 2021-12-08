@@ -49,12 +49,14 @@
                 text_size: self.width, None #label will have width of widget (which is e.g. the size of a mobile phone screen); None lets heights be dynamic
                 size_hint_y: None
                 height: self.texture_size[1] 
+                markup: True
             Label:
                 id: total_cost
                 text: ""
                 text_size: self.width, None #label will have width of widget (which is e.g. the size of a mobile phone screen); None lets heights be dynamic
                 size_hint_y: None
                 height: self.texture_size[1] 
+                markup: True
 
 
 <RootWidget>: #create root and add children (created above) to is
