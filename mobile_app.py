@@ -29,6 +29,7 @@ class EvaluateInvestment(Screen):
         no need to do anything here as
         we are building things in .kv file
     '''
+
     def calculate_payment(self, mortgage_period, interest_rate, downpayment, offer):
         loan = (1-downpayment/100)*offer
         interest_rate /= 100
@@ -38,17 +39,18 @@ class EvaluateInvestment(Screen):
         total_cost = mortgage_calc.total_cost(loan, interest_rate/12, mortgage_period)
         self.ids.mortgage_payment.text = f"""
 [b]Monthly Payment[/b]
-[size=23]$ {result:.2f}[/size]
+[size=25]$ {result:.2f}[/size]
         """
         self.ids.total_cost.text = f"""
 [b]Total Cost[/b]
-[size=23]$ {total_cost:.2f}[/size]
+[size=25]$ {total_cost:.2f}[/size]
         """
   
 
 #################################################  
 # class in which name .kv file must be named KVBoxLayout.kv. 
 class MainApp(App):
+    txt_input_size = 30
     def build(self):
         return RootWidget() #the instance (NOT the class) --> brackets
   
