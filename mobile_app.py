@@ -38,11 +38,11 @@ class EvaluateInvestment(Screen):
         total_cost = mortgage_calc.total_cost(loan, interest_rate/12, mortgage_period)
         self.ids.mortgage_payment.text = f"""
 [b]Monthly Payment[/b]
-$ {result:.2f}
+[size=23]$ {result:.2f}[/size]
         """
         self.ids.total_cost.text = f"""
 [b]Total Cost[/b]
-$ {total_cost:.2f}
+[size=23]$ {total_cost:.2f}[/size]
         """
   
 
