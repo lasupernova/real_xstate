@@ -24,10 +24,10 @@ Builder.load_file('main.kv')
 class RootWidget(ScreenManager):
     pass
 
-class EvaluateInvestment(Screen):
+class CalculateMortgage(Screen):
     '''
         no need to do anything here as
-        we are building things in .kv file
+        building things in .kv file
     '''
 
     def calculate_payment(self, mortgage_period, interest_rate, downpayment, offer):
@@ -37,6 +37,7 @@ class EvaluateInvestment(Screen):
         result = mortgage_calc.mortgage_calc(loan, interest_rate/12, mortgage_period)
         #total cost 
         total_cost = mortgage_calc.total_cost(loan, interest_rate/12, mortgage_period)
+        # self.mortgage_payment = result
         self.ids.mortgage_payment.text = f"""
 [b]Monthly Payment[/b]
 [size=25]$ {result:.2f}[/size]
@@ -45,6 +46,13 @@ class EvaluateInvestment(Screen):
 [b]Total Cost[/b]
 [size=25]$ {total_cost:.2f}[/size]
         """
+
+
+class SecondScreen(Screen):
+    # pass
+    def on_enter(self, *args):
+        print(self.manager.ids)
+        self.ids.test_textinput2.text = self.manager.ids.mortgage.ids.total_cost.text
   
 
 #################################################  
