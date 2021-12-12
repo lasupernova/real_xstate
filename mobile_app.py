@@ -79,6 +79,7 @@ class MainApp(App):
     def build(self):
         # Create the screen manager
         # return ScreenManager()
+        self.icon = f"static{os.sep}icons{os.sep}tkinter_icon.png"
         return RootWidget()
  
   
