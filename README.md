@@ -15,7 +15,7 @@ Install dependencies:<br>
 
 Usage:<br>
 
-Running the following command will run flsak contanign a Plotly Dash app:
+Running the following command will run Flas containing a Plotly Dash app:
 `python app.py`
 <br><br>
 Open app in browser (while the command above is running):
