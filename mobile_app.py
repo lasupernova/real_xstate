@@ -18,17 +18,25 @@ from kivy.config import Config
 import mortgage_calc
 import os
 
-Builder.load_file('main.kv')
+
 # Config.set('kivy','window_icon',f"static{os.sep}icon{os.sep}tkinter_icon.png")  TODO: custom icon
 
 class RootWidget(ScreenManager):
-    pass
+    def __init__(self, **kwargs):
+        super(RootWidget, self).__init__(**kwargs)
+        # add screens to be managed -- NOTE: first screen added will be the starting screen
+        self.add_widget(CalculateMortgage(name='mortgage'))
+        self.add_widget(SecondScreen(name='screen2'))
+        
+
 
 class CalculateMortgage(Screen):
     '''
         no need to do anything here as
         building things in .kv file
     '''
+    def __init__(self, **kw):
+        super(CalculateMortgage, self).__init__(**kw)
 
     def calculate_payment(self, mortgage_period, interest_rate, downpayment, offer):
         loan = (1-downpayment/100)*offer
@@ -49,10 +57,12 @@ class CalculateMortgage(Screen):
 
 
 class SecondScreen(Screen):
-    # pass
+    def __init__(self, **kw):
+        super(SecondScreen, self).__init__(**kw)
+
     def on_enter(self, *args):
         print(self.manager.ids)
-        self.ids.test_textinput2.text = self.manager.ids.mortgage.ids.total_cost.text
+        self.ids.test_textinput2.text = self.manager.get_screen('mortgage').ids.total_cost.text
   
 
 #################################################  
@@ -60,7 +70,10 @@ class SecondScreen(Screen):
 class MainApp(App):
     txt_input_size = 30
     def build(self):
-        return RootWidget() #the instance (NOT the class) --> brackets
+        # Create the screen manager
+        # return ScreenManager()
+        return RootWidget()
+ 
   
 ##################################################
 
