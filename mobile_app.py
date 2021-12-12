@@ -80,6 +80,7 @@ class MainApp(App):
         # Create the screen manager
         # return ScreenManager()
         self.icon = f"static{os.sep}icons{os.sep}tkinter_icon.png"
+        self.title = "realXstate"
         return RootWidget()
  
   
