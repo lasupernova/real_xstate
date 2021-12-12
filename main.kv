@@ -1,4 +1,8 @@
 #:kivy 2.0.0
+#: import RiseInTransition kivy.uix.screenmanager.RiseInTransition
+#: import CardTransition kivy.uix.screenmanager.CardTransition
+#: import SwapTransition kivy.uix.screenmanager.SwapTransition
+#:import C kivy.utils.get_color_from_hex
 
 <CalculateMortgage>: #create "rule" - visible
 # GridLayout is divided into two sub-GridLayouts, becsaue different number of columns
@@ -28,6 +32,12 @@
                 font_size: app.txt_input_size
                 padding: [0, (self.height-self.line_height)/2]
                 halign: "center"
+                # canvas.after:  # TODO: add border - to color when value is missing
+                #     Color:
+                #         rgba: 0, 1, 0, 1
+                #     Line:
+                #         width: self.line_width
+                #         rectangle: self.line_width  - 2.5, self.line_width  - 2.5, interest_rate.width-4 + 5, interest_rate.height-4 + 5
             TextInput:
                 id: downpayment
                 hint_text: "Downpayment [%]"
@@ -47,9 +57,17 @@
             RelativeLayout:
                 Button:
                     text: "Calculate"
-                    on_press: root.calculate_payment(int(root.ids.term.text), float(root.ids.interest_rate.text) , float(root.ids.downpayment.text), float(root.ids.offer.text))
+                    on_press: root.calculate_payment(root.ids.term.text, root.ids.interest_rate.text , root.ids.downpayment.text, root.ids.offer.text)
                     size_hint: 0.4, 0.6 #size_hint determines how much space a widget is going to get relative to its parent (in this case: how much space of the first RelativeLayout does this button occupy)
                     pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            Label:
+                id: missing_entry
+                text: ""
+                text_size: self.width, None #label will have width of widget (which is e.g. the size of a mobile phone screen); None lets heights be dynamic
+                size_hint_y: None
+                height: self.texture_size[1] 
+                markup: True
+                halign: 'center'
         GridLayout:
             cols: 2 
             size_hint: 0.2, 0.2
@@ -71,8 +89,7 @@
                 height: self.texture_size[1] 
                 markup: True
                 halign: 'center'
-            Label:
-                id: placeholder
+
             RelativeLayout:
                 Button:
                     text: "Next Page"
@@ -80,7 +97,7 @@
                         root.manager.current = 'screen2'
                         root.manager.transition.direction = 'left'
                     size_hint: 0.4, 0.6 #size_hint determines how much space a widget is going to get relative to its parent (in this case: how much space of the first RelativeLayout does this button occupy)
-                    pos_hint: {'center_x': 0.9, 'center_y': 0.7}
+                    pos_hint: {'center_x': 0.8, 'center_y': 0.7}
 
 <SecondScreen>: #create "rule" - visible
 # GridLayout is divided into two sub-GridLayouts, because different number of columns
@@ -111,3 +128,4 @@
                 on_release:
                     root.manager.current = 'mortgage'
                     root.manager.transition.direction = 'right'
+                    # root.manager.transition = RiseInTransition()  # option to change transition type later on

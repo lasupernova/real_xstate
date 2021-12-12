@@ -1,6 +1,6 @@
 from kivy.app import App 
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen 
+from kivy.uix.screenmanager import ScreenManager, Screen, FallOutTransition
 from kivy.uix.boxlayout import BoxLayout
 import json, glob
 from datetime import datetime
@@ -39,12 +39,19 @@ class CalculateMortgage(Screen):
         super(CalculateMortgage, self).__init__(**kw)
 
     def calculate_payment(self, mortgage_period, interest_rate, downpayment, offer):
-        loan = (1-downpayment/100)*offer
-        interest_rate /= 100
+        if "" in [mortgage_period, interest_rate, downpayment, offer]:
+            self.ids.mortgage_payment.height = 0
+            self.ids.total_cost.height = 0
+            border_cols = ['r' if x=="" else None for x in [mortgage_period, interest_rate, downpayment, offer]]
+            missing = [name for x, name in zip([mortgage_period, interest_rate, downpayment, offer], ['mortgage period', 'interest rate', 'downpayment', 'offer']) if x==""]
+            self.ids.missing_entry.text = f"Fill in the missing values: {', '.join(missing)}"
+            return 1
+        loan = (1-float(downpayment)/100)*float(offer)
+        interest_rate = float(interest_rate) / 100
         # monthly payment
-        result = mortgage_calc.mortgage_calc(loan, interest_rate/12, mortgage_period)
+        result = mortgage_calc.mortgage_calc(loan, float(interest_rate)/12,int(mortgage_period))
         #total cost 
-        total_cost = mortgage_calc.total_cost(loan, interest_rate/12, mortgage_period)
+        total_cost = mortgage_calc.total_cost(loan, float(interest_rate)/12, int(mortgage_period))
         # self.mortgage_payment = result
         self.ids.mortgage_payment.text = f"""
 [b]Monthly Payment[/b]
