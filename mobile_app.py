@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, FallOutTransition
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.textinput import TextInput
 import json, glob
 from datetime import datetime
 from pathlib import Path
@@ -69,7 +70,21 @@ class SecondScreen(Screen):
 
     def on_enter(self, *args):
         print(self.manager.ids)
-        self.ids.test_textinput2.text = self.manager.get_screen('mortgage').ids.total_cost.text
+        self.mortgage = self.manager.get_screen('mortgage').ids.total_cost.text
+        self.mortgage_payments = self.manager.get_screen('mortgage').ids.mortgage_payment.text
+        print(f"TOTAL MORTGAGE: {self.mortgage}")
+        print(f"Monthly Payments: {self.mortgage_payments}")
+    
+    def calculate_ROI(self, *args):
+        def __get_ROI_input__(x):
+            cond2 = x.text
+            if cond2:
+                return float(x.text)
+            else:
+                return 0
+
+        print([__get_ROI_input__(wid) for wid in self.manager.get_screen('screen2').ids.ROI_input.walk() if type(wid)== TextInput])
+        # print([type(wid) for wid in self.manager.get_screen('screen2').ids.ROI_input.walk()])
   
 
 #################################################  
