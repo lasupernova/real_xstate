@@ -101,31 +101,147 @@
 
 <SecondScreen>: #create "rule" - visible
 # GridLayout is divided into two sub-GridLayouts, because different number of columns
-    GridLayout: #all of these (also Label, Button etc.) are actually Python classes/objects that kivy implicitly imports --> same as : "from kivy.uix.gridlayout import GridLayout" and then "GridLayout()"
-        cols: 1
-        GridLayout:
-            cols: 1
-            padding: 25, 10 #horizontal and vertical padding of objects to the outside of app box
-            spacing: 20, 10
-            Label:
-                id: test_textinput
-                text: "TEEEEST!!!"
-                text_size: self.width, None #label will have width of widget (which is e.g. the size of a mobile phone screen); None lets heights be dynamic
-                size_hint_y: None
-                height: self.texture_size[1] 
-                markup: True
-                halign: 'center'
-            Label:
-                id: test_textinput2
-                text: ""
-                text_size: self.width, None #label will have width of widget (which is e.g. the size of a mobile phone screen); None lets heights be dynamic
-                size_hint_y: None
-                height: self.texture_size[1] 
-                markup: True
-                halign: 'center'
-            Button:
-                text: "Go Back"
-                on_release:
-                    root.manager.current = 'mortgage'
-                    root.manager.transition.direction = 'right'
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.width, root.height
+    Accordion:
+        # size_hint: 0.3,0.2
+        # pos_hint: {"top": 1}
+        orientation: 'vertical'
+        AccordionItem:
+            title: 'Operating Expenses'
+            background_selected: "static/images/background/accordion_selected_pink.png"
+            BoxLayout:
+                orientation: 'vertical'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    TextInput:
+                        id: expense_water
+                        hint_text: "Water per Month [$]"
+                        multiline: False
+                        input_filter: 'float'
+                        font_size: app.txt_input_size
+                        padding: [0, (self.height-self.line_height)/2]
+                        halign: "center"
+                        size_hint_x: 0.85
+                    Button:
+                        id: water_button
+                        text: 'Yearly'
+                        size_hint_x: 0.15
+                        # on_release: water
+                TextInput:
+                    id: expense_garbage
+                    hint_text: "Garbage"
+                    multiline: False
+                    input_filter: 'float'
+                    font_size: app.txt_input_size
+                    padding: [0, (self.height-self.line_height)/2]
+                    halign: "center"
+                TextInput:
+                    id: expense_lawn
+                    hint_text: "Lawn Care"
+                    multiline: False
+                    input_filter: 'float'
+                    font_size: app.txt_input_size
+                    padding: [0, (self.height-self.line_height)/2]
+                    halign: "center"
+                TextInput:
+                    id: expense_sewage
+                    hint_text: "Sewage"
+                    multiline: False
+                    input_filter: 'float'
+                    font_size: app.txt_input_size
+                    padding: [0, (self.height-self.line_height)/2]
+                    halign: "center"
+        AccordionItem:
+            title: 'Number'
+            background_selected: "static/images/background/accordion_selected_pink.png"
+        AccordionItem:
+            title: 'Another number'
+            background_selected: "static/images/background/accordion_selected_pink.png"
+    # GridLayout:
+    #     cols: 4
+    #     padding: 25, 10 #horizontal and vertical padding of objects to the outside of app box
+    #     spacing: 20, 10 #horizontal and vertical spacing between objects/widgets amongst each other
+    #     size_hint_y: 0.7
+    #     pos_hint_y: 0.1
+
+    #     BoxLayout:
+    #         orientation: 'vertical'
+    #         Label:
+    #             text: "Income"
+    #             font_size: "15sp"
+    #             height: 0.2
+    #         TextInput:
+    #             id: rent_1
+    #             hint_text: "Rent 1"
+    #             multiline: False
+    #             input_filter: 'float'
+    #             font_size: app.txt_input_size
+    #             padding: [0, (self.height-self.line_height)/2]
+    #             halign: "center"
+    #     BoxLayout:
+    #         orientation: 'vertical'
+    #         Label:
+    #             text: "Property Related"
+    #             font_size: "15sp"
+    #             height: 0.2
+    #     BoxLayout:
+    #         orientation: 'vertical'
+    #         Label:
+    #             text: "Closing Costs"
+    #             font_size: "15sp"
+    #             height: 0.2
+
+
+            # TextInput:
+            #     id: term
+            #     hint_text: "Term [years]"
+            #     multiline: False
+            #     input_filter: 'float'
+            #     cursor_color: (230/255.0, 23/255.0, 109/255.0 ,1)
+            #     font_size: app.txt_input_size
+            #     padding: [0, (self.height-self.line_height)/2]
+            #     halign: "center"
+            # TextInput:
+            #     id: interest_rate
+            #     hint_text: "Interest Rate [%]"
+            #     multiline: False
+            #     input_filter: 'float'
+            #     font_size: app.txt_input_size
+            #     padding: [0, (self.height-self.line_height)/2]
+            #     halign: "center"
+            #     # canvas.after:  # TODO: add border - to color when value is missing
+            #     #     Color:
+            #     #         rgba: 0, 1, 0, 1
+            #     #     Line:
+            #     #         width: self.line_width
+            #     #         rectangle: self.line_width  - 2.5, self.line_width  - 2.5, interest_rate.width-4 + 5, interest_rate.height-4 + 5
+            # TextInput:
+            #     id: downpayment
+            #     hint_text: "Downpayment [%]"
+            #     multiline: False
+            #     input_filter: 'float'
+            #     font_size: app.txt_input_size
+            #     padding: [0, (self.height-self.line_height)/2]
+            #     halign: "center"
+            # TextInput:
+            #     id: offer
+            #     hint_text: "Offer [$]"
+            #     multiline: False
+            #     input_filter: 'float'
+            #     font_size: app.txt_input_size
+            #     padding: [0, (self.height-self.line_height)/2]
+            #     halign: "center"
+            # RelativeLayout:
+            #     Button:
+            #         text: "Calculate"
+            #         on_press: root.calculate_payment(root.ids.term.text, root.ids.interest_rate.text , root.ids.downpayment.text, root.ids.offer.text)
+            #         size_hint: 0.4, 0.6 #size_hint determines how much space a widget is going to get relative to its parent (in this case: how much space of the first RelativeLayout does this button occupy)
+            #         pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            # Button:
+            #     text: "Go Back"
+            #     on_release:
+            #         root.manager.current = 'mortgage'
+            #         root.manager.transition.direction = 'right'
                     # root.manager.transition = RiseInTransition()  # option to change transition type later on
