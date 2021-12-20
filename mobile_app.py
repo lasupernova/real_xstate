@@ -76,14 +76,20 @@ class SecondScreen(Screen):
         print(f"Monthly Payments: {self.mortgage_payments}")
     
     def calculate_ROI(self, *args):
+        """
+        Iterated over widget tree (using walk() ) starting at 'ROI_input', 
+        identifies all children widgets that are of type TextInput,
+        and calculates sum of all inserted values.
+        """
         def __get_ROI_input__(x):
+            "Check if value was inputed and return inputted value or zero."
             cond2 = x.text
             if cond2:
                 return float(x.text)
             else:
                 return 0
 
-        print([__get_ROI_input__(wid) for wid in self.manager.get_screen('screen2').ids.ROI_input.walk() if type(wid)== TextInput])
+        print(sum([__get_ROI_input__(wid) for wid in self.manager.get_screen('screen2').ids.ROI_input.walk() if type(wid)== TextInput]))
         # print([type(wid) for wid in self.manager.get_screen('screen2').ids.ROI_input.walk()])
   
 
