@@ -1,6 +1,6 @@
 # real_xstate
 Plotly Dash app that evaluates potential real estate investment deals and keeps track of current investments.
-The app takes all impotrant metrics (such as mortgage term, property offer, utility costs, income from rent, taxes etc) and creates a investment full under realistic  ('real') and optimal ('hypo') conditions.<br>
+The app takes all important metrics (such as mortgage term, property offer, utility costs, income from rent, taxes etc) and creates a investment full under realistic  ('real') and optimal ('hypo') conditions.<br>
 Values calculated to evaluate if a property is a good investment include: __ROI, cash-on-cash ROI, breakeven date, cashflow__.<br>
 Result can be exported to a text file by hitting the dedicated button.
 <br><br>
