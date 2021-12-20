@@ -134,36 +134,130 @@
                             background_color: (2.42, 2.42, 2.42, 1)
                             spacing: [0, 0]
                             on_release: root.switch_timeframe(self, root.ids.expense_water)
-                    TextInput:
-                        id: expense_garbage
-                        hint_text: "Garbage"
-                        multiline: False
-                        input_filter: 'float'
-                        font_size: app.txt_input_size
-                        padding: [0, (self.height-self.line_height)/2]
-                        halign: "center"
-                    TextInput:
-                        id: expense_lawn
-                        hint_text: "Lawn Care"
-                        multiline: False
-                        input_filter: 'float'
-                        font_size: app.txt_input_size
-                        padding: [0, (self.height-self.line_height)/2]
-                        halign: "center"
-                    TextInput:
-                        id: expense_sewage
-                        hint_text: "Sewage"
-                        multiline: False
-                        input_filter: 'float'
-                        font_size: app.txt_input_size
-                        padding: [0, (self.height-self.line_height)/2]
-                        halign: "center"
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: expense_garbage
+                            hint_text: "Garbage Costs"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
+                            halign: "center"
+                            size_hint_x: 0.85
+                        Button:
+                            id: garbage_button
+                            text: '$/Year'
+                            size_hint_x: 0.15
+                            background_color: (2.42, 2.42, 2.42, 1)
+                            spacing: [0, 0]
+                            on_release: root.switch_timeframe(self, root.ids.expense_garbage)
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: expense_lawn
+                            hint_text: "Lawn Care Costs"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
+                            halign: "center"
+                            size_hint_x: 0.85
+                        Button:
+                            id: lawn_button
+                            text: '$/Year'
+                            size_hint_x: 0.15
+                            background_color: (2.42, 2.42, 2.42, 1)
+                            spacing: [0, 0]
+                            on_release: root.switch_timeframe(self, root.ids.expense_lawn)
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: expense_sewage
+                            hint_text: "Sewage Costs"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
+                            halign: "center"
+                            size_hint_x: 0.85
+                        Button:
+                            id: sewage_button
+                            text: '$/Year'
+                            size_hint_x: 0.15
+                            background_color: (2.42, 2.42, 2.42, 1)
+                            spacing: [0, 0]
+                            on_release: root.switch_timeframe(self, root.ids.expense_sewage)
             AccordionItem:
-                title: 'Number'
+                title: 'Rents'
                 background_selected: "static/images/background/accordion_selected_pink.png"
+                BoxLayout:
+                    orientation: 'vertical'
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: rents
+                            hint_text: "Total Rents"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
+                            halign: "center"
+                            size_hint_x: 0.85
+                        Button:
+                            id: rents_button
+                            text: '$/Month'
+                            size_hint_x: 0.15
+                            background_color: (2.42, 2.42, 2.42, 1)
+                            spacing: [0, 0]
+                            on_release: root.switch_timeframe(self, root.ids.rents)
             AccordionItem:
-                title: 'Another number'
+                title: 'Property Related Costs'
                 background_selected: "static/images/background/accordion_selected_pink.png"
+                BoxLayout:
+                    orientation: 'vertical'
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: taxes
+                            hint_text: "Property Tax"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
+                            halign: "center"
+                            size_hint_x: 0.85
+                        Button:
+                            id: tax_button
+                            text: '$/Year'
+                            size_hint_x: 0.15
+                            background_color: (2.42, 2.42, 2.42, 1)
+                            spacing: [0, 0]
+                            on_release: root.switch_timeframe(self, root.ids.taxes)
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: insurance
+                            hint_text: "Insurance"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
+                            halign: "center"
+                            size_hint_x: 0.85
+                        Button:
+                            id: insurance_button
+                            text: '$/Year'
+                            size_hint_x: 0.15
+                            background_color: (2.42, 2.42, 2.42, 1)
+                            spacing: [0, 0]
+                            on_release: root.switch_timeframe(self, root.ids.insurance)
             AccordionItem:
                 title: "test"
                 hidden: True
