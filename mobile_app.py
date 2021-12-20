@@ -92,7 +92,25 @@ class SecondScreen(Screen):
         print(sum([__get_ROI_input__(wid) for wid in self.manager.get_screen('screen2').ids.ROI_input.walk() if type(wid)== TextInput]))
         # print([type(wid) for wid in self.manager.get_screen('screen2').ids.ROI_input.walk()])
   
+    def switch_timeframe(self, current_button, current_input):
+        """
+        Changes current timeframe button text and current TextInput text based between monthly and yearly expense 
+        based on current value (text) of current timeframe button.
 
+        Params:
+            current_button: timeframe  button that was clicked (default text: '$/Year')
+            current_input: TextInput field associated with clicked tiemframe button
+
+        Returns:
+            0 if successfully exited
+        """
+        if current_input.text != "":  #TextInput default text is an empty string of length 0
+            curr_val = float(current_input.text)
+            current_input.text = f"{curr_val/12 if current_button.text=='$/Year' else curr_val*12}"
+        current_button.text = "$/Month" if current_button.text=="$/Year" else "$/Year"
+        print("New TimeFrame: ",current_button.text)
+        return 0 
+        
 #################################################  
 # class in which name .kv file must be named KVBoxLayout.kv. 
 class MainApp(App):

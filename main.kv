@@ -107,6 +107,7 @@
         Accordion:
             # size_hint: 0.3,0.2
             # pos_hint: {"top": 1}
+            id: ROI_input
             orientation: 'vertical'
             size_hint_y: 0.8
             AccordionItem:
@@ -118,18 +119,21 @@
                         orientation: 'horizontal'
                         TextInput:
                             id: expense_water
-                            hint_text: "Water per Month [$]"
+                            hint_text: "Water Costs"
                             multiline: False
                             input_filter: 'float'
                             font_size: app.txt_input_size
                             padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
                             halign: "center"
                             size_hint_x: 0.85
                         Button:
                             id: water_button
-                            text: 'Yearly'
+                            text: '$/Year'
                             size_hint_x: 0.15
-                            # on_release: water
+                            background_color: (2.42, 2.42, 2.42, 1)
+                            spacing: [0, 0]
+                            on_release: root.switch_timeframe(self, root.ids.expense_water)
                     TextInput:
                         id: expense_garbage
                         hint_text: "Garbage"
