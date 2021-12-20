@@ -104,61 +104,70 @@
     BoxLayout:
         orientation: 'vertical'
         size: root.width, root.height
-    Accordion:
-        # size_hint: 0.3,0.2
-        # pos_hint: {"top": 1}
-        orientation: 'vertical'
-        AccordionItem:
-            title: 'Operating Expenses'
-            background_selected: "static/images/background/accordion_selected_pink.png"
-            BoxLayout:
-                orientation: 'vertical'
+        Accordion:
+            # size_hint: 0.3,0.2
+            # pos_hint: {"top": 1}
+            orientation: 'vertical'
+            size_hint_y: 0.8
+            AccordionItem:
+                title: 'Operating Expenses'
+                background_selected: "static/images/background/accordion_selected_pink.png"
                 BoxLayout:
-                    orientation: 'horizontal'
+                    orientation: 'vertical'
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: expense_water
+                            hint_text: "Water per Month [$]"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            halign: "center"
+                            size_hint_x: 0.85
+                        Button:
+                            id: water_button
+                            text: 'Yearly'
+                            size_hint_x: 0.15
+                            # on_release: water
                     TextInput:
-                        id: expense_water
-                        hint_text: "Water per Month [$]"
+                        id: expense_garbage
+                        hint_text: "Garbage"
                         multiline: False
                         input_filter: 'float'
                         font_size: app.txt_input_size
                         padding: [0, (self.height-self.line_height)/2]
                         halign: "center"
-                        size_hint_x: 0.85
-                    Button:
-                        id: water_button
-                        text: 'Yearly'
-                        size_hint_x: 0.15
-                        # on_release: water
-                TextInput:
-                    id: expense_garbage
-                    hint_text: "Garbage"
-                    multiline: False
-                    input_filter: 'float'
-                    font_size: app.txt_input_size
-                    padding: [0, (self.height-self.line_height)/2]
-                    halign: "center"
-                TextInput:
-                    id: expense_lawn
-                    hint_text: "Lawn Care"
-                    multiline: False
-                    input_filter: 'float'
-                    font_size: app.txt_input_size
-                    padding: [0, (self.height-self.line_height)/2]
-                    halign: "center"
-                TextInput:
-                    id: expense_sewage
-                    hint_text: "Sewage"
-                    multiline: False
-                    input_filter: 'float'
-                    font_size: app.txt_input_size
-                    padding: [0, (self.height-self.line_height)/2]
-                    halign: "center"
-        AccordionItem:
-            title: 'Number'
-            background_selected: "static/images/background/accordion_selected_pink.png"
-        AccordionItem:
-            title: 'Another number'
-            background_selected: "static/images/background/accordion_selected_pink.png"
+                    TextInput:
+                        id: expense_lawn
+                        hint_text: "Lawn Care"
+                        multiline: False
+                        input_filter: 'float'
+                        font_size: app.txt_input_size
+                        padding: [0, (self.height-self.line_height)/2]
+                        halign: "center"
+                    TextInput:
+                        id: expense_sewage
+                        hint_text: "Sewage"
+                        multiline: False
+                        input_filter: 'float'
+                        font_size: app.txt_input_size
+                        padding: [0, (self.height-self.line_height)/2]
+                        halign: "center"
+            AccordionItem:
+                title: 'Number'
+                background_selected: "static/images/background/accordion_selected_pink.png"
+            AccordionItem:
+                title: 'Another number'
+                background_selected: "static/images/background/accordion_selected_pink.png"
+            AccordionItem:
+                title: "test"
+                hidden: True
+                collapse: False
+        Button:
+            text: "Calculate"
+            size_hint_y: 0.2
+            on_press: root.calculate_ROI()
     # GridLayout:
     #     cols: 4
     #     padding: 25, 10 #horizontal and vertical padding of objects to the outside of app box
