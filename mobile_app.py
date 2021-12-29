@@ -27,7 +27,7 @@ class RootWidget(ScreenManager):
         super(RootWidget, self).__init__(**kwargs)
         # add screens to be managed -- NOTE: first screen added will be the starting screen
         self.add_widget(CalculateMortgage(name='mortgage'))
-        self.add_widget(SecondScreen(name='screen2'))
+        self.add_widget(CashflowInfo(name='screen2'))
         
 
 
@@ -64,9 +64,9 @@ class CalculateMortgage(Screen):
         """
 
 
-class SecondScreen(Screen):
+class CashflowInfo(Screen):
     def __init__(self, **kw):
-        super(SecondScreen, self).__init__(**kw)
+        super(CashflowInfo, self).__init__(**kw)
 
     def on_enter(self, *args):
         print(self.manager.ids)
