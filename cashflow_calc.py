@@ -30,7 +30,7 @@ def total_expenses_MO(rents:list, costs:list, monthly_payment:float, hypo:bool=F
     Params:
         rents (list)            - list of monthly rents in property
         costs (list)            - list of non-rental associated costs
-        monthly_payment (float) - amount of monthly motgage payment
+        monthly_payment (float) - amount of monthly mortgage payment
         hypo (bool)             - calculates hypo cash flow when True and 'real' cash flow when False (default: False)
 
     Returns
@@ -84,7 +84,7 @@ def calculate_net_op_costs_MO(rents:list, costs:list, hypo:bool=False, rent_peri
 
 def calculate_net_op_income(rents:list, net_op_costs:float, period:str):
     """
-    Returns monthly net operating income
+    Returns net operating income
 
     Params:
         rents (list)    - list of monthly rents in property
@@ -196,10 +196,10 @@ def calculate_RTI(investment:float, cashflow_YR:float):
     return investment/cashflow_YR
 
 
-def cashflow_overview(rents:list, costs:list, downpayment, legal, home_insp, prop_mgmt_signup, bank, offer):
+def cashflow_overview(rents:list, costs:list, downpayment, legal, home_insp, prop_mgmt_signup, bank, offer, interest, term):
     now = datetime.datetime.now()
     loan_amount = offer-downpayment
-    monthly_payment = mortgage_calc.mortgage_calc(P=loan_amount, i=0.03375/12, n=30)
+    monthly_payment = mortgage_calc.mortgage_calc(P=loan_amount, i=interest/100/12, n=term)
     rental_assoc_exp = rental_assoc_expenses(rents)
     tot_exp_MO_real = total_expenses_MO(rents, costs, monthly_payment)
     tot_exp_MO_hypo = total_expenses_MO(rents, costs, monthly_payment, hypo=True)
