@@ -49,3 +49,7 @@ class CalcTest(TestCase):
     def test_calculate_cashflow_except(self):
         with self.assertRaises(ValueError):
             calculate_cashflow([700, 800, 850], 0, "x")
+
+    def test_total_investment(self):
+        expected = 28000+1500+10000+300+2000
+        self.assertEqual(expected, total_investment(28000, 1500, 10000, 300, 2000))
