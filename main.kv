@@ -94,12 +94,12 @@
                 Button:
                     text: "Next Page"
                     on_release:
-                        root.manager.current = 'screen2'
+                        root.manager.current = 'ROI_screen'
                         root.manager.transition.direction = 'left'
                     size_hint: 0.4, 0.6 #size_hint determines how much space a widget is going to get relative to its parent (in this case: how much space of the first RelativeLayout does this button occupy)
                     pos_hint: {'center_x': 0.8, 'center_y': 0.7}
 
-<SecondScreen>: #create "rule" - visible
+<CashflowInfo>: #create "rule" - visible
 # GridLayout is divided into two sub-GridLayouts, because different number of columns
     BoxLayout:
         orientation: 'vertical'
@@ -112,6 +112,7 @@
             size_hint_y: 0.8
             AccordionItem:
                 title: 'Operating Expenses'
+                id: ROI_operating_expenses
                 background_selected: "static/images/background/accordion_selected_pink.png"
                 BoxLayout:
                     orientation: 'vertical'
@@ -194,6 +195,7 @@
             AccordionItem:
                 title: 'Rents'
                 background_selected: "static/images/background/accordion_selected_pink.png"
+                id: ROI_rents
                 BoxLayout:
                     orientation: 'vertical'
                     BoxLayout:
@@ -218,6 +220,7 @@
             AccordionItem:
                 title: 'Property Related Costs'
                 background_selected: "static/images/background/accordion_selected_pink.png"
+                id: ROI_prop_rel_costs
                 BoxLayout:
                     orientation: 'vertical'
                     BoxLayout:
@@ -259,7 +262,7 @@
                             spacing: [0, 0]
                             on_release: root.switch_timeframe(self, root.ids.insurance)
             AccordionItem:
-                title: "test"
+                title: ""
                 hidden: True
                 collapse: False
         Button:
