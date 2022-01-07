@@ -111,10 +111,12 @@ class CashflowInfo(Screen):
         prop_rel_costs = [__get_ROI_input__(wid) for wid in self.manager.get_screen('ROI_screen').ids.ROI_prop_rel_costs.walk(restrict=True) if (type(wid)==TextInput or type(wid)==Button)]  # 'restrict=True' restricts walking to named widgets and its iffsprings only -- but EXCLUDES siblings etc
         prop_rel_costs_MO = [prop_rel_costs[i] if prop_rel_costs[i+1] == "$/Month" else prop_rel_costs[i]/12 for i in range(0, len(prop_rel_costs)-1, 2)]
 
+        # one-time closing fees -- accordion item 4 (id: ROI_closing_costs) --> no interval to be taken into account as these are one-time fees
+        bank, legal, home_insp, prop_mgmt_signup = [__get_ROI_input__(wid) for wid in self.manager.get_screen('ROI_screen').ids.ROI_closing_costs.walk(restrict=True) if type(wid)==TextInput]
 
         # calculate ROI based in retrieved values
-        info_dict = cashflow_calc.cashflow_overview(rents_MO, operating_cost_MO, self.downpayment, legal=0.01*self.offer,
-        home_insp=0.01*self.offer, prop_mgmt_signup=1000, bank=0.01*self.offer, offer=self.offer, interest=self.interest_rate, term=self.term)
+        info_dict = cashflow_calc.cashflow_overview(rents_MO, operating_cost_MO, self.downpayment, legal=legal,
+        home_insp=home_insp, prop_mgmt_signup=prop_mgmt_signup, bank=bank, offer=self.offer, interest=self.interest_rate, term=self.term)
 
         print(info_dict)
 

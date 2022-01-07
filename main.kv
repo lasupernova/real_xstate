@@ -261,6 +261,61 @@
                             background_color: (2.42, 2.42, 2.42, 1)
                             spacing: [0, 0]
                             on_release: root.switch_timeframe(self, root.ids.insurance)
+            
+            AccordionItem:
+                title: 'Closing Costs'
+                background_selected: "static/images/background/accordion_selected_pink.png"
+                id: ROI_closing_costs
+                BoxLayout:
+                    orientation: 'vertical'
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: bank_fees
+                            hint_text: "Bank Fees"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
+                            halign: "center"
+                            size_hint_x: 0.85
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: legal_fees
+                            hint_text: "Legal Fees"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
+                            halign: "center"
+                            size_hint_x: 0.85
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: home_insp_fees
+                            hint_text: "Home Inspection Fees"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
+                            halign: "center"
+                            size_hint_x: 0.85
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        TextInput:
+                            id: prop_mgmt_signup_fees
+                            hint_text: "Property Mgmt Signup Fees"
+                            multiline: False
+                            input_filter: 'float'
+                            font_size: app.txt_input_size
+                            padding: [0, (self.height-self.line_height)/2]
+                            spacing: [0, 0]
+                            halign: "center"
+                            size_hint_x: 0.85
             AccordionItem:
                 title: ""
                 hidden: True
