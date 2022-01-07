@@ -16,30 +16,32 @@ class MobileTxtTemplates():
             Void function
         """
         self.cashflow_text = f"""
-                    [h1]Cashflow Information[/h1]
+               [size=25][b][u]Cashflow Information[/b][/u][/size]
         
-        [h2]General[/h2]
-            Total Investment: {info_dict["general"]["total_investment"]}
-            Rental Associated Expenses: {info_dict["general"]["rental_assoc_exp"]}
-            Rent-to-Price Ratio: {info_dict["general"]["rent_to_price_ratio"]}
+        [size=20][b]General Info[/b][/size]
+            Total Investment: $ {info_dict["general"]["total_investment"]:.2f}
+            Rental Associated Expenses: {", ".join([f'$ {cost} ({name})' for cost, name in zip({info_dict["general"]["rental_assoc_exp"]}, ['Property Mgmt', 'Vacancy (5%)', 'Capital Expenditures / Repairs (5%)'])])}
+            Rent-to-Price Ratio: $ {info_dict["general"]["rent_to_price_ratio"]:.2f}
 
-        [h2]Real[/h2]
-            Net Operating Income: {info_dict["real"]["net_op_income_MO"]} (monthly) / {info_dict["real"]["net_op_income_YR"]} (yearly)
-            Net Operating Cost: {info_dict["real"]["net_op_cost"]}
-            Total Monthly Expenses: {info_dict["real"]["total_monthly_exp"]}
-            Cashflow: {info_dict["real"]["cashflow_MO"]} (monthly) / {info_dict["real"]["cashflow_YR"]} (yearly)
-            COC ROI: {info_dict["real"]["coc_ROI"]}
-            CAP: {info_dict["real"]["CAP"]}
-            ROI: {info_dict["real"]["ROI"]}
-            ROI Date: {info_dict["real"]["ROI_date"]}
+        [size=20][b]Real[/b][/size]
+            Net Operating Income: $ {info_dict["real"]["net_op_income_MO"]:.2f} (monthly) / $ {info_dict["real"]["net_op_income_YR"]:.2f} (yearly)
+            Net Operating Cost: $ {info_dict["real"]["net_op_cost"]:.2f}
+            Total Monthly Expenses: $ {info_dict["real"]["total_monthly_exp"]:.2f}
+            Cashflow: $ {info_dict["real"]["cashflow_MO"]:.2f} (monthly) / $ {info_dict["real"]["cashflow_YR"]:.2f} (yearly)
+            COC ROI: $ {info_dict["real"]["coc_ROI"]:.2f}
+            CAP: $ {info_dict["real"]["CAP"]:.2f}
+            ROI: $ {info_dict["real"]["ROI"]:.2f}
+            ROI Date: $ {info_dict["real"]["ROI_date"]:.2f}
 
-        [h2]Hypo[/h2]
-            Net Operating Income: {info_dict["hypo"]["net_op_income_MO"]} (monthly) / {info_dict["real"]["net_op_income_YR"]} (yearly)
-            Net Operating Cost: {info_dict["hypo"]["net_op_cost"]}
-            Total Monthly Expenses: {info_dict["hypo"]["total_monthly_exp"]}
-            Cashflow: {info_dict["hypo"]["cashflow_MO"]} (monthly) / {info_dict["real"]["cashflow_YR"]} (yearly)
-            COC ROI: {info_dict["hypo"]["coc_ROI"]}
-            CAP: {info_dict["hypo"]["CAP"]}
-            ROI: {info_dict["hypo"]["ROI"]}
-            ROI Date: {info_dict["hypo"]["ROI_date"]}
+        [size=20][b]Hypo[/b][/size]
+            Net Operating Income: $ {info_dict["hypo"]["net_op_income_MO"]:.2f} (monthly) / $ {info_dict["real"]["net_op_income_YR"]:.2f} (yearly)
+            Net Operating Cost: $ {info_dict["hypo"]["net_op_cost"]:.2f}
+            Total Monthly Expenses: $ {info_dict["hypo"]["total_monthly_exp"]:.2f}
+            Cashflow: $ {info_dict["hypo"]["cashflow_MO"]:.2f} (monthly) / $ {info_dict["real"]["cashflow_YR"]:.2f} (yearly)
+            COC ROI: $ {info_dict["hypo"]["coc_ROI"]:.2f}
+            CAP: $ {info_dict["hypo"]["CAP"]:.2f}
+            ROI: $ {info_dict["hypo"]["ROI"]:.2f}
+            ROI Date: $ {info_dict["hypo"]["ROI_date"]:.2f}
         """
+
+        return self.cashflow_text
