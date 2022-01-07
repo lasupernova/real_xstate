@@ -18,6 +18,7 @@ from kivy.vector import Vector
 from kivy.core.window import Window
 from kivy.config import Config
 import mortgage_calc
+import cashflow_calc
 import os
 
 
@@ -71,10 +72,14 @@ class CashflowInfo(Screen):
 
     def on_enter(self, *args):
         print(self.manager.ids)
-        self.mortgage = self.manager.get_screen('mortgage').ids.total_cost.text
-        self.mortgage_payments = self.manager.get_screen('mortgage').ids.mortgage_payment.text
-        print(f"TOTAL MORTGAGE: {self.mortgage}")
-        print(f"Monthly Payments: {self.mortgage_payments}")
+        self.downpayment_percent = float(self.manager.get_screen('mortgage').ids.downpayment.text)
+        self.offer = float(self.manager.get_screen('mortgage').ids.offer.text)
+        self.downpayment = self.downpayment_percent/100 * self.offer
+        self.interest_rate = float(self.manager.get_screen('mortgage').ids.interest_rate.text)
+        self.term = float(self.manager.get_screen('mortgage').ids.term.text)
+        # print(f"TOTAL Downpayment: {self.downpayment}")  # uncomment for testing
+        # print(f"Offer: {self.offer}")  # uncomment for testing
+
     
     def calculate_ROI(self, *args):
         """
@@ -108,7 +113,10 @@ class CashflowInfo(Screen):
 
 
         # calculate ROI based in retrieved values
-        print(operating_cost_MO, rents_MO, prop_rel_costs_MO)
+        info_dict = cashflow_calc.cashflow_overview(rents_MO, operating_cost_MO, self.downpayment, legal=0.01*self.offer,
+        home_insp=0.01*self.offer, prop_mgmt_signup=1000, bank=0.01*self.offer, offer=self.offer, interest=self.interest_rate, term=self.term)
+
+        print(info_dict)
 
   
     def switch_timeframe(self, current_button, current_input):
