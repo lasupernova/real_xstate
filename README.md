@@ -22,4 +22,4 @@ Open app in browser (while the command above is running):
 Open to Browser > Go to Localhost (port 8050) `http://127.0.0.1:8050/`
 <br><br>
 
-<img alt="User Input Process" title="Date Dec 5th 2021" src="static/demo/realXstate_evaluationPage.gif" width="1200" height="600">
+<img alt="User Input Process" title="Date Dec 5th 2021" src="static/demo/realXstate_evaluationPage.gif" width="600" height="300">
