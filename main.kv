@@ -4,6 +4,8 @@
 #: import SwapTransition kivy.uix.screenmanager.SwapTransition
 #:import C kivy.utils.get_color_from_hex
 
+# TODO: make TextInput fields into MDTextField
+
 <CalculateMortgage>: #create "rule" - visible
 # GridLayout is divided into two sub-GridLayouts, becsaue different number of columns
     GridLayout: #all of these (also Label, Button etc.) are actually Python classes/objects that kivy implicitly imports --> same as : "from kivy.uix.gridlayout import GridLayout" and then "GridLayout()"
@@ -320,6 +322,15 @@
                 title: ""
                 hidden: True
                 collapse: False
+                Label:
+                    id: ROI_info_text
+                    text: "Add the the relevant info above and hit 'Calculate'"
+                    text_size: self.width, None #label will have width of widget (which is e.g. the size of a mobile phone screen); None lets heights be dynamic
+                    size_hint_y: None
+                    height: self.texture_size[1] 
+                    markup: True
+                    halign: 'center'
+                    valign: 'center'
         Button:
             text: "Calculate"
             size_hint_y: 0.2
