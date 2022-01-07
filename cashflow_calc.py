@@ -2,8 +2,6 @@ import mortgage_calc
 import datetime
 import os
 
-now = datetime.datetime.now()
-
 def rental_assoc_expenses(rents:list, interval="month"):
     """
     Calculates rent associated expenses.
@@ -16,7 +14,7 @@ def rental_assoc_expenses(rents:list, interval="month"):
         x, y, z (tuple) - tuple containing x=property managment fees, y=vacancy and z=capital expenditures
     """
     if interval == "year":
-        [rents/12 for rent in rents]
+        rents = [rent/12 for rent in rents]
     total_rent = sum(rents)
     prop_mgmt = total_rent*0.09
     vacancy_loss = capital_exp = total_rent*0.05
@@ -31,7 +29,7 @@ def total_expenses_MO(rents:list, costs:list, monthly_payment:float, hypo:bool=F
 
     Params:
         rents (list)            - list of monthly rents in property
-        costs (list)            - list of non-rental associated  costs
+        costs (list)            - list of non-rental associated costs
         monthly_payment (float) - amount of monthly motgage payment
         hypo (bool)             - calculates hypo cash flow when True and 'real' cash flow when False (default: False)
 
@@ -199,6 +197,7 @@ def calculate_RTI(investment:float, cashflow_YR:float):
 
 
 def cashflow_overview(rents:list, costs:list, downpayment, legal, home_insp, prop_mgmt_signup, bank, offer):
+    now = datetime.datetime.now()
     loan_amount = offer-downpayment
     monthly_payment = mortgage_calc.mortgage_calc(P=loan_amount, i=0.03375/12, n=30)
     rental_assoc_exp = rental_assoc_expenses(rents)
@@ -261,6 +260,7 @@ def cashflow_overview(rents:list, costs:list, downpayment, legal, home_insp, pro
 
 def cashflow_overview_print(rents:list, costs:list, downpayment, legal, home_insp, prop_mgmt_signup, bank, offer):
 
+    now = datetime.datetime.now()
     loan_amount = offer-downpayment
     monthly_payment = mortgage_calc.mortgage_calc(P=loan_amount, i=0.03375/12, n=30)
     rental_assoc_exp = rental_assoc_expenses(rents)
