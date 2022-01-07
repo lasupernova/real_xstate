@@ -3,6 +3,7 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, FallOutTransition
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
 import json, glob
 from datetime import datetime
 from pathlib import Path
@@ -27,7 +28,7 @@ class RootWidget(ScreenManager):
         super(RootWidget, self).__init__(**kwargs)
         # add screens to be managed -- NOTE: first screen added will be the starting screen
         self.add_widget(CalculateMortgage(name='mortgage'))
-        self.add_widget(CashflowInfo(name='screen2'))
+        self.add_widget(CashflowInfo(name='ROI_screen'))
         
 
 
@@ -55,13 +56,13 @@ class CalculateMortgage(Screen):
         total_cost = mortgage_calc.total_cost(loan, float(interest_rate)/12, int(mortgage_period))
         # self.mortgage_payment = result
         self.ids.mortgage_payment.text = f"""
-[b]Monthly Payment[/b]
-[size=25]$ {result:.2f}[/size]
-        """
+    [b]Monthly Payment[/b]
+    [size=25]$ {result:.2f}[/size]
+            """
         self.ids.total_cost.text = f"""
-[b]Total Cost[/b]
-[size=25]$ {total_cost:.2f}[/size]
-        """
+    [b]Total Cost[/b]
+    [size=25]$ {total_cost:.2f}[/size]
+            """
 
 
 class CashflowInfo(Screen):
@@ -77,20 +78,38 @@ class CashflowInfo(Screen):
     
     def calculate_ROI(self, *args):
         """
-        Iterated over widget tree (using walk() ) starting at 'ROI_input', 
-        identifies all children widgets that are of type TextInput,
-        and calculates sum of all inserted values.
+        Iterated over widget tree (using walk(restrict=True) ) starting at each individual accordion item id, 
+        identifies all children widgets that are of type TextInput or Button,
+        retrieves all inserted values (= TextInput value) and corresponding interval (= corrspondong button value)
+        and 'translates' them into monthly values .
         """
         def __get_ROI_input__(x):
-            "Check if value was inputed and return inputted value or zero."
-            cond2 = x.text
-            if cond2:
+            "Check if value was inputed and return inputted value or zero. If non-zero - return monthly value"
+            if x.text and type(x)==TextInput:
                 return float(x.text)
+            elif x.text and type(x)==Button:
+                    return x.text
             else:
                 return 0
 
-        print(sum([__get_ROI_input__(wid) for wid in self.manager.get_screen('screen2').ids.ROI_input.walk() if type(wid)== TextInput]))
-        # print([type(wid) for wid in self.manager.get_screen('screen2').ids.ROI_input.walk()])
+        # get inputted values and associated intervals -- > only entries of type "TextInput" or "Button" are added to vals
+        # TODO: export below operation (performed 3 times --- code triplicate) intp separate function
+        # operating costs -- accordion item 1 (id: ROI_operating_expenses)
+        operating_cost = [__get_ROI_input__(wid) for wid in self.manager.get_screen('ROI_screen').ids.ROI_operating_expenses.walk(restrict=True) if (type(wid)==TextInput or type(wid)==Button)]  # 'restrict=True' restricts walking to named widgets and its iffsprings only -- but EXCLUDES siblings etc
+        operating_cost_MO = [operating_cost[i] if operating_cost[i+1] == "$/Month" else operating_cost[i]/12 for i in range(0, len(operating_cost)-1, 2)]
+        
+        # rents -- accordion item 2 (id: ROI_rents)
+        rents = [__get_ROI_input__(wid) for wid in self.manager.get_screen('ROI_screen').ids.ROI_rents.walk(restrict=True) if (type(wid)==TextInput or type(wid)==Button)]  # 'restrict=True' restricts walking to named widgets and its iffsprings only -- but EXCLUDES siblings etc
+        rents_MO = [rents[i] if rents[i+1] == "$/Month" else rents[i]/12 for i in range(0, len(rents)-1, 2)]
+
+        # property associated costs -- accordion item 3 (id: ROI_prop_rel_costs)
+        prop_rel_costs = [__get_ROI_input__(wid) for wid in self.manager.get_screen('ROI_screen').ids.ROI_prop_rel_costs.walk(restrict=True) if (type(wid)==TextInput or type(wid)==Button)]  # 'restrict=True' restricts walking to named widgets and its iffsprings only -- but EXCLUDES siblings etc
+        prop_rel_costs_MO = [prop_rel_costs[i] if prop_rel_costs[i+1] == "$/Month" else prop_rel_costs[i]/12 for i in range(0, len(prop_rel_costs)-1, 2)]
+
+
+        # calculate ROI based in retrieved values
+        print(operating_cost_MO, rents_MO, prop_rel_costs_MO)
+
   
     def switch_timeframe(self, current_button, current_input):
         """
