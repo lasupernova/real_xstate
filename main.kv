@@ -322,15 +322,19 @@
                 title: ""
                 hidden: True
                 collapse: False
-                Label:
-                    id: ROI_info_text
-                    text: "Add the the relevant info above and hit 'Calculate'"
-                    text_size: self.width, None #label will have width of widget (which is e.g. the size of a mobile phone screen); None lets heights be dynamic
-                    size_hint_y: None
-                    height: self.texture_size[1] 
-                    markup: True
-                    halign: 'center'
-                    valign: 'center'
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True                  
+                    Label:
+                        id: ROI_info_text
+                        text: "Add the the relevant info above and hit 'Calculate'"
+                        text_size: self.width, None #label will have width of widget (which is e.g. the size of a mobile phone screen); None lets heights be dynamic
+                        size_hint_y: None
+                        height: self.texture_size[1] 
+                        padding: 5, 5
+                        markup: True
+                        halign: 'center'
+                        valign: 'center'
         Button:
             text: "Calculate"
             size_hint_y: 0.2
