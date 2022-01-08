@@ -1,6 +1,8 @@
+import datetime
 class MobileTxtTemplates():
     def __init__(self):
         self.cashflow_text = ""
+        self.now = datetime.datetime.now()
 
     def fill_cashflow_text(self, info_dict):
         """
@@ -31,7 +33,7 @@ class MobileTxtTemplates():
             COC ROI: $ {info_dict["real"]["coc_ROI"]:.2f}
             CAP: $ {info_dict["real"]["CAP"]:.2f}
             ROI: $ {info_dict["real"]["ROI"]:.2f}
-            ROI Date: $ {info_dict["real"]["ROI_date"]:.2f}
+            [b]ROI Date: {info_dict["real"]["ROI_date"].strftime('%Y-%b-%d')}[/b]
 
         [size=20][b]Hypo[/b][/size]
             Net Operating Income: $ {info_dict["hypo"]["net_op_income_MO"]:.2f} (monthly) / $ {info_dict["real"]["net_op_income_YR"]:.2f} (yearly)
@@ -41,7 +43,7 @@ class MobileTxtTemplates():
             COC ROI: $ {info_dict["hypo"]["coc_ROI"]:.2f}
             CAP: $ {info_dict["hypo"]["CAP"]:.2f}
             ROI: $ {info_dict["hypo"]["ROI"]:.2f}
-            ROI Date: $ {info_dict["hypo"]["ROI_date"]:.2f}
+            [b]ROI Date: {info_dict["hypo"]["ROI_date"].strftime('%Y-%b-%d')}[/b]
         """
 
         return self.cashflow_text
