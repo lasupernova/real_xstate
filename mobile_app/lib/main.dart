@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/cashflowResultTile.dart';
 
 import './propertiesOverview_screen.dart';
+import './dummy_data/cashflowTileDummy.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,10 +54,10 @@ class LandingPage extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   height: 50,
-                  child: Center(child: Text('Entry ${entries[index]}')),
+                  child: Center(child: cashflowTileDummy[index]),
                 );
               },
-              itemCount: entries.length,
+              itemCount: cashflowTileDummy.length,
             )),
           ),
           ElevatedButton(
