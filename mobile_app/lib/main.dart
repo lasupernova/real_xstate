@@ -45,18 +45,23 @@ class LandingPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Column(
-        children: [
-          Center(
-              child: ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 50,
-                child: Center(child: Text('Entry ${entries[index]}')),
-              );
-            },
-            itemCount: entries.length,
-          )),
-          ElevatedButton(onPressed: () {}, child: Text("Take me to properties"))
+        children: <Widget>[
+          Expanded(
+            child: SizedBox(
+                child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  height: 50,
+                  child: Center(child: Text('Entry ${entries[index]}')),
+                );
+              },
+              itemCount: entries.length,
+            )),
+          ),
+          ElevatedButton(
+              onPressed: () => Navigator.of(context)
+                  .pushNamed(PropertyOverviewScreen.routeName),
+              child: Text("Take me to properties"))
         ],
       ),
     );
