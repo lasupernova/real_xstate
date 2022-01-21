@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/cashflowResultTile.dart';
 
 import './propertiesOverview_screen.dart';
+import './cashflowResultDetails._screen.dart';
 import './dummy_data/cashflowTileDummy.dart';
 
 void main() {
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       home: LandingPage(),
       routes: {
         PropertyOverviewScreen.routeName: (ctx) => PropertyOverviewScreen(),
+        CfResultDetailsScreen.routeName: (ctx) => CfResultDetailsScreen(),
       },
     );
   }
@@ -52,18 +54,22 @@ class LandingPage extends StatelessWidget {
             child: SizedBox(
                 child: ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  height: 50,
+                return Card(
+                  elevation: 3,
                   child: Center(child: cashflowTileDummy[index]),
                 );
               },
               itemCount: cashflowTileDummy.length,
             )),
           ),
-          ElevatedButton(
-              onPressed: () => Navigator.of(context)
-                  .pushNamed(PropertyOverviewScreen.routeName),
-              child: Text("Take me to properties"))
+          Row(
+            children: [
+              ElevatedButton(
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed(PropertyOverviewScreen.routeName),
+                  child: Text("Take me to properties")),
+            ],
+          )
         ],
       ),
     );
