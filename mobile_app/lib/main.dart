@@ -5,6 +5,8 @@ import './propertiesOverview_screen.dart';
 import './cashflowResultDetails._screen.dart';
 import './dummy_data/cashflowTileDummy.dart';
 
+// TO DO: create popup form screen for calculating cashflow
+
 void main() {
   runApp(const MyApp());
 }
@@ -42,11 +44,15 @@ class MyApp extends StatelessWidget {
 class LandingPage extends StatelessWidget {
   static const routeName = "/";
 
-  List<String> entries = [
-    'Test1',
-    'Test2',
-    'Test3',
-  ];
+  void _popupTransactionForm(BuildContext ctx) {
+    //BUildocntext (ctx)argument is automatically filled into this function by flutter; NOTE: bCtx is also a context, but a different one (again passed automatically)
+    showModalBottomSheet(
+        context: ctx,
+        builder: // builder is a function that will return+build the widget that will be contained in the showModalBottomSHeet-class
+            (bCtx) {
+          return PropertyOverviewScreen();
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +84,11 @@ class LandingPage extends StatelessWidget {
             ],
           )
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _popupTransactionForm(context),
+        child: Icon(Icons.calculate),
       ),
     );
   }
