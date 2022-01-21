@@ -37,8 +37,12 @@ class CashflowResultTile extends StatelessWidget {
       ),
       title: Text(name),
       subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(DateFormat.yMMMd().format(ROI)),
+          SizedBox(
+            width: 20,
+          ),
           Text("\$$cashflow / month")
         ],
       ),
