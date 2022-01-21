@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Real X State',
       theme: ThemeData(
         colorScheme: ColorScheme.light().copyWith(
           primary: Colors.pink,
@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: LandingPage(),
+      routes: {},
     );
   }
 }
