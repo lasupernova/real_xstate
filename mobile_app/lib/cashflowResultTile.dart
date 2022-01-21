@@ -20,6 +20,7 @@ class CashflowResultTile extends StatelessWidget {
     return ListTile(
       leading: CircleAvatar(
         radius: 15,
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         child: Padding(
           padding: const EdgeInsets.all(3),
           child: FittedBox(
