@@ -1,11 +1,11 @@
 # real_xstate
-Plotly Dash app that evaluates potential real estate investment deals and keeps track of current investments.
+App that evaluates potential real estate investment deals and keeps track of current investments __web _(plotly / Python)___ and __mobile _(Flutter / Dart)___ app available.
 The app takes all important metrics (such as mortgage term, property offer, utility costs, income from rent, taxes etc) and creates a investment full under realistic  ('real') and optimal ('hypo') conditions.<br>
 Values calculated to evaluate if a property is a good investment include: __ROI, cash-on-cash ROI, breakeven date, cashflow__.<br>
 Result can be exported to a text file by hitting the dedicated button.
 <br><br>
 
-Installation:<br>
+Installation (Web App):<br>
 
 Clone repo: <br>
 `git clone https://github.com/lasupernova/real_xstate.git`
