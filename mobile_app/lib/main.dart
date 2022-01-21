@@ -18,11 +18,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Real X State',
       theme: ThemeData(
-        colorScheme: ColorScheme.light().copyWith(
-          primary: Colors.pink,
-          secondary: Colors.amber,
-        ),
-      ),
+          colorScheme: ColorScheme.light().copyWith(
+            primary: Colors.pink,
+            secondary: Colors.amber,
+          ),
+          textTheme: const TextTheme(
+            headline6: TextStyle(fontSize: 17.0),
+            headline5: TextStyle(fontSize: 20),
+            subtitle1: TextStyle(fontSize: 15),
+            subtitle2: TextStyle(fontSize: 14),
+            bodyText1: TextStyle(fontSize: 12),
+            bodyText2: TextStyle(fontSize: 10),
+          )),
       home: LandingPage(),
       routes: {
         PropertyOverviewScreen.routeName: (ctx) => PropertyOverviewScreen(),
