@@ -1,6 +1,6 @@
-import 'package:mobile_app/cashflowResultTile.dart';
+import 'package:mobile_app/widgets/cashflowResultTile.dart';
 
-import 'package:mobile_app/cashflowResultTile.dart';
+import 'package:mobile_app/widgets/cashflowResultTile.dart';
 import 'package:intl/intl.dart';
 
 List<CashflowResultTile> cashflowTileDummy = [

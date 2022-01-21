@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/cashflowResultTile.dart';
+import 'package:mobile_app/widgets/cashflowResultTile.dart';
 
-import './propertiesOverview_screen.dart';
-import './cashflowResultDetails._screen.dart';
+import 'screens/propertiesOverview_screen.dart';
+import 'screens/cashflowResultDetails._screen.dart';
 import './dummy_data/cashflowTileDummy.dart';
 
 // TO DO: create popup form screen for calculating cashflow
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
 class LandingPage extends StatelessWidget {
   static const routeName = "/";
 
-  void _popupTransactionForm(BuildContext ctx) {
+  void _popupCashflowForm(BuildContext ctx) {
     //BUildocntext (ctx)argument is automatically filled into this function by flutter; NOTE: bCtx is also a context, but a different one (again passed automatically)
     showModalBottomSheet(
         context: ctx,
@@ -87,7 +87,7 @@ class LandingPage extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _popupTransactionForm(context),
+        onPressed: () => _popupCashflowForm(context),
         child: Icon(Icons.calculate),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'package:mobile_app/cashflowResultTile.dart';
+import 'package:mobile_app/widgets/cashflowResultTile.dart';
 
 // called from cashflowResultTile.dart
 class CfResultDetailsScreen extends StatelessWidget {

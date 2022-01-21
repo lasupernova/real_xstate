@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../screens/cashflowResultDetails._screen.dart';
+
 class CashflowResultTile extends StatelessWidget {
   final String name;
   final DateTime ROI;
@@ -18,6 +20,9 @@ class CashflowResultTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () => Navigator.of(context).pushNamed(
+          CfResultDetailsScreen.routeName,
+          arguments: [30, 3.25, 100000, 25]),
       leading: CircleAvatar(
         radius: 15,
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
