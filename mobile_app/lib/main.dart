@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // CupertinoApp
       title: 'Real X State',
       theme: ThemeData(
           colorScheme: ColorScheme.light().copyWith(
@@ -28,9 +29,9 @@ class MyApp extends StatelessWidget {
             headline6: TextStyle(fontSize: 17.0),
             headline5: TextStyle(fontSize: 20),
             subtitle1: TextStyle(fontSize: 15),
-            subtitle2: TextStyle(fontSize: 14),
-            bodyText1: TextStyle(fontSize: 12),
-            bodyText2: TextStyle(fontSize: 10),
+            subtitle2: TextStyle(fontSize: 13),
+            bodyText1: TextStyle(fontSize: 11),
+            bodyText2: TextStyle(fontSize: 9),
           )),
       home: LandingPage(),
       routes: {
@@ -80,7 +81,7 @@ class LandingPage extends StatelessWidget {
               ElevatedButton(
                   onPressed: () => Navigator.of(context)
                       .pushNamed(PropertyOverviewScreen.routeName),
-                  child: Text("Take me to properties")),
+                  child: Text("Switch to Portfolio")),
             ],
           )
         ],
