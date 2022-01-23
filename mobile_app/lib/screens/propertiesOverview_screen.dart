@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../dummy_data/propertyTileDummy.dart';
+
 class PropertyOverviewScreen extends StatelessWidget {
   static const routeName = "/properties_overview";
 
@@ -15,6 +17,22 @@ class PropertyOverviewScreen extends StatelessWidget {
             icon: Icon(Icons.add_business),
             color: Theme.of(context).colorScheme.onPrimary,
           )
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: SizedBox(
+                child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  elevation: 3,
+                  child: Center(child: propertyTileDummy[index]),
+                );
+              },
+              itemCount: propertyTileDummy.length,
+            )),
+          ),
         ],
       ),
     );
