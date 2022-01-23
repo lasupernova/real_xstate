@@ -5,6 +5,9 @@ import '../dummy_data/propertyTileDummy.dart';
 class PropertyOverviewScreen extends StatelessWidget {
   static const routeName = "/properties_overview";
 
+  List<dynamic> _currentTileList =
+      propertyTileDummy; // created for latter TODO (add filter menu, to filter properties based on parameters, e.g. totalIncome etc.)
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +30,10 @@ class PropertyOverviewScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   elevation: 3,
-                  child: Center(child: propertyTileDummy[index]),
+                  child: Center(child: _currentTileList[index]),
                 );
               },
-              itemCount: propertyTileDummy.length,
+              itemCount: _currentTileList.length,
             )),
           ),
         ],
