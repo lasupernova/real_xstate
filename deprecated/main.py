@@ -19,6 +19,7 @@ from kivy.core.window import Window
 from kivy.config import Config
 import mortgage_calc
 import cashflow_calc
+from  text_templates import MobileTxtTemplates
 import os
 
 
@@ -118,7 +119,10 @@ class CashflowInfo(Screen):
         info_dict = cashflow_calc.cashflow_overview(rents_MO, operating_cost_MO, self.downpayment, legal=legal,
         home_insp=home_insp, prop_mgmt_signup=prop_mgmt_signup, bank=bank, offer=self.offer, interest=self.interest_rate, term=self.term)
 
-        print(info_dict)
+        # fill cashflow text template with calculated values
+        cashflow_overview_text = MobileTxtTemplates().fill_cashflow_text(info_dict)
+
+        self.ids.ROI_info_text.text = cashflow_overview_text
 
   
     def switch_timeframe(self, current_button, current_input):
