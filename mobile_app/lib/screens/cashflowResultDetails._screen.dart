@@ -42,12 +42,21 @@ class CfResultDetailsScreen extends StatelessWidget {
       ),
       body: Container(
         child: Center(
-          child: Text(
-            "Term: $term, interest: ${interest * 100}%, offer: $offer, downpayment: $downpayment --- Monthly Payment: ${calculateMortgage(offer, downpayment, interest, term).toString()}",
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: 10,
-            ),
+          child: Column(
+            children: [
+              Text(
+                "Term: $term, interest: ${interest * 100}%, offer: $offer, downpayment: $downpayment --- Monthly Payment: ${calculateMortgage(offer, downpayment, interest, term).toString()}",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontSize: 10,
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    print("Added to favorites");
+                  },
+                  icon: Icon(Icons.star))
+            ],
           ),
         ),
       ),
