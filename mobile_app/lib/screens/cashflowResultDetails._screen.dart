@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -44,18 +46,23 @@ class CfResultDetailsScreen extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              Text(
-                "Term: $term, interest: ${interest * 100}%, offer: $offer, downpayment: $downpayment --- Monthly Payment: ${calculateMortgage(offer, downpayment, interest, term).toString()}",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 10,
+              Container(
+                height: MediaQuery.of(context).size.height * 0.7,
+                width: MediaQuery.of(context).size.width * 0.6,
+                alignment: Alignment.center,
+                child: Text(
+                  "Term: $term, interest: ${interest * 100}%, offer: $offer, downpayment: $downpayment --- Monthly Payment: ${calculateMortgage(offer, downpayment, interest, term).toString()}",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 10,
+                  ),
                 ),
               ),
               IconButton(
                   onPressed: () {
                     print("Added to favorites");
                   },
-                  icon: Icon(Icons.star))
+                  icon: Icon(Icons.star_border_outlined))
             ],
           ),
         ),
