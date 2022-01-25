@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Real X State',
       theme: ThemeData(
           colorScheme: ColorScheme.light().copyWith(
-            primary: Colors.pink,
+            primary: Colors.purple,
             secondary: Colors.amber,
           ),
           textTheme: const TextTheme(
@@ -60,6 +60,11 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(" --- Placeholder Title ---"),
+        actions: <Widget>[
+          IconButton(
+              onPressed: () => print("Filtering will be implemented"),
+              icon: Icon(Icons.filter_alt)),
+        ],
         centerTitle: true,
       ),
       body: Column(
@@ -85,6 +90,52 @@ class LandingPage extends StatelessWidget {
             ],
           )
         ],
+      ),
+      drawer: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: Drawer(
+          // backgroundColor: Theme.of(context).colorScheme.secondary,
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    border: Border.all()),
+                height: MediaQuery.of(context).size.height * 0.2,
+                alignment: Alignment.bottomCenter,
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: Text(
+                    "Navigation",
+                    style: TextStyle(fontSize: 25),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              ListTile(
+                leading: Icon(Icons.business_center_outlined),
+                title: Text("Portfolio"),
+                onTap: () {},
+              ),
+              // SizedBox(
+              //   height: MediaQuery.of(context).size.height * 0.02,
+              // ),
+              ListTile(
+                  leading: Icon(Icons.money),
+                  title: Text("Calculated Cashflow"),
+                  onTap: () {}),
+              // SizedBox(
+              //   height: MediaQuery.of(context).size.height * 0.02,
+              // ),
+              ListTile(
+                  leading: Icon(Icons.ramen_dining),
+                  title: Text("3rd option"),
+                  onTap: () {}),
+            ],
+          ),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
