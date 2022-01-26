@@ -116,7 +116,9 @@ class LandingPage extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.business_center_outlined),
                 title: Text("Portfolio"),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
               ),
               // SizedBox(
               //   height: MediaQuery.of(context).size.height * 0.02,
@@ -124,14 +126,18 @@ class LandingPage extends StatelessWidget {
               ListTile(
                   leading: Icon(Icons.money),
                   title: Text("Calculated Cashflow"),
-                  onTap: () {}),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  }),
               // SizedBox(
               //   height: MediaQuery.of(context).size.height * 0.02,
               // ),
               ListTile(
                   leading: Icon(Icons.ramen_dining),
                   title: Text("3rd option"),
-                  onTap: () {}),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  }),
             ],
           ),
         ),
