@@ -95,21 +95,16 @@ class LandingPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.7,
         child: Drawer(
           // backgroundColor: Theme.of(context).colorScheme.secondary,
-          child: Column(
+          child: ListView(
+            padding: EdgeInsets.zero,
             children: [
-              Container(
+              const DrawerHeader(
+                child: Text("Navigation"),
                 decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
-                    border: Border.all()),
-                height: MediaQuery.of(context).size.height * 0.2,
-                alignment: Alignment.bottomCenter,
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: Text(
-                    "Navigation",
-                    style: TextStyle(fontSize: 25),
-                  ),
-                ),
+                    // color: Colors.green,
+                    image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage('assets/images/no_entries.jpg'))),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
