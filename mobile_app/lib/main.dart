@@ -119,7 +119,7 @@ class LandingPage extends StatelessWidget {
                 onTap: () {
                   // Navigator.of(context).pop();
                   Navigator.of(context)
-                      .pushReplacementNamed(PropertyOverviewScreen.routeName);
+                      .pushNamed(PropertyOverviewScreen.routeName);
                 },
               ),
               // SizedBox(
