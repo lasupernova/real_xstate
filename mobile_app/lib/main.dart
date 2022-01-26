@@ -99,9 +99,13 @@ class LandingPage extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: [
               const DrawerHeader(
-                child: Text("Navigation"),
+                child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      "Navigation",
+                      style: TextStyle(fontSize: 20, color: Color(0xFFd8d7e0)),
+                    )),
                 decoration: BoxDecoration(
-                    // color: Colors.green,
                     image: DecorationImage(
                         fit: BoxFit.fill,
                         image: AssetImage('assets/images/no_entries.jpg'))),
