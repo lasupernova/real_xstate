@@ -129,7 +129,7 @@ class LandingPage extends StatelessWidget {
                   leading: Icon(Icons.money),
                   title: Text("Calculated Cashflow"),
                   onTap: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pushNamed("/");
                   }),
               // SizedBox(
               //   height: MediaQuery.of(context).size.height * 0.02,
