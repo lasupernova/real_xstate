@@ -63,7 +63,16 @@ class CashflowFormState extends State<CashflowForm> {
               // The validator receives the text that the user has entered.
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text 2';
+                  // check sth was entered
+                  return 'Please enter a value';
+                }
+                if (double.tryParse(value) == null) {
+                  // check that entry is a number
+                  return 'Please enter a valid number';
+                }
+                if (double.parse(value) < 0 || double.parse(value) > 100) {
+                  // check if number is in desired range (parse will work as non-numerical entry was checked above)
+                  return 'Please enter a number between 0 and 100';
                 }
                 return null;
               },
@@ -78,7 +87,7 @@ class CashflowFormState extends State<CashflowForm> {
               // The validator receives the text that the user has entered.
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text 2';
+                  return 'Please enter some text';
                 }
                 return null;
               },
@@ -120,6 +129,16 @@ class CashflowFormState extends State<CashflowForm> {
                     keyboardType: TextInputType.url,
                     textInputAction: TextInputAction.done,
                     controller: _imageUrlController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Enter a value!";
+                      }
+                      if (!value.startsWith("http") &&
+                          !value.startsWith("https")) {
+                        return "You need to enter a valid URL!";
+                      }
+                      return null;
+                    },
                     onSaved: (value) {
                       entryInfo["IMAGE url"] = value;
                     },
@@ -135,6 +154,7 @@ class CashflowFormState extends State<CashflowForm> {
               onPressed: () {
                 // Validate returns true if the form is valid, or false otherwise.
                 if (_formKey.currentState!.validate()) {
+                  // .."currentState!.validate()" triggers all defined TextFormField validators -- and returns "true", if no error was thrown!
                   // If the form is valid, display a snackbar. In the real world,
                   // you'd often call a server or save the information in a database.
                   _saveForm();
