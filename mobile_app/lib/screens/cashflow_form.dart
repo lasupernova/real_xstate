@@ -19,9 +19,16 @@ class CashflowFormState extends State<CashflowForm> {
   //
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<
+      FormState>(); // GLobalKeys are rarely used,only when interaction with widget from inside code is necessary --> here: Form needs to be submitted/validated etc, function within code needs access to widget Form()
   final _imageUrlController =
       TextEditingController(); // usuallyh not needed when using Form(), BUT: here image textinput should be used prior to any action that Form() takes, as image should be displyed in Container() above
+  Map entryInfo = {};
+
+  void _saveForm() {
+    _formKey.currentState!
+        .save(); // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +37,7 @@ class CashflowFormState extends State<CashflowForm> {
       appBar: AppBar(
         title: Text("Testing CF Form"),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.save_outlined))
+          IconButton(onPressed: _saveForm, icon: Icon(Icons.save_outlined))
         ],
       ),
       body: Form(
@@ -48,6 +55,9 @@ class CashflowFormState extends State<CashflowForm> {
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(labelText: "Term"),
               keyboardType: TextInputType.number,
+              onSaved: (value) {
+                entryInfo["Term"] = value;
+              },
             ),
             TextFormField(
               // The validator receives the text that the user has entered.
@@ -60,6 +70,9 @@ class CashflowFormState extends State<CashflowForm> {
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(labelText: "Interest"),
               keyboardType: TextInputType.number,
+              onSaved: (value) {
+                entryInfo["Interest"] = double.parse(value!);
+              },
             ),
             TextFormField(
               // The validator receives the text that the user has entered.
@@ -73,6 +86,9 @@ class CashflowFormState extends State<CashflowForm> {
               decoration: InputDecoration(labelText: "Description"),
               keyboardType: TextInputType.multiline,
               maxLines: 3,
+              onSaved: (value) {
+                entryInfo["Description"] = value;
+              },
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -86,7 +102,11 @@ class CashflowFormState extends State<CashflowForm> {
                     child: _imageUrlController.text.isEmpty
                         ? Text("Enter URL")
                         : FittedBox(
-                            child: Image.network(_imageUrlController.text),
+                            child: Image.network(
+                              _imageUrlController.text,
+                              errorBuilder: (ctx, url, error) =>
+                                  Icon(Icons.error),
+                            ),
                             fit: BoxFit.cover,
                           ),
                   ),
@@ -100,6 +120,9 @@ class CashflowFormState extends State<CashflowForm> {
                     keyboardType: TextInputType.url,
                     textInputAction: TextInputAction.done,
                     controller: _imageUrlController,
+                    onSaved: (value) {
+                      entryInfo["IMAGE url"] = value;
+                    },
                     onTap: () => _imageUrlController.selection = TextSelection(
                         baseOffset: 0,
                         extentOffset: _imageUrlController.value.text
@@ -114,9 +137,14 @@ class CashflowFormState extends State<CashflowForm> {
                 if (_formKey.currentState!.validate()) {
                   // If the form is valid, display a snackbar. In the real world,
                   // you'd often call a server or save the information in a database.
+                  _saveForm();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
+                    const SnackBar(
+                      content: Text('Processing Data'),
+                      duration: Duration(seconds: 1),
+                    ),
                   );
+                  print(entryInfo);
                 }
               },
               child: const Text('Submit'),
