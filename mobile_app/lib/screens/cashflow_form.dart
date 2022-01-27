@@ -20,6 +20,8 @@ class CashflowFormState extends State<CashflowForm> {
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+  final _imageUrlController =
+      TextEditingController(); // usuallyh not needed when using Form(), BUT: here image textinput should be used prior to any action that Form() takes, as image should be displyed in Container() above
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,9 @@ class CashflowFormState extends State<CashflowForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Testing CF Form"),
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.save_outlined))
+        ],
       ),
       body: Form(
         key: _formKey,
@@ -55,6 +60,53 @@ class CashflowFormState extends State<CashflowForm> {
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(labelText: "Interest"),
               keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              // The validator receives the text that the user has entered.
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text 2';
+                }
+                return null;
+              },
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(labelText: "Description"),
+              keyboardType: TextInputType.multiline,
+              maxLines: 3,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: MediaQuery.of(context).size.width * 0.3,
+                  margin: EdgeInsets.only(top: 8, right: 10),
+                  decoration: BoxDecoration(border: Border.all()),
+                  child: Container(
+                    child: _imageUrlController.text.isEmpty
+                        ? Text("Enter URL")
+                        : FittedBox(
+                            child: Image.network(_imageUrlController.text),
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                ),
+                SizedBox(
+                  width: 3,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: "Image URL"),
+                    keyboardType: TextInputType.url,
+                    textInputAction: TextInputAction.done,
+                    controller: _imageUrlController,
+                    onTap: () => _imageUrlController.selection = TextSelection(
+                        baseOffset: 0,
+                        extentOffset: _imageUrlController.value.text
+                            .length), // select all available text on tap / focus
+                  ),
+                )
+              ],
             ),
             ElevatedButton(
               onPressed: () {
