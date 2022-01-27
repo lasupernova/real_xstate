@@ -3,6 +3,7 @@ import 'package:mobile_app/widgets/cashflowResultTile.dart';
 
 import 'screens/propertiesOverview_screen.dart';
 import 'screens/cashflowResultDetails._screen.dart';
+import './screens/cashflow_form.dart';
 import './dummy_data/cashflowTileDummy.dart';
 
 // TO DO: create popup form screen for calculating cashflow
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       routes: {
         PropertyOverviewScreen.routeName: (ctx) => PropertyOverviewScreen(),
         CfResultDetailsScreen.routeName: (ctx) => CfResultDetailsScreen(),
+        CashflowForm.routeName: (ctx) => CashflowForm(),
       },
     );
   }
@@ -84,9 +86,9 @@ class LandingPage extends StatelessWidget {
           Row(
             children: [
               ElevatedButton(
-                  onPressed: () => Navigator.of(context)
-                      .pushNamed(PropertyOverviewScreen.routeName),
-                  child: Text("Switch to Portfolio")),
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed(CashflowForm.routeName),
+                  child: Text("Test Form")),
             ],
           )
         ],
