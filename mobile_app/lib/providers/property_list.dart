@@ -55,4 +55,10 @@ class PropertyList with ChangeNotifier {
         behindPayment: false,
         brokeEven: true),
   ];
+
+  // var _showFavoritesOnly = false;
+
+  List<PropertyItem> get items {
+    return [..._entries];
+  }
 }
