@@ -58,7 +58,7 @@ class PropertyList with ChangeNotifier {
 
   // var _showFavoritesOnly = false;
 
-  List<PropertyItem> get items {
+  List<PropertyItem> get fetchProperties {
     return [..._entries];
   }
 }
