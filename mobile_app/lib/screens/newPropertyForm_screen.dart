@@ -30,7 +30,7 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
         city: entryInfo["city"],
         state: "TEST",
         country: entryInfo["country"],
-        buyDate: DateTime(2021, 8, 13)));
+        buyDate: entryInfo["buydate"]));
   }
 
   @override
@@ -95,23 +95,31 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
                 entryInfo["country"] = value;
               },
             ),
-            TextFormField(
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a date';
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(
-                labelText: "Buying Date",
-                hintText: "When did you buy this property...",
-              ),
-              keyboardType: TextInputType.datetime,
-              onSaved: (value) {
+            InputDatePickerFormField(
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1950, 1, 1),
+              lastDate: DateTime.now().add(Duration(days: 31)),
+              onDateSaved: (value) {
                 entryInfo["buydate"] = value;
               },
             ),
+            // TextFormField(
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Please enter a date';
+            //     }
+            //     return null;
+            //   },
+            //   textInputAction: TextInputAction.next,
+            //   decoration: InputDecoration(
+            //     labelText: "Buying Date",
+            //     hintText: "When did you buy this property...",
+            //   ),
+            //   keyboardType: TextInputType.datetime,
+            //   onSaved: (value) {
+            //     entryInfo["buydate"] = value;
+            //   },
+            // ),
             ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
