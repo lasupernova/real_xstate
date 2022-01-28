@@ -7,6 +7,7 @@ import 'package:mobile_app/widgets/cashflowResultTile.dart';
 import 'screens/propertiesOverview_screen.dart';
 import 'screens/cashflowResultDetails._screen.dart';
 import './screens/cashflow_form.dart';
+import './screens/newPropertyForm_screen.dart';
 import './dummy_data/cashflowTileDummy.dart';
 
 // TO DO: create popup form screen for calculating cashflow
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
           CfResultDetailsScreen.routeName: (ctx) => CfResultDetailsScreen(),
           // ignore: prefer_const_constructors
           CashflowForm.routeName: (ctx) => CashflowForm(),
+          NewPropertyForm.routeName: (ctx) => NewPropertyForm(),
         },
       ),
     );
@@ -130,8 +132,8 @@ class LandingPage extends StatelessWidget {
                 title: Text("Portfolio"),
                 onTap: () {
                   // Navigator.of(context).pop();
-                  Navigator.of(context)
-                      .pushNamed(PropertyOverviewScreen.routeName);
+                  // Navigator.of(context)
+                  //     .pushNamed(PropertyOverviewScreen.routeName);
                 },
               ),
               // SizedBox(
