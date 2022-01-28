@@ -7,10 +7,10 @@ class PropertyItem extends StatelessWidget {
   final String state;
   final String country;
   final DateTime buyDate;
-  final double totalIncome;
-  final double behindPaymentNum;
-  final bool behindPayment;
-  final bool brokeEven;
+  double totalIncome;
+  double behindPaymentNum;
+  bool behindPayment;
+  bool brokeEven;
 
   PropertyItem(
       {required this.streetAddress,
