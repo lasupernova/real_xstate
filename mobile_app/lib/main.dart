@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/providers/property_list.dart';
+import 'package:provider/provider.dart';
+
 import 'package:mobile_app/widgets/cashflowResultTile.dart';
 
 import 'screens/propertiesOverview_screen.dart';
@@ -18,29 +21,36 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // CupertinoApp
-      title: 'Real X State',
-      theme: ThemeData(
-          colorScheme: ColorScheme.light().copyWith(
-            primary: Colors.purple,
-            secondary: Colors.amber,
-          ),
-          textTheme: const TextTheme(
-            headline6: TextStyle(fontSize: 17.0),
-            headline5: TextStyle(fontSize: 20),
-            subtitle1: TextStyle(fontSize: 15),
-            subtitle2: TextStyle(fontSize: 13),
-            bodyText1: TextStyle(fontSize: 11),
-            bodyText2: TextStyle(fontSize: 9),
-          )),
-      home: LandingPage(),
-      routes: {
-        PropertyOverviewScreen.routeName: (ctx) => PropertyOverviewScreen(),
-        CfResultDetailsScreen.routeName: (ctx) => CfResultDetailsScreen(),
-        CashflowForm.routeName: (ctx) => CashflowForm(),
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (ctx) => PropertyList()),
+      ],
+      child: MaterialApp(
+        // CupertinoApp
+        title: 'Real X State',
+        theme: ThemeData(
+            colorScheme: ColorScheme.light().copyWith(
+              primary: Colors.purple,
+              secondary: Colors.amber,
+            ),
+            textTheme: const TextTheme(
+              headline6: TextStyle(fontSize: 17.0),
+              headline5: TextStyle(fontSize: 20),
+              subtitle1: TextStyle(fontSize: 15),
+              subtitle2: TextStyle(fontSize: 13),
+              bodyText1: TextStyle(fontSize: 11),
+              bodyText2: TextStyle(fontSize: 9),
+            )),
+        home: LandingPage(),
+        routes: {
+          PropertyOverviewScreen.routeName: (ctx) => PropertyOverviewScreen(),
+          CfResultDetailsScreen.routeName: (ctx) => CfResultDetailsScreen(),
+          // ignore: prefer_const_constructors
+          CashflowForm.routeName: (ctx) => CashflowForm(),
+        },
+      ),
     );
+    ;
   }
 }
 
