@@ -1,29 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile_app/providers/property_item.dart';
 
 import '../screens/cashflowResultDetails._screen.dart';
 
 class PropertyOverviewTile extends StatelessWidget {
-  final String streetAddress;
-  final String city;
-  final String state;
-  final String country;
-  final DateTime buyDate;
-  final double totalIncome;
-  final double behindPaymentNum;
-  final bool behindPayment;
-  final bool brokeEven;
+  final PropertyItem passedProperty;
 
-  PropertyOverviewTile(
-      {required this.streetAddress,
-      required this.city,
-      required this.state,
-      required this.country,
-      required this.buyDate,
-      required this.totalIncome,
-      required this.behindPaymentNum,
-      required this.behindPayment,
-      required this.brokeEven});
+  PropertyOverviewTile({required this.passedProperty});
 
   // Icon worth_icon = worth ? const Icon(Icons.check)  : const Icon(Icons.check);
 
@@ -38,7 +22,7 @@ class PropertyOverviewTile extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(3),
             child: FittedBox(
-              child: !behindPayment
+              child: !passedProperty.behindPayment
                   ? const Icon(
                       Icons.check,
                       color: Colors.green,
@@ -52,12 +36,12 @@ class PropertyOverviewTile extends StatelessWidget {
         ),
         title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            streetAddress,
+            passedProperty.streetAddress,
             style: TextStyle(
                 fontSize: Theme.of(context).textTheme.subtitle2!.fontSize),
           ),
           Text(
-            "$city, $country",
+            "${passedProperty.city}, ${passedProperty.country}",
             style: TextStyle(
                 fontSize: Theme.of(context).textTheme.bodyText1!.fontSize),
           ),
@@ -70,11 +54,12 @@ class PropertyOverviewTile extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text("purchased: ${DateFormat.yMMMd().format(buyDate)}"),
+              Text(
+                  "purchased: ${DateFormat.yMMMd().format(passedProperty.buyDate)}"),
               SizedBox(
                 width: 10,
               ),
-              Text("Total Income: \$$totalIncome")
+              Text("Total Income: \$${passedProperty.totalIncome}")
             ],
           ),
         ));
