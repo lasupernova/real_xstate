@@ -61,4 +61,9 @@ class PropertyList with ChangeNotifier {
   List<PropertyItem> get fetchProperties {
     return [..._entries];
   }
+
+  PropertyItem findById(String streetAddress) {
+    return _entries
+        .firstWhere((property) => property.streetAddress == streetAddress);
+  }
 }
