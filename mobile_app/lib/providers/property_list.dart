@@ -66,4 +66,9 @@ class PropertyList with ChangeNotifier {
     return _entries
         .firstWhere((property) => property.streetAddress == streetAddress);
   }
+
+  void addProperty(newProp) {
+    _entries.add(newProp);
+    notifyListeners();
+  }
 }
