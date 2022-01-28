@@ -103,23 +103,6 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
                 entryInfo["buydate"] = value;
               },
             ),
-            // TextFormField(
-            //   validator: (value) {
-            //     if (value == null || value.isEmpty) {
-            //       return 'Please enter a date';
-            //     }
-            //     return null;
-            //   },
-            //   textInputAction: TextInputAction.next,
-            //   decoration: InputDecoration(
-            //     labelText: "Buying Date",
-            //     hintText: "When did you buy this property...",
-            //   ),
-            //   keyboardType: TextInputType.datetime,
-            //   onSaved: (value) {
-            //     entryInfo["buydate"] = value;
-            //   },
-            // ),
             ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
