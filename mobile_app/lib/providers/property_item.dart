@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PropertyItem extends StatelessWidget {
+class PropertyItem {
   // const PropertyItem({Key? key}) : super(key: key);
   final String streetAddress;
   final String city;
@@ -22,12 +22,4 @@ class PropertyItem extends StatelessWidget {
       this.behindPaymentNum = 0,
       this.behindPayment = false,
       this.brokeEven = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-          "Property on $streetAddress in $city ($state, $country) was bought on $buyDate"),
-    );
-  }
 }
