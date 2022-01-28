@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/screens/newPropertyForm_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/property_list.dart';
@@ -11,7 +12,7 @@ class PropertyOverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _properties = Provider.of<PropertyList>(context).fetchProperties;
+    // final _properties = Provider.of<PropertyList>(context).fetchProperties;
     return Scaffold(
       appBar: AppBar(
         // title: Text("Properties"),
@@ -19,7 +20,9 @@ class PropertyOverviewScreen extends StatelessWidget {
         title: Row(children: [
           // added IconButtons() previosuly under "actions" to "title", for them to be centered in AppBar
           IconButton(
-            onPressed: () => print("Adding Property"),
+            onPressed: () {
+              Navigator.of(context).pushNamed(NewPropertyForm.routeName);
+            },
             icon: Icon(Icons.add_business),
             color: Theme.of(context).colorScheme.onPrimary,
           ),
@@ -34,18 +37,22 @@ class PropertyOverviewScreen extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: SizedBox(
-                child: ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  elevation: 3,
-                  child: Center(
-                      child: PropertyOverviewTile(
-                    passedProperty: _properties[index],
-                  )),
+            child: SizedBox(child: Consumer<PropertyList>(
+              builder: (context, props, child) {
+                List allProps = props.fetchProperties;
+                return ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      elevation: 3,
+                      child: Center(
+                          child: PropertyOverviewTile(
+                        passedProperty: allProps[index],
+                      )),
+                    );
+                  },
+                  itemCount: allProps.length,
                 );
               },
-              itemCount: _properties.length,
             )),
           ),
         ],

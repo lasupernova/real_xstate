@@ -131,9 +131,8 @@ class LandingPage extends StatelessWidget {
                 leading: Icon(Icons.business_center_outlined),
                 title: Text("Portfolio"),
                 onTap: () {
-                  // Navigator.of(context).pop();
-                  // Navigator.of(context)
-                  //     .pushNamed(PropertyOverviewScreen.routeName);
+                  Navigator.of(context)
+                      .pushNamed(PropertyOverviewScreen.routeName);
                 },
               ),
               // SizedBox(
