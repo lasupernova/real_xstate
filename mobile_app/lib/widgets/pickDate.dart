@@ -9,5 +9,9 @@ Future<String?> selectDate(context) async {
           2000), //DateTime.now() - not to allow to choose before today.
       lastDate: DateTime(2101));
 
-  return DateFormat('yyyy-MM-dd').format(pickedDate!);
+  if (pickedDate != null) {
+    return DateFormat('yyyy-MM-dd').format(pickedDate);
+  } else {
+    return DateFormat('yyyy-MM-dd').format(DateTime.now());
+  }
 }
