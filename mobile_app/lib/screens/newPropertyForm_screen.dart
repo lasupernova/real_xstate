@@ -32,6 +32,14 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
   }
 
   // methods
+  void _resetPropForm() {
+    FocusScope.of(context).unfocus();
+    _formKey.currentState!.reset();
+    setState(() {
+      _dateinput.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    });
+  }
+
   void _saveForm() {
     _formKey.currentState!.save();
     // print(entryInfo);  // uncomment for debugging
@@ -42,10 +50,7 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
         state: "TEST",
         country: entryInfo["country"],
         buyDate: entryInfo["buydate"]));
-    _formKey.currentState!.reset();
-    setState(() {
-      _dateinput.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    });
+    _resetPropForm();
   }
 
   @override
@@ -53,7 +58,9 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add a new property"),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.clear))],
+        actions: [
+          IconButton(onPressed: () => _resetPropForm(), icon: Icon(Icons.clear))
+        ],
       ),
       body: Form(
         key: _formKey,
