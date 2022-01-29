@@ -6,7 +6,7 @@ import 'package:mobile_app/widgets/cashflowResultTile.dart';
 
 import 'screens/propertiesOverview_screen.dart';
 import 'screens/cashflowResultDetails._screen.dart';
-import './screens/cashflow_form.dart';
+import './screens/cashflowForm_screen.dart';
 import './screens/newPropertyForm_screen.dart';
 import './dummy_data/cashflowTileDummy.dart';
 
