@@ -23,13 +23,18 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
   Map entryInfo = {};
   // controller for DatePicker date storage
   TextEditingController _dateinput = TextEditingController();
-  // variable to save currently selected date (if different from DateTime.now())
-  String _selectedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  @override
+  void initState() {
+    _dateinput.text = DateFormat('yyyy-MM-dd')
+        .format(DateTime.now()); //set the initial value of text field
+    super.initState();
+  }
 
   // methods
   void _saveForm() {
     _formKey.currentState!.save();
-    print(entryInfo);
+    // print(entryInfo);  // uncomment for debugging
     Provider.of<PropertyList>(context, listen: false).addProperty(PropertyItem(
         // 'listen:false', as no rebuild of current widget is wanted
         streetAddress: entryInfo["streetaddress"],
@@ -37,6 +42,10 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
         state: "TEST",
         country: entryInfo["country"],
         buyDate: entryInfo["buydate"]));
+    _formKey.currentState!.reset();
+    setState(() {
+      _dateinput.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    });
   }
 
   @override
@@ -110,12 +119,12 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
               readOnly:
                   true, //set it true, so that user will not able to edit text
               onTap: () {
-                selectDate(context, _selectedDate).then((value) {
+                selectDate(context, _dateinput.text).then((value) {
                   // .then() necessary, as selectDate returns a Future<DateTime>
                   setState(() {
-                    _selectedDate = _dateinput.text = value!;
+                    _dateinput.text = value!;
                   });
-                  ;
+                  print(_formKey.currentState.toString());
                 });
               },
               onSaved: (value) {
