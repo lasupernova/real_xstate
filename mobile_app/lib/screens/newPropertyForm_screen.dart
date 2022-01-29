@@ -21,7 +21,10 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
   final _formKey = GlobalKey<FormState>();
   // create map to store form values for further usage
   Map entryInfo = {};
-  TextEditingController dateinput = TextEditingController();
+  // controller for DatePicker date storage
+  TextEditingController _dateinput = TextEditingController();
+  // variable to save currently selected date (if different from DateTime.now())
+  String _selectedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   // methods
   void _saveForm() {
@@ -99,7 +102,7 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
               },
             ),
             TextFormField(
-              controller: dateinput, //editing controller of this TextField
+              controller: _dateinput, //editing controller of this TextField
               decoration: InputDecoration(
                   icon: Icon(Icons.calendar_today), //icon of text field
                   labelText: "Enter Buy Date" //label text of field
@@ -107,16 +110,16 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
               readOnly:
                   true, //set it true, so that user will not able to edit text
               onTap: () {
-                selectDate(context).then((value) {
+                selectDate(context, _selectedDate).then((value) {
                   // .then() necessary, as selectDate returns a Future<DateTime>
                   setState(() {
-                    dateinput.text = value!;
+                    _selectedDate = _dateinput.text = value!;
                   });
                   ;
                 });
               },
               onSaved: (value) {
-                entryInfo["buydate"] = DateTime.parse(dateinput.text);
+                entryInfo["buydate"] = DateTime.parse(_dateinput.text);
               },
             ),
             ElevatedButton(
