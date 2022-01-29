@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/property_list.dart';
 import '../providers/property_item.dart';
+import '../widgets/pickDate.dart';
 
 class NewPropertyForm extends StatefulWidget {
   static const routeName = "/add-property";
@@ -19,6 +21,7 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
   final _formKey = GlobalKey<FormState>();
   // create map to store form values for further usage
   Map entryInfo = {};
+  TextEditingController dateinput = TextEditingController();
 
   // methods
   void _saveForm() {
@@ -95,12 +98,25 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
                 entryInfo["country"] = value;
               },
             ),
-            InputDatePickerFormField(
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1950, 1, 1),
-              lastDate: DateTime.now().add(Duration(days: 31)),
-              onDateSaved: (value) {
-                entryInfo["buydate"] = value;
+            TextFormField(
+              controller: dateinput, //editing controller of this TextField
+              decoration: InputDecoration(
+                  icon: Icon(Icons.calendar_today), //icon of text field
+                  labelText: "Enter Buy Date" //label text of field
+                  ),
+              readOnly:
+                  true, //set it true, so that user will not able to edit text
+              onTap: () {
+                selectDate(context).then((value) {
+                  // .then() necessary, as selectDate returns a Future<DateTime>
+                  setState(() {
+                    dateinput.text = value!;
+                  });
+                  ;
+                });
+              },
+              onSaved: (value) {
+                entryInfo["buydate"] = DateTime.parse(dateinput.text);
               },
             ),
             ElevatedButton(
