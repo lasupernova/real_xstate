@@ -88,7 +88,7 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
                 }
                 return null;
               },
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 labelText: "Country",
                 hintText: "Insert the property's country...",
