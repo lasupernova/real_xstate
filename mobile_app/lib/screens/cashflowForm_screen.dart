@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -34,7 +35,7 @@ class CashflowFormState extends State<CashflowForm> {
 
   void sendToDB() {
     final url = Uri.parse(
-        "https://fluttercourse-fd31e-default-rtdb.firebaseio.com/testProp.json"); // .json addition is unique to Firebase databases for their tables
+        "${dotenv.env["FIREBASE_URL"]}testProp.json"); // .json addition is unique to Firebase databases for their tables
     http.post(url,
         body: json.encode({
           "Term": entryInfo["Term"],
