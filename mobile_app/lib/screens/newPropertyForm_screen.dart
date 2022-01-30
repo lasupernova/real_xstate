@@ -56,7 +56,7 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
             buyDate: entryInfo["buydate"]));
     _resetPropForm();
     Navigator.of(context)
-        .pop(); // remove current form to get back to propertiesOverview_screen
+        .pop(); // remove current form to get back to propertiesOverview_screen (which is next in stack)
     SnackbarWrapper(
       context: context, //PropertyOverviewScreen.scaffoldKeyPropOverview
       //.currentContext, // use GlobalKey to display Snackbar on propertiesOverview_screen after current page is popped
@@ -64,7 +64,7 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
       actionText: "Add another",
       actionFunc: () {
         Navigator.of(PropertyOverviewScreen.scaffoldKeyPropOverview
-                .currentContext!) // not using 'context', as 'context belongsto the current widget, which was popped and therefore its context does not exist anymore
+                .currentContext!) // not using 'context', as 'context belongs to the current widget, which was popped and therefore its context does not exist anymore
             .pushNamed(NewPropertyForm.routeName);
       },
     ).show();
