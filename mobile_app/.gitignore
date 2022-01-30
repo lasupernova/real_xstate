@@ -1,3 +1,6 @@
+# sensitive info
+.env
+
 # Miscellaneous
 *.class
 *.log
