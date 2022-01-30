@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/providers/property_list.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:mobile_app/widgets/cashflowResultTile.dart';
 
@@ -12,7 +13,10 @@ import './dummy_data/cashflowTileDummy.dart';
 
 // TO DO: create popup form screen for calculating cashflow
 
-void main() {
+Future<void> main() async {
+  // loadenvironment varibles specified in .env
+  await dotenv
+      .load(); // loads file named '.env' by default - different filename can be specified: .load(filanme: '<someOtherFile>')
   runApp(const MyApp());
 }
 
@@ -73,7 +77,7 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(" --- Placeholder Title ---"),
+        title: Text(" --- Placeholder Title ---"), //
         actions: <Widget>[
           IconButton(
               onPressed: () => print("Filtering will be implemented"),
