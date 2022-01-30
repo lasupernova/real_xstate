@@ -69,7 +69,7 @@ class LandingPage extends StatelessWidget {
         context: ctx,
         builder: // builder is a function that will return+build the widget that will be contained in the showModalBottomSHeet-class
             (bCtx) {
-          return PropertyOverviewScreen();
+          return CashflowForm();
         });
   }
 
@@ -99,14 +99,6 @@ class LandingPage extends StatelessWidget {
               itemCount: cashflowTileDummy.length,
             )),
           ),
-          Row(
-            children: [
-              ElevatedButton(
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed(CashflowForm.routeName),
-                  child: Text("Test Form")),
-            ],
-          )
         ],
       ),
       drawer: SizedBox(
