@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
-import 'package:provider/provider.dart';
+// import 'package:getwidget/getwidget.dart';
+import 'package:provider/provider.dart' as prov;
 import 'package:intl/intl.dart';
 
 import '../providers/property_list.dart';
 import '../providers/property_item.dart';
 import '../widgets/pickDate.dart';
+import './propertiesOverview_screen.dart';
+import '../widgets/snackbarWrapper.dart';
 
 class NewPropertyForm extends StatefulWidget {
   static const routeName = "/add-property";
@@ -43,14 +45,30 @@ class _NewPropertyFormState extends State<NewPropertyForm> {
   void _saveForm() {
     _formKey.currentState!.save();
     // print(entryInfo);  // uncomment for debugging
-    Provider.of<PropertyList>(context, listen: false).addProperty(PropertyItem(
-        // 'listen:false', as no rebuild of current widget is wanted
-        streetAddress: entryInfo["streetaddress"],
-        city: entryInfo["city"],
-        state: "TEST",
-        country: entryInfo["country"],
-        buyDate: entryInfo["buydate"]));
+    // add new Property to list -> listener updates propertiesOverview_screen
+    prov.Provider.of<PropertyList>(context, listen: false)
+        .addProperty(PropertyItem(
+            // 'listen:false', as no rebuild of current widget is wanted
+            streetAddress: entryInfo["streetaddress"],
+            city: entryInfo["city"],
+            state: "TEST",
+            country: entryInfo["country"],
+            buyDate: entryInfo["buydate"]));
     _resetPropForm();
+    Navigator.of(context)
+        .pop(); // remove current form to get back to propertiesOverview_screen
+    SnackbarWrapper(
+      context: context, //PropertyOverviewScreen.scaffoldKeyPropOverview
+      //.currentContext, // use GlobalKey to display Snackbar on propertiesOverview_screen after current page is popped
+      displayText: "New Property Added",
+      actionText: "Add another",
+      actionFunc: () {
+        Navigator.of(PropertyOverviewScreen.scaffoldKeyPropOverview
+                .currentContext!) // not using 'context', as 'context belongsto the current widget, which was popped and therefore its context does not exist anymore
+            .pushNamed(NewPropertyForm.routeName);
+      },
+    ).show();
+    print("---print context: ${Navigator.of(context).context}");
   }
 
   @override

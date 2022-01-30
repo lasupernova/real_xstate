@@ -7,13 +7,13 @@ import '../widgets/propertyOverviewTile.dart';
 
 class PropertyOverviewScreen extends StatelessWidget {
   static const routeName = "/properties_overview";
-
-  // created for latter TODO (add filter menu, to filter properties based on parameters, e.g. totalIncome etc.)
+  static GlobalKey<ScaffoldState> scaffoldKeyPropOverview = GlobalKey<
+      ScaffoldState>(); // GlobalKey used on newpropertyForm_screen to display Snackbar here after successfully adding new property
 
   @override
   Widget build(BuildContext context) {
-    // final _properties = Provider.of<PropertyList>(context).fetchProperties;
     return Scaffold(
+      key: scaffoldKeyPropOverview,
       appBar: AppBar(
         // title: Text("Properties"),
         // centerTitle: true,
