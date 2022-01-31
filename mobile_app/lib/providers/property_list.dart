@@ -12,6 +12,7 @@ class PropertyList with ChangeNotifier {
   // var _showFavoritesOnly = false;
 
   Future<void> getProps() async {
+    // TODO: implement _firstLoad check - in order to not load this every time that page is relaoaded (e.g. due to saving file)
     _entries =
         []; // reset property list ,as properties will otherwise appear multiple times on screen (multiplied at every re-load)
     final response = await http
@@ -29,6 +30,18 @@ class PropertyList with ChangeNotifier {
             state: propdata['state'],
             country: propdata['country'],
             buyDate: DateTime.parse(propdata['buyDate']),
+            totalIncome: propdata.containsKey('totalIncome')
+                ? propdata['totalIncome']
+                : 0, // ternary operator for specs which are not mandatory upon adding new property
+            behindPaymentNum: propdata.containsKey('behindPaymentNum')
+                ? propdata['behindPaymentNum']
+                : 0,
+            behindPayment: propdata.containsKey('behindPayment')
+                ? propdata['behindPayment']
+                : false,
+            brokeEven: propdata.containsKey('brokeEven')
+                ? propdata['brokeEven']
+                : false,
           );
           _entries.add(currentProp);
         });
