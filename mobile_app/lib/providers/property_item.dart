@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class PropertyItem {
   // const PropertyItem({Key? key}) : super(key: key);
+  String id;
   final String streetAddress;
   final String city;
   final String state;
@@ -13,7 +14,8 @@ class PropertyItem {
   bool brokeEven;
 
   PropertyItem(
-      {required this.streetAddress,
+      {this.id = "not given",
+      required this.streetAddress,
       required this.city,
       required this.state,
       required this.country,

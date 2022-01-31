@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import './property_item.dart';
 
@@ -41,8 +45,8 @@ class PropertyList with ChangeNotifier {
         country: "US",
         buyDate: DateTime(2022, 1, 20),
         totalIncome: 100,
-        behindPaymentNum: 0,
-        behindPayment: false,
+        // behindPaymentNum: 0,
+        // behindPayment: false,
         brokeEven: false),
     PropertyItem(
         streetAddress: "5th Address",
@@ -62,12 +66,28 @@ class PropertyList with ChangeNotifier {
     return [..._entries];
   }
 
-  PropertyItem findById(String streetAddress) {
-    return _entries
-        .firstWhere((property) => property.streetAddress == streetAddress);
+  PropertyItem findById(String id) {
+    return _entries.firstWhere((property) => property.id == id);
   }
 
-  void addProperty(newProp) {
+  Future<void> addProperty(newProp) async {
+    // print("Add funtions is running!!!");  \\ uncomment for troubleshooting
+
+    print(newProp.streetAddress);
+
+    // send new property to cloud DB and wait for identifier
+    final url = Uri.parse("${dotenv.env["FIREBASE_URL"]}propperties.json");
+    http.Response resp = await http.post(url,
+        body: json.encode({
+          "address": newProp.streetAddress,
+          "city": newProp.city,
+          "state": "",
+          "buyDate": newProp.buyDate.toIso8601String(),
+        }));
+    final info = jsonDecode(resp.body); // decode request response body
+    final id = info["name"]; // extract necessary info (here: DB ID)
+    // prive new property with unique ID and add to properties list
+    newProp.id = id;
     _entries.add(newProp);
     notifyListeners();
   }
