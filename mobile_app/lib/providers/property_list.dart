@@ -7,62 +7,44 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import './property_item.dart';
 
 class PropertyList with ChangeNotifier {
-  List<PropertyItem> _entries = [
-    PropertyItem(
-        streetAddress: "2825 33rd Str.",
-        city: "Binghamptom",
-        state: "NY",
-        country: "US",
-        buyDate: DateTime(2021, 2, 15),
-        totalIncome: 10000.0,
-        behindPaymentNum: 0,
-        behindPayment: false,
-        brokeEven: true),
-    PropertyItem(
-        streetAddress: "112 Adams Ave.",
-        city: "Binghamptom",
-        state: "NY",
-        country: "US",
-        buyDate: DateTime(2021, 8, 13),
-        totalIncome: 3000.50,
-        behindPaymentNum: 190,
-        behindPayment: true,
-        brokeEven: false),
-    PropertyItem(
-        streetAddress: "3rd Address",
-        city: "different citt",
-        state: "NY",
-        country: "US",
-        buyDate: DateTime(2019, 4, 11),
-        totalIncome: 3000.50,
-        behindPaymentNum: 10,
-        behindPayment: true,
-        brokeEven: false),
-    PropertyItem(
-        streetAddress: "4th Address",
-        city: "lala land",
-        state: "NY",
-        country: "US",
-        buyDate: DateTime(2022, 1, 20),
-        totalIncome: 100,
-        // behindPaymentNum: 0,
-        // behindPayment: false,
-        brokeEven: false),
-    PropertyItem(
-        streetAddress: "5th Address",
-        city: "Binghamptom",
-        state: "NY",
-        country: "US",
-        buyDate: DateTime(2018, 12, 30),
-        totalIncome: 30000.50,
-        behindPaymentNum: 0,
-        behindPayment: false,
-        brokeEven: true),
-  ];
+  List<PropertyItem> _entries = [];
 
   // var _showFavoritesOnly = false;
 
+  Future<void> getProps() async {
+    _entries =
+        []; // reset property list ,as properties will otherwise appear multiple times on screen (multiplied at every re-load)
+    final response = await http
+        .get(Uri.parse("${dotenv.env["FIREBASE_URL"]}properties.json"));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(
+          response.body); // convert to Map in order to be able to use .foreach
+
+      if (data != null) {
+        data.forEach((id, propdata) {
+          PropertyItem currentProp = PropertyItem(
+            streetAddress: propdata['address'],
+            city: propdata['city'],
+            state: propdata['state'],
+            country: propdata['country'],
+            buyDate: DateTime.parse(propdata['buyDate']),
+          );
+          _entries.add(currentProp);
+        });
+      }
+    }
+    notifyListeners();
+    return;
+  }
+  // else {
+  //   // If the server did not return a 200 OK response,
+  //   // then throw an exception.
+  //   throw Exception('Failed to load album');
+  // }
+
   List<PropertyItem> get fetchProperties {
+    // for app-internal purposes
     return [..._entries];
   }
 
@@ -73,15 +55,14 @@ class PropertyList with ChangeNotifier {
   Future<void> addProperty(newProp) async {
     // print("Add funtions is running!!!");  \\ uncomment for troubleshooting
 
-    print(newProp.streetAddress);
-
     // send new property to cloud DB and wait for identifier
-    final url = Uri.parse("${dotenv.env["FIREBASE_URL"]}propperties.json");
+    final url = Uri.parse("${dotenv.env["FIREBASE_URL"]}properties.json");
     http.Response resp = await http.post(url,
         body: json.encode({
           "address": newProp.streetAddress,
           "city": newProp.city,
           "state": "",
+          "country": newProp.country,
           "buyDate": newProp.buyDate.toIso8601String(),
         }));
     final info = jsonDecode(resp.body); // decode request response body

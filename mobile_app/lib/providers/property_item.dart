@@ -24,4 +24,13 @@ class PropertyItem {
       this.behindPaymentNum = 0,
       this.behindPayment = false,
       this.brokeEven = false});
+
+  // factory PropertyItem.fromJson(Map<String, dynamic> json) {
+  //   return PropertyItem(
+  //       streetAddress: json['address'],
+  //       city: json['city'],
+  //       state: json['state'],
+  //       country: json['country'],
+  //       buyDate: DateTime(json['buyDate']));
+  // }
 }

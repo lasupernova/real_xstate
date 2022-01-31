@@ -12,6 +12,7 @@ class PropertyOverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<PropertyList>(context, listen: false).getProps();
     return Scaffold(
       key: scaffoldKeyPropOverview,
       appBar: AppBar(
