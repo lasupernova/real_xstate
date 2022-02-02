@@ -5,6 +5,11 @@ Values calculated to evaluate if a property is a good investment include: __ROI,
 Result can be exported to a text file by hitting the dedicated button.
 <br><br>
 
+Installation (Mobile App):<br>
+
+A .apk (Android) file will be added for installation on Android phones. Additionally, the app will be uploaded to the Google Play Store (once beta-version is finished). <br>
+The app is equally suitable for ios, however, compilation will need to be one by the end user, as the app will not be uploaded to the Apple App Store at this moment.
+
 Installation (Web App):<br>
 
 Clone repo: <br>
