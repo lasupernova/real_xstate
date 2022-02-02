@@ -78,15 +78,14 @@ class CashflowList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removeCF(id) async {
+  void removeCashflowLocal(id) {
+    _entries.removeWhere((cashflow) => cashflow.id == id);
+    return;
+  }
+
+  Future<void> removeCashflowDB(id) async {
     final url = Uri.parse("${dotenv.env["FIREBASE_URL"]}cashflow/$id.json");
     http.Response resp = await http.delete(url);
-
-    if (resp.statusCode == 200) {
-      print("ENTRIES BEFOEE: $_entries");
-      _entries.removeWhere((cashflow) => cashflow.id == id);
-      print("ENTRIES AFTER: $_entries");
-    }
     return;
   }
 }
