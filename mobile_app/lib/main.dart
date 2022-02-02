@@ -15,6 +15,7 @@ import './screens/cashflowForm_screen.dart';
 import './screens/newPropertyForm_screen.dart';
 import './dummy_data/cashflowTileDummy.dart';
 import './screens/mortgageCalculated_Screen.dart';
+import './providers/cashflow_list.dart';
 
 // TO DO: create popup form screen for calculating cashflow
 
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => PropertyList()),
+        ChangeNotifierProvider(create: (ctx) => CashflowList()),
       ],
       child: MaterialApp(
         // CupertinoApp
