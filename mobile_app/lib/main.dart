@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:mobile_app/providers/property_list.dart';
+import 'package:mobile_app/screens/mortgageCalculated_Screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +14,7 @@ import 'screens/cashflowResultDetails._screen.dart';
 import './screens/cashflowForm_screen.dart';
 import './screens/newPropertyForm_screen.dart';
 import './dummy_data/cashflowTileDummy.dart';
+import './screens/mortgageCalculated_Screen.dart';
 
 // TO DO: create popup form screen for calculating cashflow
 
@@ -56,6 +58,7 @@ class MyApp extends StatelessWidget {
           // ignore: prefer_const_constructors
           CashflowForm.routeName: (ctx) => CashflowForm(),
           NewPropertyForm.routeName: (ctx) => NewPropertyForm(),
+          MortgageResult.routeName: (ctx) => MortgageResult(),
         },
       ),
     );
