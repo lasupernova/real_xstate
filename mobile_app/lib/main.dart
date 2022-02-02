@@ -70,6 +70,7 @@ class MyApp extends StatelessWidget {
 
 class LandingPage extends StatelessWidget {
   static const routeName = "/";
+  bool _firstLoad = true;
 
   void _popupCashflowForm(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(CashflowForm.routeName);
@@ -97,6 +98,13 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (_firstLoad) {
+      Provider.of<CashflowList>(context, listen: false)
+          .getCFs(); // only update on first load -- otherwise listen to added entries from within app
+      _firstLoad = !_firstLoad;
+    }
+    ;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(" --- Placeholder Title ---"), //

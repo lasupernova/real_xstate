@@ -24,7 +24,9 @@ class CashflowList with ChangeNotifier {
 
       if (data != null) {
         data.forEach((id, propdata) {
+          // DB id is the key, data is the value
           CashflowItem currentCF = CashflowItem(
+            id: id,
             mortgage: propdata['mortgage'],
             offer: propdata['offer'],
             downpayment: propdata['downpayment'],
@@ -51,7 +53,7 @@ class CashflowList with ChangeNotifier {
   }
 
   CashflowItem findById(String id) {
-    return _entries.firstWhere((property) => property.id == id);
+    return _entries.firstWhere((cashflow) => cashflow.id == id);
   }
 
   Future<void> addCF(newProp) async {
@@ -66,7 +68,7 @@ class CashflowList with ChangeNotifier {
           "downpayment": newProp.downpayment,
           "interest": newProp.interest,
           "term": newProp.term,
-          "buyDate": newProp.calcDate.toIso8601String(),
+          "calcDate": newProp.calcDate.toIso8601String(),
         }));
     final info = jsonDecode(resp.body); // decode request response body
     final id = info["name"]; // extract necessary info (here: DB ID)
