@@ -148,6 +148,7 @@ class CashflowFormState extends State<CashflowForm> {
                   // If the form is valid, display a snackbar. In the real world,
                   // you'd often call a server or save the information in a database.
                   _saveForm();
+                  _formKey.currentState!.reset();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Processing Data'),
@@ -157,11 +158,9 @@ class CashflowFormState extends State<CashflowForm> {
                   double mortgage = mg.calculateMortgage(
                     entryInfo["Offer"],
                     entryInfo["Downpayment"],
-                    entryInfo["Interest"] / 100 * 12,
+                    entryInfo["Interest"],
                     entryInfo["Term"],
                   );
-                  print(entryInfo);
-                  print("Mortgage calculated: $mortgage");
                   entryInfo["Mortgage"] = mortgage;
                   Navigator.of(context).pushNamed(
                       MortgageResult.routeName, // ERROR FROM HERE@!!!!
