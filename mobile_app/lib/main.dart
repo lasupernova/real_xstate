@@ -110,15 +110,26 @@ class LandingPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: SizedBox(
-                child: ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  elevation: 3,
-                  child: Center(child: cashflowTileDummy[index]),
+            child: SizedBox(child: Consumer<CashflowList>(
+              builder: (context, props, child) {
+                List allCFs = props.fetchCFs;
+                return ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      elevation: 3,
+                      child: Center(
+                        child: CashflowResultTile(
+                          name: allCFs[index].id,
+                          ROI: DateTime.now(),
+                          cashflow: 0.99,
+                          worth: false,
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: allCFs.length,
                 );
               },
-              itemCount: cashflowTileDummy.length,
             )),
           ),
         ],
