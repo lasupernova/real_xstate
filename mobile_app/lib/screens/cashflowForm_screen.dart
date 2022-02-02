@@ -3,6 +3,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../models/mortgageCalcs.dart' as mg;
+import './mortgageCalculated_Screen.dart';
+
 // Define a custom Form widget.
 class CashflowForm extends StatefulWidget {
   static const routeName = "/cashflow-form";
@@ -33,15 +36,18 @@ class CashflowFormState extends State<CashflowForm> {
         .save(); // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
   }
 
-  void sendToDB() {
+  Future<void> sendToDB() async {
     final url = Uri.parse(
-        "${dotenv.env["FIREBASE_URL"]}testProp.json"); // .json addition is unique to Firebase databases for their tables
-    http.post(url,
+        "${dotenv.env["FIREBASE_URL"]}testCF.json"); // .json addition is unique to Firebase databases for their tables
+    final resp = await http.post(url,
         body: json.encode({
-          "Term": entryInfo["Term"],
-          "Interest": entryInfo["Interest"],
-          "Description": entryInfo["Description"],
+          "Term": double.parse(entryInfo["Term"]),
+          "Interest": double.parse(entryInfo["Interest"]),
+          "Offer": double.parse(entryInfo["Offer"]),
+          "Downpayment": double.parse(entryInfo["Downpayment"]),
         }));
+    print(resp.statusCode);
+    print(jsonDecode(resp.body));
   }
 
   @override
@@ -49,7 +55,7 @@ class CashflowFormState extends State<CashflowForm> {
     // Build a Form widget using the _formKey created above.
     return Scaffold(
       appBar: AppBar(
-        title: Text("Testing CF Form"),
+        title: Text("Mortgage Calculator"),
         actions: [
           IconButton(onPressed: _saveForm, icon: Icon(Icons.save_outlined))
         ],
@@ -62,7 +68,11 @@ class CashflowFormState extends State<CashflowForm> {
               // The validator receives the text that the user has entered.
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text 1';
+                  return 'Please enter a value';
+                }
+                if (double.parse(value) < 0 || double.parse(value) > 50) {
+                  // check if number is in desired range (parse will work as non-numerical entry was checked above)
+                  return 'Please enter a number of years between 0 and 50';
                 }
                 return null;
               },
@@ -70,7 +80,7 @@ class CashflowFormState extends State<CashflowForm> {
               decoration: InputDecoration(labelText: "Term"),
               keyboardType: TextInputType.number,
               onSaved: (value) {
-                entryInfo["Term"] = value;
+                entryInfo["Term"] = int.parse(value!);
               },
             ),
             TextFormField(
@@ -100,69 +110,35 @@ class CashflowFormState extends State<CashflowForm> {
             TextFormField(
               // The validator receives the text that the user has entered.
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                if (value == null || value.isEmpty || double.parse(value) < 0) {
+                  return 'Please enter a value greater than 0';
                 }
                 return null;
               },
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: "Description"),
-              keyboardType: TextInputType.multiline,
-              maxLines: 3,
+              decoration: InputDecoration(labelText: "Offer"),
+              keyboardType: TextInputType.number,
               onSaved: (value) {
-                entryInfo["Description"] = value;
+                entryInfo["Offer"] = double.parse(value!);
               },
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  height: MediaQuery.of(context).size.width * 0.3,
-                  margin: EdgeInsets.only(top: 8, right: 10),
-                  decoration: BoxDecoration(border: Border.all()),
-                  child: Container(
-                    child: _imageUrlController.text.isEmpty
-                        ? Text("Enter URL")
-                        : FittedBox(
-                            child: Image.network(
-                              _imageUrlController.text,
-                              errorBuilder: (ctx, url, error) =>
-                                  Icon(Icons.error),
-                            ),
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                ),
-                SizedBox(
-                  width: 3,
-                ),
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(labelText: "Image URL"),
-                    keyboardType: TextInputType.url,
-                    textInputAction: TextInputAction.done,
-                    controller: _imageUrlController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter a value!";
-                      }
-                      if (!value.startsWith("http") &&
-                          !value.startsWith("https")) {
-                        return "You need to enter a valid URL!";
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      entryInfo["IMAGE url"] = value;
-                    },
-                    onTap: () => _imageUrlController.selection = TextSelection(
-                        baseOffset: 0,
-                        extentOffset: _imageUrlController.value.text
-                            .length), // select all available text on tap / focus
-                  ),
-                )
-              ],
+            TextFormField(
+              // The validator receives the text that the user has entered.
+              validator: (value) {
+                if (value == null || value.isEmpty || double.parse(value) < 0) {
+                  return 'Please enter a value greater than 0';
+                }
+                // if (double.parse(value) > 0) {  // TODO: check that downpayment needs to be SMALLER than offer
+                //   return 'Please enter a value greater than 0';
+                // }
+                return null;
+              },
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(labelText: "Downpayment"),
+              keyboardType: TextInputType.number,
+              onSaved: (value) {
+                entryInfo["Downpayment"] = double.parse(value!);
+              },
             ),
             ElevatedButton(
               onPressed: () {
@@ -178,8 +154,18 @@ class CashflowFormState extends State<CashflowForm> {
                       duration: Duration(seconds: 1),
                     ),
                   );
-                  sendToDB();
+                  double mortgage = mg.calculateMortgage(
+                    entryInfo["Offer"],
+                    entryInfo["Downpayment"],
+                    entryInfo["Interest"] / 100 * 12,
+                    entryInfo["Term"],
+                  );
                   print(entryInfo);
+                  print("Mortgage calculated: $mortgage");
+                  entryInfo["Mortgage"] = mortgage;
+                  Navigator.of(context).pushNamed(
+                      MortgageResult.routeName, // ERROR FROM HERE@!!!!
+                      arguments: entryInfo);
                 }
               },
               child: const Text('Submit'),
