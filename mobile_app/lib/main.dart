@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mobile_app/providers/property_list.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:mobile_app/widgets/cashflowResultTile.dart';
 
@@ -64,13 +67,27 @@ class LandingPage extends StatelessWidget {
   static const routeName = "/";
 
   void _popupCashflowForm(BuildContext ctx) {
-    //BUildocntext (ctx)argument is automatically filled into this function by flutter; NOTE: bCtx is also a context, but a different one (again passed automatically)
-    showModalBottomSheet(
-        context: ctx,
-        builder: // builder is a function that will return+build the widget that will be contained in the showModalBottomSHeet-class
-            (bCtx) {
-          return CashflowForm();
-        });
+    Navigator.of(ctx).pushNamed(CashflowForm.routeName);
+
+    // //BUildocntext (ctx)argument is automatically filled into this function by flutter; NOTE: bCtx is also a context, but a different one (again passed automatically)
+    // context: ctx,
+    // builder: // builder is a function that will return+build the widget that will be contained in the showModalBottomSHeet-class
+    //     (bCtx) {
+    //   return Container(
+    //     padding: const EdgeInsets.all(5),
+    //     height: MediaQuery.of(ctx).size.height * 0.4,
+    //     width: MediaQuery.of(ctx).size.width,
+    //     child: ElevatedButton(
+    //       onPressed: () async {
+    //         var resp = await http.get(Uri.parse("http://127.0.0.1:5000/"));
+    //         var decodedData = jsonDecode(resp);
+    //       },
+    //       child: Row(
+    //         children: [Icon(Icons.calculate), Text("Get Mortbgage .py")],
+    //       ),
+    //     ),
+    //   );
+    // });
   }
 
   @override
