@@ -11,7 +11,7 @@ class CashflowList with ChangeNotifier {
 
   // var _showFavoritesOnly = false;
 
-  Future<void> getProps() async {
+  Future<void> getCFs() async {
     // TODO: implement _firstLoad check - in order to not load this every time that page is relaoaded (e.g. due to saving file)
     _entries =
         []; // reset property list ,as properties will otherwise appear multiple times on screen (multiplied at every re-load)
@@ -45,7 +45,7 @@ class CashflowList with ChangeNotifier {
   //   throw Exception('Failed to load album');
   // }
 
-  List<CashflowItem> get fetchProperties {
+  List<CashflowItem> get fetchCFs {
     // for app-internal purposes
     return [..._entries];
   }
