@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'dart:math';
 
 import 'package:mobile_app/widgets/cashflowResultTile.dart';
 import 'package:provider/provider.dart';
 import '../providers/cashflow_list.dart';
 import '../models/cashflowResult.dart';
+import '../widgets/cirleAvatarInfo.dart';
 
 // called from cashflowResultTile.dart
 class CfResultDetailsScreen extends StatelessWidget {
@@ -49,20 +51,81 @@ class CfResultDetailsScreen extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.7,
-                width: MediaQuery.of(context).size.width * 0.6,
-                alignment: Alignment.center,
-                child: Consumer<CashflowList>(builder: (context, props, child) {
-                  CashflowItem CF_item = props.findById(cashflowID);
-                  return Text(
-                    "Term: ${CF_item.term}, interest: ${CF_item.interest * 100}%, offer: ${CF_item.offer}, downpayment: ${CF_item.downpayment} --- Monthly Payment: \$${CF_item.mortgage} / month",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 10,
-                    ),
-                  );
-                }),
+              SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * 0.03,
+                      horizontal: MediaQuery.of(context).size.width * 0.03),
+                  alignment: Alignment.center,
+                  child:
+                      Consumer<CashflowList>(builder: (context, props, child) {
+                    CashflowItem CF_item = props.findById(cashflowID);
+                    return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Flexible(
+                                flex: 4,
+                                child: Text(
+                                  "${CF_item.id}",
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                              ),
+                              Flexible(
+                                flex: 2,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${DateFormat('yyyy-MM-dd').format(CF_item.calcDate)}",
+                                    ),
+                                    Text(
+                                        ""), // TODO: find more elegant solution for pushing text to the top
+                                    Text(""),
+                                    Text(""),
+                                    Text(""),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          // const Spacer(),
+                          Row(children: [
+                            CircleAvatarInfo(
+                                text1: CF_item.term.toString(), text2: "years"),
+                            const Spacer(),
+                            CircleAvatarInfo(
+                                text1: CF_item.interest.toString(), text2: "%"),
+                            const Spacer(),
+                            CircleAvatarInfo(
+                                text1: CF_item.offer < 10000
+                                    ? "\$${(CF_item.offer).toString().split(".")[0]}"
+                                    : CF_item.offer < 1000000
+                                        ? "\$${(CF_item.offer / 1000).toString()}k"
+                                        : "\$${(CF_item.offer / 1000000).toString()}M",
+                                text2: "offer"),
+                            const Spacer(),
+                            CircleAvatarInfo(
+                                text1: "${CF_item.downpayment.toString()} %",
+                                text2: "down"),
+                            const Spacer(),
+                            // Expanded(
+                            //   child: SizedBox(
+                            //     child: Text(
+                            //       "Term: ${CF_item.term}, interest: ${CF_item.interest * 100}%, offer: ${CF_item.offer}, downpayment: ${CF_item.downpayment} --- Monthly Payment: \$${CF_item.mortgage} / month",
+                            //       style: TextStyle(
+                            //         color: Theme.of(context).colorScheme.primary,
+                            //         fontSize: 10,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // )
+                          ])
+                        ]);
+                  }),
+                ),
               ),
               IconButton(
                   onPressed: () {
