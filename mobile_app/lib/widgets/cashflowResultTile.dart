@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile_app/providers/cashflow_list.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/cashflowResultDetails._screen.dart';
+import '../providers/cashflow_list.dart';
 
 class CashflowResultTile extends StatelessWidget {
   final String name;
@@ -19,38 +22,59 @@ class CashflowResultTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () => Navigator.of(context).pushNamed(
-          CfResultDetailsScreen.routeName,
-          arguments: [30, 3.25, 100000, 25]),
-      leading: CircleAvatar(
-        radius: 15,
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
+    return Dismissible(
+      // TODO: fix dismissed dismissible error!!!
+      key: UniqueKey(),
+      background: Container(
+        color: Colors.red,
         child: Padding(
-          padding: const EdgeInsets.all(3),
-          child: FittedBox(
-            child: worth
-                ? const Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  )
-                : const Icon(
-                    Icons.dangerous,
-                    color: Colors.red,
-                  ),
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: [Icon(Icons.delete)],
+            mainAxisAlignment: MainAxisAlignment.end,
           ),
         ),
       ),
-      title: Text(name),
-      subtitle: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(DateFormat.yMMMd().format(ROI)),
-          SizedBox(
-            width: 20,
+      onDismissed: (direction) {
+        if (direction == DismissDirection.endToStart) {
+          Provider.of<CashflowList>(context, listen: false)
+              .removeCashflow(name);
+        } else {
+          print("Nothing happening");
+        }
+      },
+      child: ListTile(
+        onTap: () => Navigator.of(context)
+            .pushNamed(CfResultDetailsScreen.routeName, arguments: name),
+        leading: CircleAvatar(
+          radius: 15,
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
+          child: Padding(
+            padding: const EdgeInsets.all(3),
+            child: FittedBox(
+              child: worth
+                  ? const Icon(
+                      Icons.check,
+                      color: Colors.green,
+                    )
+                  : const Icon(
+                      Icons.dangerous,
+                      color: Colors.red,
+                    ),
+            ),
           ),
-          Text("\$$cashflow / month")
-        ],
+        ),
+        title: Text(name),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(DateFormat.yMMMd().format(ROI)),
+            SizedBox(
+              width: 20,
+            ),
+            Text("\$$cashflow / month")
+          ],
+        ),
       ),
     );
   }
