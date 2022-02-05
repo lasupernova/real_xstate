@@ -71,6 +71,12 @@ class CashflowList with ChangeNotifier {
           "term": newProp.term,
           "calcDate": newProp.calcDate.toIso8601String(),
           "rents": newProp.rents,
+          "propMgmt": newProp.propMgmt,
+          "vacancyLoss": newProp.vacancyLoss,
+          "capitalExp": newProp.capitalExp,
+          "propMgmtPerc": newProp.propMgmtPerc,
+          "vacancyLossPerc": newProp.vacancyLossPerc,
+          "capitalExpPerc": newProp.capitalExpPerc,
         }));
     final info = jsonDecode(resp.body); // decode request response body
     final id = info["name"]; // extract necessary info (here: DB ID)
