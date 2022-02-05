@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:provider/provider.dart' as prov;
+import 'package:accordion/accordion.dart';
 
 import '../models/mortgageCalcs.dart' as mg;
 import './mortgageCalculated_Screen.dart';
@@ -38,6 +39,15 @@ class CashflowFormState extends State<CashflowForm> {
   static List<String> rentsList = [""];
   static List<String> costsList = [""];
   String dbID = "";
+
+  // visibility indicators
+  bool mortgageOpen = true;
+
+  // text inpu controllers
+  TextEditingController termControll = TextEditingController();
+  TextEditingController interestControll = TextEditingController();
+  TextEditingController offerControll = TextEditingController();
+  TextEditingController downpaymentControll = TextEditingController();
 
   void _saveForm() {
     // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
@@ -145,87 +155,112 @@ class CashflowFormState extends State<CashflowForm> {
                     )),
                   ),
                   const Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          mortgageOpen = !mortgageOpen;
+                        });
+                      },
+                      icon: mortgageOpen
+                          ? Icon(Icons.keyboard_arrow_up)
+                          : Icon(Icons.keyboard_arrow_down))
                 ],
               ),
-              TextFormField(
-                // The validator receives the text that the user has entered.
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a value';
-                  }
-                  if (double.parse(value) < 0 || double.parse(value) > 50) {
-                    // check if number is in desired range (parse will work as non-numerical entry was checked above)
-                    return 'Please enter a number of years between 0 and 50';
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: "Term"),
-                keyboardType: TextInputType.number,
-                onSaved: (value) {
-                  entryInfo["term"] = int.parse(value!);
-                },
-              ),
-              TextFormField(
-                // The validator receives the text that the user has entered.
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    // check sth was entered
-                    return 'Please enter a value';
-                  }
-                  if (double.tryParse(value) == null) {
-                    // check that entry is a number
-                    return 'Please enter a valid number';
-                  }
-                  if (double.parse(value) < 0 || double.parse(value) > 100) {
-                    // check if number is in desired range (parse will work as non-numerical entry was checked above)
-                    return 'Please enter a number between 0 and 100';
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: "Interest"),
-                keyboardType: TextInputType.number,
-                onSaved: (value) {
-                  entryInfo["interest"] = double.parse(value!);
-                },
-              ),
-              TextFormField(
-                // The validator receives the text that the user has entered.
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      double.parse(value) < 0) {
-                    return 'Please enter a value greater than 0';
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: "Offer"),
-                keyboardType: TextInputType.number,
-                onSaved: (value) {
-                  entryInfo["offer"] = double.parse(value!);
-                },
-              ),
-              TextFormField(
-                // The validator receives the text that the user has entered.
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      double.parse(value) < 0) {
-                    return 'Please enter a value greater than 0';
-                  }
-                  // if (double.parse(value) > 0) {  // TODO: check that downpayment needs to be SMALLER than offer
-                  //   return 'Please enter a value greater than 0';
-                  // }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: "Downpayment"),
-                keyboardType: TextInputType.number,
-                onSaved: (value) {
-                  entryInfo["downpayment"] = double.parse(value!);
-                },
+              Visibility(
+                visible: mortgageOpen,
+                maintainState:
+                    true, // allows data to be saved, although currently hidden
+                child: Column(
+                  children: [
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a value';
+                        }
+                        if (double.parse(value) < 0 ||
+                            double.parse(value) > 50) {
+                          // check if number is in desired range (parse will work as non-numerical entry was checked above)
+                          return 'Please enter a number of years between 0 and 50';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(labelText: "Term"),
+                      keyboardType: TextInputType.number,
+                      controller:
+                          termControll, // added controller to avoid input deletion on toggling
+                      onSaved: (value) {
+                        entryInfo["term"] = int.parse(value!);
+                      },
+                    ),
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          // check sth was entered
+                          return 'Please enter a value';
+                        }
+                        if (double.tryParse(value) == null) {
+                          // check that entry is a number
+                          return 'Please enter a valid number';
+                        }
+                        if (double.parse(value) < 0 ||
+                            double.parse(value) > 100) {
+                          // check if number is in desired range (parse will work as non-numerical entry was checked above)
+                          return 'Please enter a number between 0 and 100';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(labelText: "Interest"),
+                      keyboardType: TextInputType.number,
+                      controller: interestControll,
+                      onSaved: (value) {
+                        entryInfo["interest"] = double.parse(value!);
+                      },
+                    ),
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            double.parse(value) < 0) {
+                          return 'Please enter a value greater than 0';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(labelText: "Offer"),
+                      keyboardType: TextInputType.number,
+                      controller: offerControll,
+                      onSaved: (value) {
+                        entryInfo["offer"] = double.parse(value!);
+                      },
+                    ),
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            double.parse(value) < 0) {
+                          return 'Please enter a value greater than 0';
+                        }
+                        // if (double.parse(value) > 0) {  // TODO: check that downpayment needs to be SMALLER than offer
+                        //   return 'Please enter a value greater than 0';
+                        // }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(labelText: "Downpayment"),
+                      keyboardType: TextInputType.number,
+                      controller: downpaymentControll,
+                      onSaved: (value) {
+                        entryInfo["downpayment"] = double.parse(value!);
+                      },
+                    ),
+                  ],
+                ),
               ),
               Row(
                 children: [
