@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:provider/provider.dart' as prov;
 
 import '../models/mortgageCalcs.dart' as mg;
 import './mortgageCalculated_Screen.dart';
+import '../providers/cashflow_list.dart';
+import '../models/cashflowResult.dart';
+import './cashflowFormWidgets/rentsWidget.dart';
 
 // Define a custom Form widget.
 class CashflowForm extends StatefulWidget {
@@ -30,28 +34,79 @@ class CashflowFormState extends State<CashflowForm> {
   final _imageUrlController =
       TextEditingController(); // usuallyh not needed when using Form(), BUT: here image textinput should be used prior to any action that Form() takes, as image should be displyed in Container() above
   Map entryInfo = {};
+  static List<String> rentsList = [""];
 
   void _saveForm() {
-    _formKey.currentState!
-        .save(); // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
+    _formKey.currentState!.save();
+    double mortgage = mg.calculateMortgage(
+      entryInfo["offer"],
+      entryInfo["downpayment"],
+      entryInfo["interest"],
+      entryInfo["term"],
+    );
+    entryInfo["mortgage"] = mortgage;
+    prov.Provider.of<CashflowList>(context, listen: false).addCF(CashflowItem(
+      // 'listen:false', as no rebuild of current widget is wanted
+      mortgage: entryInfo["mortgage"],
+      offer: entryInfo["offer"],
+      downpayment: entryInfo["downpayment"],
+      interest: entryInfo["interest"],
+      term: entryInfo["term"],
+      calcDate: DateTime.now(),
+    ));
+    // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
   }
 
-  Future<void> sendToDB() async {
-    final url = Uri.parse(
-        "${dotenv.env["FIREBASE_URL"]}testCF.json"); // .json addition is unique to Firebase databases for their tables
-    final resp = await http.post(url,
-        body: json.encode({
-          "Term": double.parse(entryInfo["Term"]),
-          "Interest": double.parse(entryInfo["Interest"]),
-          "Offer": double.parse(entryInfo["Offer"]),
-          "Downpayment": double.parse(entryInfo["Downpayment"]),
-        }));
-    print(resp.statusCode);
-    print(jsonDecode(resp.body));
+  Widget _addRemoveButton(bool add, int index) {
+    return InkWell(
+      onTap: () {
+        if (add) {
+          // add new text-fields at the top of all friends textfields
+          rentsList.insert(0, rentsList[index]);
+        } else {
+          rentsList.removeAt(index);
+        }
+        ;
+        setState(() {});
+      },
+      child: Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          color: (add) ? Colors.green : Colors.red,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Icon(
+          (add) ? Icons.add : Icons.remove,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _getFriends() {
+    List<Widget> friendsTextFieldsList = [];
+    for (int i = 0; i < rentsList.length; i++) {
+      friendsTextFieldsList.add(Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Row(
+          children: [
+            Expanded(child: RentFieldDynamic(i, entryInfo)),
+            SizedBox(
+              width: 16,
+            ),
+            // we need add button at last friends row only
+            _addRemoveButton(i == rentsList.length - 1, i),
+          ],
+        ),
+      ));
+    }
+    return friendsTextFieldsList;
   }
 
   @override
   Widget build(BuildContext context) {
+    double _screenWidth = MediaQuery.of(context).size.width;
     // Build a Form widget using the _formKey created above.
     return Scaffold(
       appBar: AppBar(
@@ -64,6 +119,24 @@ class CashflowFormState extends State<CashflowForm> {
         key: _formKey,
         child: ListView(
           children: <Widget>[
+            Row(
+              children: [
+                const Spacer(),
+                Container(
+                  // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
+                  margin: EdgeInsets.all(_screenWidth * 0.02),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 2, color: Colors.green)),
+                  width: _screenWidth * 0.5,
+                  child: const FittedBox(
+                      child: Text(
+                    "Mortgage Info",
+                    style: TextStyle(color: Colors.black54),
+                  )),
+                ),
+                const Spacer(),
+              ],
+            ),
             TextFormField(
               // The validator receives the text that the user has entered.
               validator: (value) {
@@ -80,7 +153,7 @@ class CashflowFormState extends State<CashflowForm> {
               decoration: InputDecoration(labelText: "Term"),
               keyboardType: TextInputType.number,
               onSaved: (value) {
-                entryInfo["Term"] = int.parse(value!);
+                entryInfo["term"] = int.parse(value!);
               },
             ),
             TextFormField(
@@ -104,7 +177,7 @@ class CashflowFormState extends State<CashflowForm> {
               decoration: InputDecoration(labelText: "Interest"),
               keyboardType: TextInputType.number,
               onSaved: (value) {
-                entryInfo["Interest"] = double.parse(value!);
+                entryInfo["interest"] = double.parse(value!);
               },
             ),
             TextFormField(
@@ -119,7 +192,7 @@ class CashflowFormState extends State<CashflowForm> {
               decoration: InputDecoration(labelText: "Offer"),
               keyboardType: TextInputType.number,
               onSaved: (value) {
-                entryInfo["Offer"] = double.parse(value!);
+                entryInfo["offer"] = double.parse(value!);
               },
             ),
             TextFormField(
@@ -137,9 +210,40 @@ class CashflowFormState extends State<CashflowForm> {
               decoration: InputDecoration(labelText: "Downpayment"),
               keyboardType: TextInputType.number,
               onSaved: (value) {
-                entryInfo["Downpayment"] = double.parse(value!);
+                entryInfo["downpayment"] = double.parse(value!);
               },
             ),
+            Row(
+              children: [
+                const Spacer(),
+                Container(
+                  // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
+                  margin: EdgeInsets.all(_screenWidth * 0.02),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 2, color: Colors.green)),
+                  width: _screenWidth * 0.5,
+                  child: const FittedBox(
+                      child: Text(
+                    "Income",
+                    style: TextStyle(color: Colors.black54),
+                  )),
+                ),
+                const Spacer(),
+              ],
+            ),
+            ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                itemCount: rentsList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: RentFieldDynamic(index, entryInfo),
+                    trailing: index + 1 == rentsList.length
+                        ? _addRemoveButton(true, index)
+                        : _addRemoveButton(false, index),
+                  );
+                }),
             ElevatedButton(
               onPressed: () {
                 // Validate returns true if the form is valid, or false otherwise.
@@ -155,13 +259,6 @@ class CashflowFormState extends State<CashflowForm> {
                       duration: Duration(seconds: 1),
                     ),
                   );
-                  double mortgage = mg.calculateMortgage(
-                    entryInfo["Offer"],
-                    entryInfo["Downpayment"],
-                    entryInfo["Interest"],
-                    entryInfo["Term"],
-                  );
-                  entryInfo["Mortgage"] = mortgage;
                   Navigator.of(context).pushNamed(
                       MortgageResult.routeName, // ERROR FROM HERE@!!!!
                       arguments: entryInfo);
