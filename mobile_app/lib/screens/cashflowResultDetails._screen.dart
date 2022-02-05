@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
@@ -108,6 +110,15 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                                   text1: "${CF_item.downpayment.toString()} %",
                                   text2: "down"),
                             ]),
+                            ListTile(
+                              leading: Icon(Icons.attach_money),
+                              title: Text(
+                                "Mortgage: ${CF_item.mortgage.toStringAsFixed(2)}/mth.",
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                              ),
+                            ),
                             IconButton(
                                 onPressed: () {
                                   print("Added to favorites");
