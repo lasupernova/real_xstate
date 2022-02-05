@@ -9,6 +9,7 @@ import './mortgageCalculated_Screen.dart';
 import '../providers/cashflow_list.dart';
 import '../models/cashflowResult.dart';
 import './cashflowFormWidgets/rentsWidget.dart';
+import '../screens/cashflowResultDetails._screen.dart';
 
 // Define a custom Form widget.
 class CashflowForm extends StatefulWidget {
@@ -35,8 +36,10 @@ class CashflowFormState extends State<CashflowForm> {
       TextEditingController(); // usuallyh not needed when using Form(), BUT: here image textinput should be used prior to any action that Form() takes, as image should be displyed in Container() above
   Map entryInfo = {};
   static List<String> rentsList = [""];
+  String dbID = "";
 
   void _saveForm() {
+    // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
     entryInfo['rents'] = [];
     _formKey.currentState!.save();
     print(entryInfo);
@@ -52,8 +55,12 @@ class CashflowFormState extends State<CashflowForm> {
     );
     newCF
         .calculateCashflow(); // calculate relevant cashflow properties based on form inputs
-    prov.Provider.of<CashflowList>(context, listen: false).addCF(newCF);
-    // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
+    prov.Provider.of<CashflowList>(context, listen: false)
+        .addCF(newCF)
+        .then((value) {
+      Navigator.of(context)
+          .pushNamed(CfResultDetailsScreen.routeName, arguments: value);
+    }); // use returned value = String (after Future is resolved) to navigate cashflow result screen of newly created CF
   }
 
   Widget _addRemoveButton(bool add, int index) {
@@ -258,9 +265,9 @@ class CashflowFormState extends State<CashflowForm> {
                       duration: Duration(seconds: 1),
                     ),
                   );
-                  Navigator.of(context).pushNamed(
-                      MortgageResult.routeName, // ERROR FROM HERE@!!!!
-                      arguments: entryInfo);
+                  // Navigator.of(context).pushNamed(
+                  //     CfResultDetailsScreen.routeName,
+                  //     arguments: dbID);
                 }
               },
               child: const Text('Submit'),
