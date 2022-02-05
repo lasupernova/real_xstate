@@ -56,8 +56,7 @@ class CashflowItem {
   //   return M;
   // }
 
-  void rentalAssocExpenses(
-      rents, propMngtPerc, capitalExpPerc, vacancyLossPerc) {
+  void rentalAssocExpenses() {
     double totalRents = rents.fold(
         0,
         (previous, current) =>
