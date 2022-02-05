@@ -113,11 +113,12 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                             ListTile(
                               leading: Icon(Icons.attach_money),
                               title: Text(
-                                "Mortgage: ${CF_item.mortgage.toStringAsFixed(2)}/mth.",
+                                CF_item.mortgage.toStringAsFixed(2),
                                 style: TextStyle(
                                     color:
                                         Theme.of(context).colorScheme.primary),
                               ),
+                              subtitle: Text("Monthly Mortgage"),
                             ),
                             IconButton(
                                 onPressed: () {
