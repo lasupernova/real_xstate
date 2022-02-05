@@ -24,7 +24,7 @@ class CashflowResultTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dismissible(
       // TODO: fix dismissed dismissible error!!!
-      key: UniqueKey(),
+      key: Key(name),
       background: Container(
         color: Colors.red,
         child: Padding(
