@@ -36,6 +36,7 @@ class CashflowFormState extends State<CashflowForm> {
       TextEditingController(); // usuallyh not needed when using Form(), BUT: here image textinput should be used prior to any action that Form() takes, as image should be displyed in Container() above
   Map entryInfo = {};
   static List<String> rentsList = [""];
+  static List<String> costsList = [""];
   String dbID = "";
 
   void _saveForm() {
@@ -63,14 +64,14 @@ class CashflowFormState extends State<CashflowForm> {
     }); // use returned value = String (after Future is resolved) to navigate cashflow result screen of newly created CF
   }
 
-  Widget _addRemoveButton(bool add, int index) {
+  Widget _addRemoveButton(bool add, int index, List currList) {
     return InkWell(
       onTap: () {
         if (add) {
           // add new text-fields at the top of all friends textfields
-          rentsList.insert(0, rentsList[index]);
+          currList.insert(0, currList[index]);
         } else {
-          rentsList.removeAt(index);
+          currList.removeAt(index);
         }
         ;
         setState(() {});
@@ -244,10 +245,51 @@ class CashflowFormState extends State<CashflowForm> {
                 itemCount: rentsList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                    title: RentFieldDynamic(index, entryInfo),
+                    title: GenerateFieldDynamic(
+                      index: index,
+                      entryInfo: entryInfo,
+                      mapKey: "rents",
+                      label: "Rent",
+                    ),
                     trailing: index + 1 == rentsList.length
-                        ? _addRemoveButton(true, index)
-                        : _addRemoveButton(false, index),
+                        ? _addRemoveButton(true, index, rentsList)
+                        : _addRemoveButton(false, index, rentsList),
+                  );
+                }),
+            Row(
+              children: [
+                const Spacer(),
+                Container(
+                  // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
+                  margin: EdgeInsets.all(_screenWidth * 0.02),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 2, color: Colors.green)),
+                  width: _screenWidth * 0.5,
+                  child: const FittedBox(
+                      child: Text(
+                    " Recurring Costs",
+                    style: TextStyle(color: Colors.black54),
+                  )),
+                ),
+                const Spacer(),
+              ],
+            ),
+            ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                itemCount: costsList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: GenerateFieldDynamic(
+                      index: index,
+                      entryInfo: entryInfo,
+                      mapKey: "costs",
+                      label: "Cost",
+                    ),
+                    trailing: index + 1 == costsList.length
+                        ? _addRemoveButton(true, index, costsList)
+                        : _addRemoveButton(false, index, costsList),
                   );
                 }),
             ElevatedButton(
