@@ -37,7 +37,9 @@ class CashflowFormState extends State<CashflowForm> {
   static List<String> rentsList = [""];
 
   void _saveForm() {
+    entryInfo['rents'] = [];
     _formKey.currentState!.save();
+    print(entryInfo);
     double mortgage = mg.calculateMortgage(
       entryInfo["offer"],
       entryInfo["downpayment"],
@@ -45,15 +47,18 @@ class CashflowFormState extends State<CashflowForm> {
       entryInfo["term"],
     );
     entryInfo["mortgage"] = mortgage;
-    prov.Provider.of<CashflowList>(context, listen: false).addCF(CashflowItem(
+    CashflowItem newCF = CashflowItem(
       // 'listen:false', as no rebuild of current widget is wanted
       mortgage: entryInfo["mortgage"],
       offer: entryInfo["offer"],
       downpayment: entryInfo["downpayment"],
       interest: entryInfo["interest"],
       term: entryInfo["term"],
+      rents: entryInfo["rents"],
       calcDate: DateTime.now(),
-    ));
+    );
+    newCF.rentalAssocExpenses(); // calculate rent assciated expenses
+    prov.Provider.of<CashflowList>(context, listen: false).addCF(newCF);
     // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
   }
 
@@ -84,25 +89,25 @@ class CashflowFormState extends State<CashflowForm> {
     );
   }
 
-  List<Widget> _getFriends() {
-    List<Widget> friendsTextFieldsList = [];
-    for (int i = 0; i < rentsList.length; i++) {
-      friendsTextFieldsList.add(Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: Row(
-          children: [
-            Expanded(child: RentFieldDynamic(i, entryInfo)),
-            SizedBox(
-              width: 16,
-            ),
-            // we need add button at last friends row only
-            _addRemoveButton(i == rentsList.length - 1, i),
-          ],
-        ),
-      ));
-    }
-    return friendsTextFieldsList;
-  }
+  // List<Widget> _getFriends() {
+  //   List<Widget> friendsTextFieldsList = [];
+  //   for (int i = 0; i < rentsList.length; i++) {
+  //     friendsTextFieldsList.add(Padding(
+  //       padding: const EdgeInsets.symmetric(vertical: 16.0),
+  //       child: Row(
+  //         children: [
+  //           Expanded(child: RentFieldDynamic(i, entryInfo['rents'])),
+  //           SizedBox(
+  //             width: 16,
+  //           ),
+  //           // we need add button at last friends row only
+  //           _addRemoveButton(i == rentsList.length - 1, i),
+  //         ],
+  //       ),
+  //     ));
+  //   }
+  //   return friendsTextFieldsList;
+  // }
 
   @override
   Widget build(BuildContext context) {
