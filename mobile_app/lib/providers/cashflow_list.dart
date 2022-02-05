@@ -54,6 +54,7 @@ class CashflowList with ChangeNotifier {
 
   CashflowItem findById(String id) {
     return _entries.firstWhere((cashflow) => cashflow.id == id);
+    // return _entries.where((element) => false) Where((cashflow) => cashflow.id == id);
   }
 
   Future<void> addCF(newProp) async {
@@ -69,6 +70,7 @@ class CashflowList with ChangeNotifier {
           "interest": newProp.interest,
           "term": newProp.term,
           "calcDate": newProp.calcDate.toIso8601String(),
+          "rents": newProp.rents,
         }));
     final info = jsonDecode(resp.body); // decode request response body
     final id = info["name"]; // extract necessary info (here: DB ID)
@@ -84,7 +86,7 @@ class CashflowList with ChangeNotifier {
 
     if (resp.statusCode == 200) {
       _entries.removeWhere((cashflow) => cashflow.id == id);
-      notifyListeners();
+      notifyListeners(); // NECESSARY! otherwise "dismissed Dismissible Error" will be thrown
     }
     return;
   }
