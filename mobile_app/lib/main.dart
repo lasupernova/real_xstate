@@ -13,7 +13,6 @@ import 'screens/propertiesOverview_screen.dart';
 import 'screens/cashflowResultDetails._screen.dart';
 import './screens/cashflowForm_screen.dart';
 import './screens/newPropertyForm_screen.dart';
-import './dummy_data/cashflowTileDummy.dart';
 import './screens/mortgageCalculated_Screen.dart';
 import './providers/cashflow_list.dart';
 
@@ -129,7 +128,7 @@ class LandingPage extends StatelessWidget {
                         child: CashflowResultTile(
                           name: allCFs[index].id,
                           ROI: DateTime.now(),
-                          cashflow: 0.99,
+                          cashflow: 0.98,
                           worth: false,
                         ),
                       ),

@@ -8,7 +8,7 @@ import '../models/mortgageCalcs.dart' as mg;
 import './mortgageCalculated_Screen.dart';
 import '../providers/cashflow_list.dart';
 import '../models/cashflowResult.dart';
-import './cashflowFormWidgets/rentsWidget.dart';
+import './cashflowFormWidgets/dynamicTextFormInput.dart';
 import '../screens/cashflowResultDetails._screen.dart';
 
 // Define a custom Form widget.
@@ -56,7 +56,7 @@ class CashflowFormState extends State<CashflowForm> {
       costs: [150, 250, 300],
     );
     newCF
-        .calculateCashflow(); // calculate relevant cashflow properties based on form inputs
+        .getCashflow(); // calculate relevant cashflow properties based on form inputs
     prov.Provider.of<CashflowList>(context, listen: false)
         .addCF(newCF)
         .then((value) {
@@ -126,6 +126,7 @@ class CashflowFormState extends State<CashflowForm> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
+          // use SingleChildScrollView + Column instead of ListView, to avoid input from disappear on scrolling (-> Reason: ListView has recycling nature and only renders the visible children )
           child: Column(
             children: <Widget>[
               Row(
