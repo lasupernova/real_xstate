@@ -40,24 +40,18 @@ class CashflowFormState extends State<CashflowForm> {
     entryInfo['rents'] = [];
     _formKey.currentState!.save();
     print(entryInfo);
-    double mortgage = mg.calculateMortgage(
-      entryInfo["offer"],
-      entryInfo["downpayment"],
-      entryInfo["interest"],
-      entryInfo["term"],
-    );
-    entryInfo["mortgage"] = mortgage;
     CashflowItem newCF = CashflowItem(
       // 'listen:false', as no rebuild of current widget is wanted
-      mortgage: entryInfo["mortgage"],
       offer: entryInfo["offer"],
       downpayment: entryInfo["downpayment"],
       interest: entryInfo["interest"],
       term: entryInfo["term"],
       rents: entryInfo["rents"],
       calcDate: DateTime.now(),
+      costs: [150, 250, 300],
     );
-    newCF.rentalAssocExpenses(); // calculate rent assciated expenses
+    newCF
+        .calculateCashflow(); // calculate relevant cashflow properties based on form inputs
     prov.Provider.of<CashflowList>(context, listen: false).addCF(newCF);
     // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
   }
