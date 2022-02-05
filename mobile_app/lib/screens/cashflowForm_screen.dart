@@ -42,6 +42,7 @@ class CashflowFormState extends State<CashflowForm> {
   void _saveForm() {
     // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
     entryInfo['rents'] = [];
+    entryInfo['costs'] = [];
     _formKey.currentState!.save();
     print(entryInfo);
     CashflowItem newCF = CashflowItem(
@@ -124,197 +125,205 @@ class CashflowFormState extends State<CashflowForm> {
       ),
       body: Form(
         key: _formKey,
-        child: ListView(
-          children: <Widget>[
-            Row(
-              children: [
-                const Spacer(),
-                Container(
-                  // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
-                  margin: EdgeInsets.all(_screenWidth * 0.02),
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.green)),
-                  width: _screenWidth * 0.5,
-                  child: const FittedBox(
-                      child: Text(
-                    "Mortgage Info",
-                    style: TextStyle(color: Colors.black54),
-                  )),
-                ),
-                const Spacer(),
-              ],
-            ),
-            TextFormField(
-              // The validator receives the text that the user has entered.
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a value';
-                }
-                if (double.parse(value) < 0 || double.parse(value) > 50) {
-                  // check if number is in desired range (parse will work as non-numerical entry was checked above)
-                  return 'Please enter a number of years between 0 and 50';
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: "Term"),
-              keyboardType: TextInputType.number,
-              onSaved: (value) {
-                entryInfo["term"] = int.parse(value!);
-              },
-            ),
-            TextFormField(
-              // The validator receives the text that the user has entered.
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  // check sth was entered
-                  return 'Please enter a value';
-                }
-                if (double.tryParse(value) == null) {
-                  // check that entry is a number
-                  return 'Please enter a valid number';
-                }
-                if (double.parse(value) < 0 || double.parse(value) > 100) {
-                  // check if number is in desired range (parse will work as non-numerical entry was checked above)
-                  return 'Please enter a number between 0 and 100';
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: "Interest"),
-              keyboardType: TextInputType.number,
-              onSaved: (value) {
-                entryInfo["interest"] = double.parse(value!);
-              },
-            ),
-            TextFormField(
-              // The validator receives the text that the user has entered.
-              validator: (value) {
-                if (value == null || value.isEmpty || double.parse(value) < 0) {
-                  return 'Please enter a value greater than 0';
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: "Offer"),
-              keyboardType: TextInputType.number,
-              onSaved: (value) {
-                entryInfo["offer"] = double.parse(value!);
-              },
-            ),
-            TextFormField(
-              // The validator receives the text that the user has entered.
-              validator: (value) {
-                if (value == null || value.isEmpty || double.parse(value) < 0) {
-                  return 'Please enter a value greater than 0';
-                }
-                // if (double.parse(value) > 0) {  // TODO: check that downpayment needs to be SMALLER than offer
-                //   return 'Please enter a value greater than 0';
-                // }
-                return null;
-              },
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(labelText: "Downpayment"),
-              keyboardType: TextInputType.number,
-              onSaved: (value) {
-                entryInfo["downpayment"] = double.parse(value!);
-              },
-            ),
-            Row(
-              children: [
-                const Spacer(),
-                Container(
-                  // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
-                  margin: EdgeInsets.all(_screenWidth * 0.02),
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.green)),
-                  width: _screenWidth * 0.5,
-                  child: const FittedBox(
-                      child: Text(
-                    "Income",
-                    style: TextStyle(color: Colors.black54),
-                  )),
-                ),
-                const Spacer(),
-              ],
-            ),
-            ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                itemCount: rentsList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: GenerateFieldDynamic(
-                      index: index,
-                      entryInfo: entryInfo,
-                      mapKey: "rents",
-                      label: "Rent",
-                    ),
-                    trailing: index + 1 == rentsList.length
-                        ? _addRemoveButton(true, index, rentsList)
-                        : _addRemoveButton(false, index, rentsList),
-                  );
-                }),
-            Row(
-              children: [
-                const Spacer(),
-                Container(
-                  // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
-                  margin: EdgeInsets.all(_screenWidth * 0.02),
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.green)),
-                  width: _screenWidth * 0.5,
-                  child: const FittedBox(
-                      child: Text(
-                    " Recurring Costs",
-                    style: TextStyle(color: Colors.black54),
-                  )),
-                ),
-                const Spacer(),
-              ],
-            ),
-            ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                itemCount: costsList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: GenerateFieldDynamic(
-                      index: index,
-                      entryInfo: entryInfo,
-                      mapKey: "costs",
-                      label: "Cost",
-                    ),
-                    trailing: index + 1 == costsList.length
-                        ? _addRemoveButton(true, index, costsList)
-                        : _addRemoveButton(false, index, costsList),
-                  );
-                }),
-            ElevatedButton(
-              onPressed: () {
-                // Validate returns true if the form is valid, or false otherwise.
-                if (_formKey.currentState!.validate()) {
-                  // .."currentState!.validate()" triggers all defined TextFormField validators -- and returns "true", if no error was thrown!
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
-                  _saveForm();
-                  _formKey.currentState!.reset();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Processing Data'),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                  // Navigator.of(context).pushNamed(
-                  //     CfResultDetailsScreen.routeName,
-                  //     arguments: dbID);
-                }
-              },
-              child: const Text('Submit'),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: [
+                  const Spacer(),
+                  Container(
+                    // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
+                    margin: EdgeInsets.all(_screenWidth * 0.02),
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 2, color: Colors.green)),
+                    width: _screenWidth * 0.5,
+                    child: const FittedBox(
+                        child: Text(
+                      "Mortgage Info",
+                      style: TextStyle(color: Colors.black54),
+                    )),
+                  ),
+                  const Spacer(),
+                ],
+              ),
+              TextFormField(
+                // The validator receives the text that the user has entered.
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a value';
+                  }
+                  if (double.parse(value) < 0 || double.parse(value) > 50) {
+                    // check if number is in desired range (parse will work as non-numerical entry was checked above)
+                    return 'Please enter a number of years between 0 and 50';
+                  }
+                  return null;
+                },
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(labelText: "Term"),
+                keyboardType: TextInputType.number,
+                onSaved: (value) {
+                  entryInfo["term"] = int.parse(value!);
+                },
+              ),
+              TextFormField(
+                // The validator receives the text that the user has entered.
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    // check sth was entered
+                    return 'Please enter a value';
+                  }
+                  if (double.tryParse(value) == null) {
+                    // check that entry is a number
+                    return 'Please enter a valid number';
+                  }
+                  if (double.parse(value) < 0 || double.parse(value) > 100) {
+                    // check if number is in desired range (parse will work as non-numerical entry was checked above)
+                    return 'Please enter a number between 0 and 100';
+                  }
+                  return null;
+                },
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(labelText: "Interest"),
+                keyboardType: TextInputType.number,
+                onSaved: (value) {
+                  entryInfo["interest"] = double.parse(value!);
+                },
+              ),
+              TextFormField(
+                // The validator receives the text that the user has entered.
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      double.parse(value) < 0) {
+                    return 'Please enter a value greater than 0';
+                  }
+                  return null;
+                },
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(labelText: "Offer"),
+                keyboardType: TextInputType.number,
+                onSaved: (value) {
+                  entryInfo["offer"] = double.parse(value!);
+                },
+              ),
+              TextFormField(
+                // The validator receives the text that the user has entered.
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      double.parse(value) < 0) {
+                    return 'Please enter a value greater than 0';
+                  }
+                  // if (double.parse(value) > 0) {  // TODO: check that downpayment needs to be SMALLER than offer
+                  //   return 'Please enter a value greater than 0';
+                  // }
+                  return null;
+                },
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(labelText: "Downpayment"),
+                keyboardType: TextInputType.number,
+                onSaved: (value) {
+                  entryInfo["downpayment"] = double.parse(value!);
+                },
+              ),
+              Row(
+                children: [
+                  const Spacer(),
+                  Container(
+                    // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
+                    margin: EdgeInsets.all(_screenWidth * 0.02),
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 2, color: Colors.green)),
+                    width: _screenWidth * 0.5,
+                    child: const FittedBox(
+                        child: Text(
+                      "Income",
+                      style: TextStyle(color: Colors.black54),
+                    )),
+                  ),
+                  const Spacer(),
+                ],
+              ),
+              SingleChildScrollView(
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    itemCount: rentsList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                        title: GenerateFieldDynamic(
+                          index: index,
+                          entryInfo: entryInfo,
+                          mapKey: "rents",
+                          label: "Rent",
+                        ),
+                        trailing: index + 1 == rentsList.length
+                            ? _addRemoveButton(true, index, rentsList)
+                            : _addRemoveButton(false, index, rentsList),
+                      );
+                    }),
+              ),
+              Row(
+                children: [
+                  const Spacer(),
+                  Container(
+                    // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
+                    margin: EdgeInsets.all(_screenWidth * 0.02),
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 2, color: Colors.green)),
+                    width: _screenWidth * 0.5,
+                    child: const FittedBox(
+                        child: Text(
+                      "Recurring Costs",
+                      style: TextStyle(color: Colors.black54),
+                    )),
+                  ),
+                  const Spacer(),
+                ],
+              ),
+              ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  itemCount: costsList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      title: GenerateFieldDynamic(
+                        index: index,
+                        entryInfo: entryInfo,
+                        mapKey: "costs",
+                        label: "Cost",
+                      ),
+                      trailing: index + 1 == costsList.length
+                          ? _addRemoveButton(true, index, costsList)
+                          : _addRemoveButton(false, index, costsList),
+                    );
+                  }),
+              ElevatedButton(
+                onPressed: () {
+                  // Validate returns true if the form is valid, or false otherwise.
+                  if (_formKey.currentState!.validate()) {
+                    // .."currentState!.validate()" triggers all defined TextFormField validators -- and returns "true", if no error was thrown!
+                    // If the form is valid, display a snackbar. In the real world,
+                    // you'd often call a server or save the information in a database.
+                    _saveForm();
+                    _formKey.currentState!.reset();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Processing Data'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                    // Navigator.of(context).pushNamed(
+                    //     CfResultDetailsScreen.routeName,
+                    //     arguments: dbID);
+                  }
+                },
+                child: const Text('Submit'),
+              ),
+            ],
+          ),
         ),
       ),
     );
