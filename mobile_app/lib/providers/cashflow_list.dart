@@ -57,7 +57,7 @@ class CashflowList with ChangeNotifier {
     // return _entries.where((element) => false) Where((cashflow) => cashflow.id == id);
   }
 
-  Future<void> addCF(newProp) async {
+  Future<String> addCF(newProp) async {
     // print("Add funtions is running!!!");  \\ uncomment for troubleshooting
 
     // send new property to cloud DB and wait for identifier
@@ -84,6 +84,7 @@ class CashflowList with ChangeNotifier {
     newProp.id = id;
     _entries.add(newProp);
     notifyListeners();
+    return id; // returning ID to direclty access new CF Results from cashflowForm_screen
   }
 
   Future<void> removeCashflow(id) async {
