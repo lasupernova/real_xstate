@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 
-class RentFieldDynamic extends StatefulWidget {
+class GenerateFieldDynamic extends StatefulWidget {
   final int index;
   Map entryInfo;
-  RentFieldDynamic(this.index, this.entryInfo, {Key? key}) : super(key: key);
+  String mapKey;
+  String label;
+  GenerateFieldDynamic(
+      {required this.index,
+      required this.entryInfo,
+      required this.mapKey,
+      required this.label,
+      Key? key})
+      : super(key: key);
 
   @override
-  State<RentFieldDynamic> createState() => _RentFieldDynamicState();
+  State<GenerateFieldDynamic> createState() => _GenerateFieldDynamicState();
 }
 
-class _RentFieldDynamicState extends State<RentFieldDynamic> {
+class _GenerateFieldDynamicState extends State<GenerateFieldDynamic> {
   late TextEditingController _nameController;
 
   @override
@@ -41,10 +49,11 @@ class _RentFieldDynamicState extends State<RentFieldDynamic> {
         return null;
       },
       textInputAction: TextInputAction.next,
-      decoration: InputDecoration(labelText: "Rent ${widget.index + 1}"),
+      decoration:
+          InputDecoration(labelText: "${widget.label} ${widget.index + 1}"),
       keyboardType: TextInputType.number,
       onSaved: (value) {
-        widget.entryInfo["rents"].add(double.parse(value!));
+        widget.entryInfo[widget.mapKey].add(double.parse(value!));
       },
     );
   }
