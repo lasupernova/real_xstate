@@ -44,7 +44,7 @@ class _RentFieldDynamicState extends State<RentFieldDynamic> {
       decoration: InputDecoration(labelText: "Rent ${widget.index + 1}"),
       keyboardType: TextInputType.number,
       onSaved: (value) {
-        widget.entryInfo["rent${widget.index}"] = double.parse(value!);
+        widget.entryInfo["rents"].add(double.parse(value!));
       },
     );
   }
