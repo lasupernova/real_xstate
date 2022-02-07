@@ -261,11 +261,40 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                 Expanded(
                   // added in order to restrict height of Expanded() widget above to desired heigth (defined via flex)
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // ElevatedButton(
-                      //   onPressed: () {},
-                      //   child: Text("Month"),
-                      //   style: Style,)
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text("Month"),
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(0),
+                          foregroundColor: MaterialStateProperty.all(
+                              (Theme.of(context).colorScheme.primary)),
+                          backgroundColor: MaterialStateProperty.all(
+                              (Theme.of(context).scaffoldBackgroundColor)),
+                          overlayColor: MaterialStateProperty.all(
+                              (Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.2))),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text("Year"),
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(0),
+                          foregroundColor: MaterialStateProperty.all(
+                              (Theme.of(context).colorScheme.primary)),
+                          backgroundColor: MaterialStateProperty.all(
+                              (Theme.of(context).scaffoldBackgroundColor)),
+                          overlayColor: MaterialStateProperty.all(
+                              (Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.2))),
+                        ),
+                      ),
                     ],
                   ),
                 ),
