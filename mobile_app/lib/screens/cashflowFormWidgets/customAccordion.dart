@@ -4,11 +4,13 @@ class CustomAccordion extends StatefulWidget {
   double screenWidth;
   bool accordionOpen;
   List<Widget> accordionChildren;
+  String accordionText;
 
   CustomAccordion(
       {required this.screenWidth,
       required this.accordionOpen,
       required this.accordionChildren,
+      required this.accordionText,
       Key? key})
       : super(key: key);
 
@@ -30,9 +32,9 @@ class _CustomAccordionState extends State<CustomAccordion> {
               decoration: BoxDecoration(
                   border: Border.all(width: 2, color: Colors.green)),
               width: widget.screenWidth * 0.5,
-              child: const FittedBox(
+              child: FittedBox(
                   child: Text(
-                "Mortgage Info",
+                widget.accordionText,
                 style: TextStyle(color: Colors.black54),
               )),
             ),
