@@ -312,7 +312,9 @@ def fill_defaults(n_clicks):
     State('home_insp', 'value'),
     State('bank', 'value'),
     State('downpayment', 'value'),
-    State('offer', 'value')]
+    State('offer', 'value'),
+
+    ]
 )
 def export_results(n_clicks, utilities, utilities_intervals, rents, rents_intervals, taxes, tax_interval, insurance, insurance_interval,
                         legal, home_insp, bank, downpayment, offer):
@@ -331,7 +333,7 @@ def export_results(n_clicks, utilities, utilities_intervals, rents, rents_interv
                                                    utilities + [taxes, insurance],
                                                    downpayment, 
                                                    legal, home_insp, 0, bank,
-                                                   offer)
+                                                   offer)  # TODO: add interest and term, as these were added in cashflow_calc.py, too !!!
 
         return [
             f"""Analysis exported to:
@@ -354,10 +356,12 @@ def export_results(n_clicks, utilities, utilities_intervals, rents, rents_interv
     State('home_insp', 'value'),
     State('bank', 'value'),
     State('downpayment', 'value'),
-    State('offer', 'value')]
+    State('offer', 'value'),
+    State('mortgage_period', 'value'),
+    State('interest_rate_yearly', 'value'),]
 )
 def summarize_expenses(n_clicks, utilities, utilities_intervals, rents, rents_intervals, taxes, tax_interval, insurance, insurance_interval,
-                        legal, home_insp, bank, downpayment, offer):
+                        legal, home_insp, bank, downpayment, offer, term, interest):
     if n_clicks is None:
         raise PreventUpdate
     else:
@@ -377,7 +381,8 @@ def summarize_expenses(n_clicks, utilities, utilities_intervals, rents, rents_in
                                                    utilities + [taxes, insurance],
                                                    downpayment, 
                                                    legal, home_insp, 0, bank,
-                                                   offer)
+                                                   offer, 
+                                                   interest, term)
         info_col_width = 3
         text_row_height = 3
         info_row_height = 6
