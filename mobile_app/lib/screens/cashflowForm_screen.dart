@@ -42,12 +42,19 @@ class CashflowFormState extends State<CashflowForm> {
   String dbID = "";
 
   // visibility indicators
+  bool closingCostsOpen = true;
   bool mortgageOpen = true;
   bool incomeOpen = true;
   bool recurringCostOpen = true;
 
   // visibilityrefresh funcs  -- used to update visibility indicators from insde external widget (CustomAccordion)
   // TODO: find more efficient solution -- one function per indicator is not optimal
+  void refreshClosingCostOpen(bool childValue) {
+    setState(() {
+      closingCostsOpen = childValue;
+    });
+  }
+
   void refreshMortgageOpen(bool childValue) {
     setState(() {
       mortgageOpen = childValue;
@@ -67,6 +74,11 @@ class CashflowFormState extends State<CashflowForm> {
   }
 
   // text input controllers -- only necessary for TextFormFields, NOT necessary for GenerateFieldDynamic (as these have a intrinsinc controller within their custom classes already)
+
+  TextEditingController legalControll = TextEditingController();
+  TextEditingController homeInspControll = TextEditingController();
+  TextEditingController propMgmtSignUpControll = TextEditingController();
+  TextEditingController bankControll = TextEditingController();
   TextEditingController termControll = TextEditingController();
   TextEditingController interestControll = TextEditingController();
   TextEditingController offerControll = TextEditingController();
@@ -87,6 +99,10 @@ class CashflowFormState extends State<CashflowForm> {
       rents: entryInfo["rents"],
       calcDate: DateTime.now(),
       costs: entryInfo["costs"],
+      legal: entryInfo["legal"],
+      homeInsp: entryInfo["homeInsp"],
+      propMgmtSignUp: entryInfo["propMgmtSignUp"],
+      bankFees: entryInfo["bankFees"],
     );
     newCF
         .getCashflow(); // calculate relevant cashflow properties based on form inputs
@@ -108,13 +124,7 @@ class CashflowFormState extends State<CashflowForm> {
           currList.removeAt(index);
         }
         ;
-        print("Before: $mortgageOpen");
-        setState(() {
-          print("After: $mortgageOpen");
-          mortgageOpen = mortgageOpen;
-          incomeOpen = incomeOpen;
-          recurringCostOpen = recurringCostOpen;
-        });
+        setState(() {});
       },
       child: Container(
         width: 30,
@@ -169,6 +179,84 @@ class CashflowFormState extends State<CashflowForm> {
           child: Column(
             children: <Widget>[
               CustomAccordion(
+                  screenWidth: _screenWidth,
+                  accordionOpen: closingCostsOpen,
+                  accordionChildren: [
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a value';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration:
+                          const InputDecoration(labelText: "Legal Fees"),
+                      keyboardType: TextInputType.number,
+                      controller:
+                          legalControll, // added controller to avoid input deletion on toggling
+                      onSaved: (value) {
+                        entryInfo["legal"] = double.parse(value!);
+                      },
+                    ),
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a value';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                          labelText: "Home Inspection Fees"),
+                      keyboardType: TextInputType.number,
+                      controller:
+                          homeInspControll, // added controller to avoid input deletion on toggling
+                      onSaved: (value) {
+                        entryInfo["homeInsp"] = double.parse(value!);
+                      },
+                    ),
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a value';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                          labelText: "Propertyh Mgmt Signup"),
+                      keyboardType: TextInputType.number,
+                      controller:
+                          propMgmtSignUpControll, // added controller to avoid input deletion on toggling
+                      onSaved: (value) {
+                        entryInfo["propMgmtSignUp"] = double.parse(value!);
+                      },
+                    ),
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a value';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(labelText: "Bank Fees"),
+                      keyboardType: TextInputType.number,
+                      controller:
+                          bankControll, // added controller to avoid input deletion on toggling
+                      onSaved: (value) {
+                        entryInfo["bankFees"] = double.parse(value!);
+                      },
+                    ),
+                  ],
+                  accordionText: "Closing Costs",
+                  notifyParent: refreshClosingCostOpen),
+              CustomAccordion(
                 screenWidth: _screenWidth,
                 accordionOpen: mortgageOpen,
                 accordionChildren: [
@@ -185,7 +273,7 @@ class CashflowFormState extends State<CashflowForm> {
                       return null;
                     },
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(labelText: "Term"),
+                    decoration: const InputDecoration(labelText: "Term"),
                     keyboardType: TextInputType.number,
                     controller:
                         termControll, // added controller to avoid input deletion on toggling

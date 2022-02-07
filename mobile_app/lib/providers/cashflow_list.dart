@@ -27,13 +27,19 @@ class CashflowList with ChangeNotifier {
           // DB id is the key, data is the value
           CashflowItem currentCF = CashflowItem(
             id: id,
-            mortgage: propdata['mortgage'],
             offer: propdata['offer'],
             downpayment: propdata['downpayment'],
             interest: propdata['interest'],
             term: propdata['term'],
+            rents: propdata['rents'],
+            costs: propdata['costs'],
             calcDate: DateTime.parse(propdata['calcDate']),
+            propMgmtPerc: propdata['propMgmtPerc'],
+            vacancyLossPerc: propdata['vacancyLossPerc'],
+            capitalExpPerc: propdata['capitalExpPerc'],
           );
+          currentCF
+              .getCashflow(); // calculate properties that have not been saved in DB
           _entries.add(currentCF);
         });
       }
@@ -58,25 +64,27 @@ class CashflowList with ChangeNotifier {
   }
 
   Future<String> addCF(newProp) async {
+    // UDES IN: screens/cashflowForm_screen.dart
     // print("Add funtions is running!!!");  \\ uncomment for troubleshooting
 
     // send new property to cloud DB and wait for identifier
     final url = Uri.parse("${dotenv.env["FIREBASE_URL"]}cashflow.json");
     http.Response resp = await http.post(url,
         body: json.encode({
-          "mortgage": newProp.mortgage,
           "offer": newProp.offer,
           "downpayment": newProp.downpayment,
           "interest": newProp.interest,
           "term": newProp.term,
           "calcDate": newProp.calcDate.toIso8601String(),
           "rents": newProp.rents,
-          "propMgmt": newProp.propMgmt,
-          "vacancyLoss": newProp.vacancyLoss,
-          "capitalExp": newProp.capitalExp,
+          "costs": newProp.costs,
           "propMgmtPerc": newProp.propMgmtPerc,
           "vacancyLossPerc": newProp.vacancyLossPerc,
           "capitalExpPerc": newProp.capitalExpPerc,
+          "legal": newProp.legal,
+          "homeInsp": newProp.homeInsp,
+          "propMgmtSignUp": newProp.propMgmtSignUp,
+          "bankFees": newProp.bankFees,
         }));
     final info = jsonDecode(resp.body); // decode request response body
     final id = info["name"]; // extract necessary info (here: DB ID)
