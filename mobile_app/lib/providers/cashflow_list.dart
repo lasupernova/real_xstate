@@ -40,7 +40,7 @@ class CashflowList with ChangeNotifier {
             legal: propdata['legal'],
             homeInsp: propdata['homeInsp'],
             propMgmtSignUp: propdata['propMgmtSignUp'],
-            bankFees: propdata['propMgmtSignUp'],
+            bankFees: propdata['bankFees'],
           );
           currentCF
               .getCashflow(); // calculate properties that have not been saved in DB
