@@ -44,8 +44,9 @@ class CashflowFormState extends State<CashflowForm> {
   // visibility indicators
   bool mortgageOpen = true;
   bool incomeOpen = true;
+  bool recurringCostOpen = true;
 
-  // text input controllers
+  // text input controllers -- only necessary for TextFormFields, NOT necessary for GenerateFieldDynamic (as these have a intrinsinc controller within their custom classes already)
   TextEditingController termControll = TextEditingController();
   TextEditingController interestControll = TextEditingController();
   TextEditingController offerControll = TextEditingController();
@@ -141,39 +142,10 @@ class CashflowFormState extends State<CashflowForm> {
           // use SingleChildScrollView + Column instead of ListView, to avoid input from disappear on scrolling (-> Reason: ListView has recycling nature and only renders the visible children )
           child: Column(
             children: <Widget>[
-              Row(
-                children: [
-                  const Spacer(),
-                  Container(
-                    // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
-                    margin: EdgeInsets.all(_screenWidth * 0.02),
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: Colors.green)),
-                    width: _screenWidth * 0.5,
-                    child: const FittedBox(
-                        child: Text(
-                      "Mortgage Info",
-                      style: TextStyle(color: Colors.black54),
-                    )),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          mortgageOpen = !mortgageOpen;
-                        });
-                      },
-                      icon: mortgageOpen
-                          ? Icon(Icons.keyboard_arrow_up)
-                          : Icon(Icons.keyboard_arrow_down))
-                ],
-              ),
-              Visibility(
-                visible: mortgageOpen,
-                maintainState:
-                    true, // allows data to be saved, although currently hidden
-                child: Column(
-                  children: [
+              CustomAccordion(
+                  screenWidth: _screenWidth,
+                  accordionOpen: mortgageOpen,
+                  accordionChildren: [
                     TextFormField(
                       // The validator receives the text that the user has entered.
                       validator: (value) {
@@ -262,8 +234,7 @@ class CashflowFormState extends State<CashflowForm> {
                       },
                     ),
                   ],
-                ),
-              ),
+                  accordionText: "Mortgage Info"),
               CustomAccordion(
                 screenWidth: _screenWidth,
                 accordionOpen: incomeOpen,
@@ -291,80 +262,30 @@ class CashflowFormState extends State<CashflowForm> {
                 ],
                 accordionText: "Income",
               ),
-              // Row(
-              //   children: [
-              //     const Spacer(),
-              //     Container(
-              //       // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
-              //       margin: EdgeInsets.all(_screenWidth * 0.02),
-              //       decoration: BoxDecoration(
-              //           border: Border.all(width: 2, color: Colors.green)),
-              //       width: _screenWidth * 0.5,
-              //       child: const FittedBox(
-              //           child: Text(
-              //         "Income",
-              //         style: TextStyle(color: Colors.black54),
-              //       )),
-              //     ),
-              //     const Spacer(),
-              //   ],
-              // ),
-              // SingleChildScrollView(
-              //   child: ListView.builder(
-              //       scrollDirection: Axis.vertical,
-              //       shrinkWrap: true,
-              //       physics: const ClampingScrollPhysics(),
-              //       itemCount: rentsList.length,
-              //       itemBuilder: (BuildContext context, int index) {
-              //         return ListTile(
-              //           title: GenerateFieldDynamic(
-              //             index: index,
-              //             entryInfo: entryInfo,
-              //             mapKey: "rents",
-              //             label: "Rent",
-              //           ),
-              //           trailing: index + 1 == rentsList.length
-              //               ? _addRemoveButton(true, index, rentsList)
-              //               : _addRemoveButton(false, index, rentsList),
-              //         );
-              //       }),
-              // ),
-              Row(
-                children: [
-                  const Spacer(),
-                  Container(
-                    // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
-                    margin: EdgeInsets.all(_screenWidth * 0.02),
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: Colors.green)),
-                    width: _screenWidth * 0.5,
-                    child: const FittedBox(
-                        child: Text(
-                      "Recurring Costs",
-                      style: TextStyle(color: Colors.black54),
-                    )),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-              ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  itemCount: costsList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      title: GenerateFieldDynamic(
-                        index: index,
-                        entryInfo: entryInfo,
-                        mapKey: "costs",
-                        label: "Cost",
-                      ),
-                      trailing: index + 1 == costsList.length
-                          ? _addRemoveButton(true, index, costsList)
-                          : _addRemoveButton(false, index, costsList),
-                    );
-                  }),
+              CustomAccordion(
+                  screenWidth: _screenWidth,
+                  accordionOpen: recurringCostOpen,
+                  accordionChildren: [
+                    ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: costsList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            title: GenerateFieldDynamic(
+                              index: index,
+                              entryInfo: entryInfo,
+                              mapKey: "costs",
+                              label: "Cost",
+                            ),
+                            trailing: index + 1 == costsList.length
+                                ? _addRemoveButton(true, index, costsList)
+                                : _addRemoveButton(false, index, costsList),
+                          );
+                        }),
+                  ],
+                  accordionText: "Recurring Costs"),
               ElevatedButton(
                 onPressed: () {
                   // Validate returns true if the form is valid, or false otherwise.
