@@ -43,9 +43,10 @@ class CashflowFormState extends State<CashflowForm> {
 
   // visibility indicators
   bool closingCostsOpen = true;
-  bool mortgageOpen = true;
-  bool incomeOpen = true;
-  bool recurringCostOpen = true;
+  bool mortgageOpen = false;
+  bool incomeOpen = false;
+  bool recurringCostOpen = false;
+  bool rentAssocExpOpen = false;
 
   // visibilityrefresh funcs  -- used to update visibility indicators from insde external widget (CustomAccordion)
   // TODO: find more efficient solution -- one function per indicator is not optimal
@@ -73,6 +74,12 @@ class CashflowFormState extends State<CashflowForm> {
     });
   }
 
+  void refreshRentAssocExpOpen(bool childValue) {
+    setState(() {
+      rentAssocExpOpen = childValue;
+    });
+  }
+
   // text input controllers -- only necessary for TextFormFields, NOT necessary for GenerateFieldDynamic (as these have a intrinsinc controller within their custom classes already)
 
   TextEditingController legalControll = TextEditingController();
@@ -83,6 +90,9 @@ class CashflowFormState extends State<CashflowForm> {
   TextEditingController interestControll = TextEditingController();
   TextEditingController offerControll = TextEditingController();
   TextEditingController downpaymentControll = TextEditingController();
+  TextEditingController propMgmtPercControll = TextEditingController();
+  TextEditingController vacancyLossPercControll = TextEditingController();
+  TextEditingController capitalEpxPercControll = TextEditingController();
 
   void _saveForm() {
     // saving the current state allows Form() to go over every entry for all TextFormFIelds and do anything with them; but executing the function specified under onSaved for every TextFormField
@@ -103,6 +113,9 @@ class CashflowFormState extends State<CashflowForm> {
       homeInsp: entryInfo["homeInsp"],
       propMgmtSignUp: entryInfo["propMgmtSignUp"],
       bankFees: entryInfo["bankFees"],
+      propMgmtPerc: entryInfo["propMgmtPerc"],
+      vacancyLossPerc: entryInfo["vacancyLossPerc"],
+      capitalExpPerc: entryInfo["capitalExpPerc"],
     );
     newCF
         .getCashflow(); // calculate relevant cashflow properties based on form inputs
@@ -404,6 +417,82 @@ class CashflowFormState extends State<CashflowForm> {
                 accordionText: "Recurring Costs",
                 notifyParent: refreshCostOpen,
               ),
+              CustomAccordion(
+                  screenWidth: _screenWidth,
+                  accordionOpen: rentAssocExpOpen,
+                  accordionChildren: [
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a value';
+                        }
+                        if (double.parse(value) < 0 ||
+                            double.parse(value) > 100) {
+                          return 'Percentage value needs to be between 0 and 100';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                          labelText: "Property Mgmt",
+                          helperText: "% from total rental income"),
+                      keyboardType: TextInputType.number,
+                      controller:
+                          propMgmtPercControll, // added controller to avoid input deletion on toggling
+                      onSaved: (value) {
+                        entryInfo["propMgmtPerc"] = double.parse(value!);
+                      },
+                    ),
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a value';
+                        }
+                        if (double.parse(value) < 0 ||
+                            double.parse(value) > 100) {
+                          return 'Percentage value needs to be between 0 and 100';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                          labelText: "Vacancy Loss",
+                          helperText: "% from total rental income"),
+                      keyboardType: TextInputType.number,
+                      controller:
+                          vacancyLossPercControll, // added controller to avoid input deletion on toggling
+                      onSaved: (value) {
+                        entryInfo["vacancyLossPerc"] = double.parse(value!);
+                      },
+                    ),
+                    TextFormField(
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a value';
+                        }
+                        if (double.parse(value) < 0 ||
+                            double.parse(value) > 100) {
+                          return 'Percentage value needs to be between 0 and 100';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                          labelText: "Capital Expenditure",
+                          helperText: "% from total rental income"),
+                      keyboardType: TextInputType.number,
+                      controller:
+                          capitalEpxPercControll, // added controller to avoid input deletion on toggling
+                      onSaved: (value) {
+                        entryInfo["capitalExpPerc"] = double.parse(value!);
+                      },
+                    ),
+                  ],
+                  accordionText: "Rent Assocciated Expenses",
+                  notifyParent: refreshRentAssocExpOpen),
               ElevatedButton(
                 onPressed: () {
                   // Validate returns true if the form is valid, or false otherwise.
