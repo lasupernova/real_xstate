@@ -46,6 +46,26 @@ class CashflowFormState extends State<CashflowForm> {
   bool incomeOpen = true;
   bool recurringCostOpen = true;
 
+  // visibilityrefresh funcs  -- used to update visibility indicators from insde external widget (CustomAccordion)
+  // TODO: find more efficient solution -- one function per indicator is not optimal
+  void refreshMortgageOpen(bool childValue) {
+    setState(() {
+      mortgageOpen = childValue;
+    });
+  }
+
+  void refreshIncomeOpen(bool childValue) {
+    setState(() {
+      incomeOpen = childValue;
+    });
+  }
+
+  void refreshCostOpen(bool childValue) {
+    setState(() {
+      recurringCostOpen = childValue;
+    });
+  }
+
   // text input controllers -- only necessary for TextFormFields, NOT necessary for GenerateFieldDynamic (as these have a intrinsinc controller within their custom classes already)
   TextEditingController termControll = TextEditingController();
   TextEditingController interestControll = TextEditingController();
@@ -88,7 +108,13 @@ class CashflowFormState extends State<CashflowForm> {
           currList.removeAt(index);
         }
         ;
-        setState(() {});
+        print("Before: $mortgageOpen");
+        setState(() {
+          print("After: $mortgageOpen");
+          mortgageOpen = mortgageOpen;
+          incomeOpen = incomeOpen;
+          recurringCostOpen = recurringCostOpen;
+        });
       },
       child: Container(
         width: 30,
@@ -143,98 +169,99 @@ class CashflowFormState extends State<CashflowForm> {
           child: Column(
             children: <Widget>[
               CustomAccordion(
-                  screenWidth: _screenWidth,
-                  accordionOpen: mortgageOpen,
-                  accordionChildren: [
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a value';
-                        }
-                        if (double.parse(value) < 0 ||
-                            double.parse(value) > 50) {
-                          // check if number is in desired range (parse will work as non-numerical entry was checked above)
-                          return 'Please enter a number of years between 0 and 50';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(labelText: "Term"),
-                      keyboardType: TextInputType.number,
-                      controller:
-                          termControll, // added controller to avoid input deletion on toggling
-                      onSaved: (value) {
-                        entryInfo["term"] = int.parse(value!);
-                      },
-                    ),
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          // check sth was entered
-                          return 'Please enter a value';
-                        }
-                        if (double.tryParse(value) == null) {
-                          // check that entry is a number
-                          return 'Please enter a valid number';
-                        }
-                        if (double.parse(value) < 0 ||
-                            double.parse(value) > 100) {
-                          // check if number is in desired range (parse will work as non-numerical entry was checked above)
-                          return 'Please enter a number between 0 and 100';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(labelText: "Interest"),
-                      keyboardType: TextInputType.number,
-                      controller: interestControll,
-                      onSaved: (value) {
-                        entryInfo["interest"] = double.parse(value!);
-                      },
-                    ),
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            double.parse(value) < 0) {
-                          return 'Please enter a value greater than 0';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(labelText: "Offer"),
-                      keyboardType: TextInputType.number,
-                      controller: offerControll,
-                      onSaved: (value) {
-                        entryInfo["offer"] = double.parse(value!);
-                      },
-                    ),
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            double.parse(value) < 0) {
-                          return 'Please enter a value greater than 0';
-                        }
-                        // if (double.parse(value) > 0) {  // TODO: check that downpayment needs to be SMALLER than offer
-                        //   return 'Please enter a value greater than 0';
-                        // }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(labelText: "Downpayment"),
-                      keyboardType: TextInputType.number,
-                      controller: downpaymentControll,
-                      onSaved: (value) {
-                        entryInfo["downpayment"] = double.parse(value!);
-                      },
-                    ),
-                  ],
-                  accordionText: "Mortgage Info"),
+                screenWidth: _screenWidth,
+                accordionOpen: mortgageOpen,
+                accordionChildren: [
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a value';
+                      }
+                      if (double.parse(value) < 0 || double.parse(value) > 50) {
+                        // check if number is in desired range (parse will work as non-numerical entry was checked above)
+                        return 'Please enter a number of years between 0 and 50';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(labelText: "Term"),
+                    keyboardType: TextInputType.number,
+                    controller:
+                        termControll, // added controller to avoid input deletion on toggling
+                    onSaved: (value) {
+                      entryInfo["term"] = int.parse(value!);
+                    },
+                  ),
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        // check sth was entered
+                        return 'Please enter a value';
+                      }
+                      if (double.tryParse(value) == null) {
+                        // check that entry is a number
+                        return 'Please enter a valid number';
+                      }
+                      if (double.parse(value) < 0 ||
+                          double.parse(value) > 100) {
+                        // check if number is in desired range (parse will work as non-numerical entry was checked above)
+                        return 'Please enter a number between 0 and 100';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(labelText: "Interest"),
+                    keyboardType: TextInputType.number,
+                    controller: interestControll,
+                    onSaved: (value) {
+                      entryInfo["interest"] = double.parse(value!);
+                    },
+                  ),
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          double.parse(value) < 0) {
+                        return 'Please enter a value greater than 0';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(labelText: "Offer"),
+                    keyboardType: TextInputType.number,
+                    controller: offerControll,
+                    onSaved: (value) {
+                      entryInfo["offer"] = double.parse(value!);
+                    },
+                  ),
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          double.parse(value) < 0) {
+                        return 'Please enter a value greater than 0';
+                      }
+                      // if (double.parse(value) > 0) {  // TODO: check that downpayment needs to be SMALLER than offer
+                      //   return 'Please enter a value greater than 0';
+                      // }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(labelText: "Downpayment"),
+                    keyboardType: TextInputType.number,
+                    controller: downpaymentControll,
+                    onSaved: (value) {
+                      entryInfo["downpayment"] = double.parse(value!);
+                    },
+                  ),
+                ],
+                accordionText: "Mortgage Info",
+                notifyParent: refreshMortgageOpen,
+              ),
               CustomAccordion(
                 screenWidth: _screenWidth,
                 accordionOpen: incomeOpen,
@@ -261,31 +288,34 @@ class CashflowFormState extends State<CashflowForm> {
                   )
                 ],
                 accordionText: "Income",
+                notifyParent: refreshIncomeOpen,
               ),
               CustomAccordion(
-                  screenWidth: _screenWidth,
-                  accordionOpen: recurringCostOpen,
-                  accordionChildren: [
-                    ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        itemCount: costsList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            title: GenerateFieldDynamic(
-                              index: index,
-                              entryInfo: entryInfo,
-                              mapKey: "costs",
-                              label: "Cost",
-                            ),
-                            trailing: index + 1 == costsList.length
-                                ? _addRemoveButton(true, index, costsList)
-                                : _addRemoveButton(false, index, costsList),
-                          );
-                        }),
-                  ],
-                  accordionText: "Recurring Costs"),
+                screenWidth: _screenWidth,
+                accordionOpen: recurringCostOpen,
+                accordionChildren: [
+                  ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: costsList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          title: GenerateFieldDynamic(
+                            index: index,
+                            entryInfo: entryInfo,
+                            mapKey: "costs",
+                            label: "Cost",
+                          ),
+                          trailing: index + 1 == costsList.length
+                              ? _addRemoveButton(true, index, costsList)
+                              : _addRemoveButton(false, index, costsList),
+                        );
+                      }),
+                ],
+                accordionText: "Recurring Costs",
+                notifyParent: refreshCostOpen,
+              ),
               ElevatedButton(
                 onPressed: () {
                   // Validate returns true if the form is valid, or false otherwise.
