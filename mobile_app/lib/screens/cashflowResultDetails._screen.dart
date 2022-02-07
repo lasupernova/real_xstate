@@ -26,7 +26,6 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
   @override
   void didChangeDependencies() {
     if (_firstInit) {
-      print("GETTING CASHFLOW ID");
       cashflowID = ModalRoute.of(context)!.settings.arguments as String;
       CF_item = Provider.of<CashflowList>(context, listen: false)
           .findById(cashflowID.toString());
@@ -37,9 +36,14 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double _screenwidth = MediaQuery.of(context).size.width;
+    double _screenheight = MediaQuery.of(context).size.height.toDouble();
     return Scaffold(
         appBar: AppBar(
           title: Text("Cashflow Details"),
+          // toolbarOpacity: 0.8,
+          // shape: RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(10))),
           actions: <Widget>[
             IconButton(
               onPressed: () => print("EXPORTED"),
@@ -119,6 +123,24 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                                         Theme.of(context).colorScheme.primary),
                               ),
                               subtitle: Text("Monthly Mortgage"),
+                            ),
+                            SizedBox(
+                              height: _screenheight * 0.05,
+                            ),
+                            Table(
+                              children: const [
+                                TableRow(children: [
+                                  Text("          "),
+                                  Text(
+                                    "Real",
+                                    textScaleFactor: 1.5,
+                                  ),
+                                  Text(
+                                    "Hypo",
+                                    textScaleFactor: 1.5,
+                                  ),
+                                ]),
+                              ],
                             ),
                             IconButton(
                                 onPressed: () {
