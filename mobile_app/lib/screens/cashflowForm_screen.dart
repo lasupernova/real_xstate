@@ -10,6 +10,7 @@ import './mortgageCalculated_Screen.dart';
 import '../providers/cashflow_list.dart';
 import '../models/cashflowResult.dart';
 import './cashflowFormWidgets/dynamicTextFormInput.dart';
+import './cashflowFormWidgets/customAccordion.dart';
 import '../screens/cashflowResultDetails._screen.dart';
 
 // Define a custom Form widget.
@@ -42,8 +43,9 @@ class CashflowFormState extends State<CashflowForm> {
 
   // visibility indicators
   bool mortgageOpen = true;
+  bool incomeOpen = true;
 
-  // text inpu controllers
+  // text input controllers
   TextEditingController termControll = TextEditingController();
   TextEditingController interestControll = TextEditingController();
   TextEditingController offerControll = TextEditingController();
@@ -63,7 +65,7 @@ class CashflowFormState extends State<CashflowForm> {
       term: entryInfo["term"],
       rents: entryInfo["rents"],
       calcDate: DateTime.now(),
-      costs: [150, 250, 300],
+      costs: entryInfo["costs"],
     );
     newCF
         .getCashflow(); // calculate relevant cashflow properties based on form inputs
@@ -262,44 +264,71 @@ class CashflowFormState extends State<CashflowForm> {
                   ],
                 ),
               ),
-              Row(
-                children: [
-                  const Spacer(),
-                  Container(
-                    // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
-                    margin: EdgeInsets.all(_screenWidth * 0.02),
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: Colors.green)),
-                    width: _screenWidth * 0.5,
-                    child: const FittedBox(
-                        child: Text(
-                      "Income",
-                      style: TextStyle(color: Colors.black54),
-                    )),
-                  ),
-                  const Spacer(),
+              CustomAccordion(
+                screenWidth: _screenWidth,
+                accordionOpen: incomeOpen,
+                accordionChildren: [
+                  SingleChildScrollView(
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: rentsList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            title: GenerateFieldDynamic(
+                              index: index,
+                              entryInfo: entryInfo,
+                              mapKey: "rents",
+                              label: "Rent",
+                            ),
+                            trailing: index + 1 == rentsList.length
+                                ? _addRemoveButton(true, index, rentsList)
+                                : _addRemoveButton(false, index, rentsList),
+                          );
+                        }),
+                  )
                 ],
+                accordionText: "Income",
               ),
-              SingleChildScrollView(
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: rentsList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: GenerateFieldDynamic(
-                          index: index,
-                          entryInfo: entryInfo,
-                          mapKey: "rents",
-                          label: "Rent",
-                        ),
-                        trailing: index + 1 == rentsList.length
-                            ? _addRemoveButton(true, index, rentsList)
-                            : _addRemoveButton(false, index, rentsList),
-                      );
-                    }),
-              ),
+              // Row(
+              //   children: [
+              //     const Spacer(),
+              //     Container(
+              //       // use spacers above and below, as widgets within ListView otherwise default to taking full width -- Fittedbox takes all space from parent  (therefore contianer  width should NOT be full screen width)
+              //       margin: EdgeInsets.all(_screenWidth * 0.02),
+              //       decoration: BoxDecoration(
+              //           border: Border.all(width: 2, color: Colors.green)),
+              //       width: _screenWidth * 0.5,
+              //       child: const FittedBox(
+              //           child: Text(
+              //         "Income",
+              //         style: TextStyle(color: Colors.black54),
+              //       )),
+              //     ),
+              //     const Spacer(),
+              //   ],
+              // ),
+              // SingleChildScrollView(
+              //   child: ListView.builder(
+              //       scrollDirection: Axis.vertical,
+              //       shrinkWrap: true,
+              //       physics: const ClampingScrollPhysics(),
+              //       itemCount: rentsList.length,
+              //       itemBuilder: (BuildContext context, int index) {
+              //         return ListTile(
+              //           title: GenerateFieldDynamic(
+              //             index: index,
+              //             entryInfo: entryInfo,
+              //             mapKey: "rents",
+              //             label: "Rent",
+              //           ),
+              //           trailing: index + 1 == rentsList.length
+              //               ? _addRemoveButton(true, index, rentsList)
+              //               : _addRemoveButton(false, index, rentsList),
+              //         );
+              //       }),
+              // ),
               Row(
                 children: [
                   const Spacer(),
