@@ -129,61 +129,129 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                             Text("          "),
                             Text(
                               "Real",
-                              textScaleFactor: 1.5,
+                              textScaleFactor: 1.7,
+                              textAlign: TextAlign.center,
                             ),
                             Text(
                               "Hypo",
-                              textScaleFactor: 1.5,
+                              textScaleFactor: 1.7,
+                              textAlign: TextAlign.center,
                             ),
                           ]),
-                          TableRow(
-                              children: [Text("Income"), Text(""), Text("")]),
                           TableRow(children: [
-                            Text("Net Operating"),
-                            Text(CF_item.monthlyNetOpIncomeReal.toString()),
-                            Text(CF_item.monthlyNetOpIncomeHypo.toString()),
+                            Text(
+                              "Income",
+                              textScaleFactor: 1.3,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(""),
+                            Text("")
                           ]),
-                          TableRow(
-                              children: [Text("Expenses"), Text(""), Text("")]),
                           TableRow(children: [
                             Text("Net Operating"),
-                            Text(CF_item.monthlyNetOpCostsReal.toString()),
-                            Text(CF_item.monthlyNetOpCostsHypo.toString()),
+                            Text(
+                              CF_item.monthlyNetOpIncomeReal.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              CF_item.monthlyNetOpIncomeHypo.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
+                          ]),
+                          TableRow(children: [
+                            Text(
+                              "Expenses",
+                              textScaleFactor: 1.3,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(""),
+                            Text("")
+                          ]),
+                          TableRow(children: [
+                            Text("Net Operating"),
+                            Text(
+                              CF_item.monthlyNetOpCostsReal.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              CF_item.monthlyNetOpCostsHypo.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
                           ]),
                           TableRow(children: [
                             Text("Total Monthly (incl. mortgage)"),
-                            Text(CF_item.monthlyExpensesReal.toString()),
-                            Text(CF_item.monthlyExpensesHypo.toString()),
+                            Text(
+                              CF_item.monthlyExpensesReal.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              CF_item.monthlyExpensesHypo.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
                           ]),
                           TableRow(children: [
-                            Text("Cashflow Stats"),
+                            Text(
+                              "Cashflow Stats",
+                              textScaleFactor: 1.3,
+                              textAlign: TextAlign.center,
+                            ),
                             Text(""),
                             Text("")
                           ]),
                           TableRow(children: [
                             Text("Cashflow"),
-                            Text(CF_item.cashflowMonthlyReal.toString()),
-                            Text(CF_item.cashflowMonthlyHypo.toString()),
+                            Text(
+                              CF_item.cashflowMonthlyReal.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              CF_item.cashflowMonthlyHypo.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
                           ]),
                           TableRow(children: [
                             Text("coc ROI"),
-                            Text(CF_item.cocROIReal.toString()),
-                            Text(CF_item.cocROIHypo.toString()),
+                            Text(
+                              CF_item.cocROIReal.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              CF_item.cocROIHypo.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
                           ]),
                           TableRow(children: [
                             Text("Rent-to-Price ratio"),
-                            Text(CF_item.rentToPrice.toString()),
-                            Text(CF_item.rentToPrice.toString()),
+                            Text(
+                              CF_item.rentToPrice.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              CF_item.rentToPrice.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
                           ]),
                           TableRow(children: [
                             Text("CAP Rate"),
-                            Text(CF_item.capRateReal.toString()),
-                            Text(CF_item.capRateHypo.toString()),
+                            Text(
+                              CF_item.capRateReal.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              CF_item.capRateHypo.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
                           ]),
                           TableRow(children: [
                             Text("ROI"),
-                            Text(CF_item.rtiReal.toString()),
-                            Text(CF_item.rtiHypo.toString()),
+                            Text(
+                              CF_item.rtiReal.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              CF_item.rtiHypo.toStringAsFixed(2),
+                              textAlign: TextAlign.center,
+                            ),
                           ]),
                         ],
                       ),
@@ -192,8 +260,13 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                 ),
                 Expanded(
                   // added in order to restrict height of Expanded() widget above to desired heigth (defined via flex)
-                  child: SizedBox(
-                    height: _screenheight * 0.1,
+                  child: Row(
+                    children: [
+                      // ElevatedButton(
+                      //   onPressed: () {},
+                      //   child: Text("Month"),
+                      //   style: Style,)
+                    ],
                   ),
                 ),
                 IconButton(
