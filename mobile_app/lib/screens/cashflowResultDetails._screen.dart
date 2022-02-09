@@ -212,33 +212,33 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                           TableRow(children: [
                             Text("coc ROI"),
                             Text(
-                              CF_item.cocROIReal.toStringAsFixed(2),
+                              (CF_item.cocROIReal * 100).toStringAsFixed(2),
                               textAlign: TextAlign.center,
                             ),
                             Text(
-                              CF_item.cocROIHypo.toStringAsFixed(2),
+                              (CF_item.cocROIHypo * 100).toStringAsFixed(2),
                               textAlign: TextAlign.center,
                             ),
                           ]),
                           TableRow(children: [
                             Text("Rent-to-Price ratio"),
                             Text(
-                              CF_item.rentToPrice.toStringAsFixed(2),
+                              (CF_item.rentToPrice * 100).toStringAsFixed(2),
                               textAlign: TextAlign.center,
                             ),
                             Text(
-                              CF_item.rentToPrice.toStringAsFixed(2),
+                              (CF_item.rentToPrice * 100).toStringAsFixed(2),
                               textAlign: TextAlign.center,
                             ),
                           ]),
                           TableRow(children: [
                             Text("CAP Rate"),
                             Text(
-                              CF_item.capRateReal.toStringAsFixed(2),
+                              (CF_item.capRateReal * 100).toStringAsFixed(2),
                               textAlign: TextAlign.center,
                             ),
                             Text(
-                              CF_item.capRateHypo.toStringAsFixed(2),
+                              (CF_item.capRateHypo * 100).toStringAsFixed(2),
                               textAlign: TextAlign.center,
                             ),
                           ]),
