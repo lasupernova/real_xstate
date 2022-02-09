@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:core';
+import 'dart:developer';
 
 class CashflowItem {
   String id; // generated + returned by DB via provider/cashflow_list.addCF()
@@ -104,6 +105,7 @@ class CashflowItem {
         (interest * pow((1 + interest), term)) /
         (pow((1 + interest), term) - 1);
     mortgage = M;
+    print("MORTGAGE: $mortgage");
   }
 
   //  Calculates expenses that are based on total rental income, namely proeprty management costs,
@@ -117,6 +119,7 @@ class CashflowItem {
     propMgmt = totalRents * propMgmtPerc;
     vacancyLoss = totalRents * vacancyLossPerc;
     capitalExp = totalRents * capitalExpPerc;
+    print("Prop Mgmt: $propMgmt; Vacancy Loss: $vacancyLoss");
   }
 
 //  Calculates total monthly expenses (hypo or 'real'), including:
@@ -130,22 +133,28 @@ class CashflowItem {
         0,
         (previous, current) =>
             previous + current); // sum all values in list together
-    monthlyNetOpCostsReal = propMgmt + totalCosts;
-    monthlyNetOpCostsHypo = propMgmt + vacancyLoss + capitalExp + totalCosts;
+    monthlyNetOpCostsReal = propMgmt + vacancyLoss + capitalExp + totalCosts;
+    monthlyNetOpCostsHypo = propMgmt + totalCosts;
     monthlyExpensesReal = monthlyNetOpCostsReal + mortgage;
     monthlyExpensesHypo = monthlyNetOpCostsHypo + mortgage;
+    print(
+        "Net Op Costs:$monthlyNetOpCostsReal (real), $monthlyNetOpCostsHypo (hypo)");
+    print("Expenses:$monthlyExpensesReal (real), $monthlyExpensesHypo (hypo");
   }
 
   //  Returns monthly net operating income
   void _totalIncomeMonthly() {
     monthlyNetOpIncomeReal = totalRents - monthlyNetOpCostsReal;
     monthlyNetOpIncomeHypo = totalRents - monthlyNetOpCostsHypo;
+    print(
+        "Net Income:$monthlyNetOpIncomeReal (real), $monthlyNetOpIncomeHypo (hypo)");
   }
 
   //  Returns monthly cashflow
   void _calculateCashflow() {
     cashflowMonthlyReal = totalRents - monthlyExpensesReal;
     cashflowMonthlyHypo = totalRents - monthlyExpensesHypo;
+    print("Cashflow: $cashflowMonthlyReal (real), $cashflowMonthlyHypo (hypo)");
   }
 
   void _totalInvestment() {
@@ -187,5 +196,19 @@ class CashflowItem {
     _calculateCocRoi();
     _calculateRentToPrice();
     _calculateCapRate();
+    inspect(this);
   }
 }
+
+// void main() {
+//   CashflowItem item_ = CashflowItem(
+//       offer: 100.000,
+//       downpayment: 25,
+//       interest: 4,
+//       term: 30,
+//       calcDate: DateTime.now(),
+//       rents: [800, 750],
+//       costs: [400, 250],
+//       );
+//   item_.getCashflow();
+// }
