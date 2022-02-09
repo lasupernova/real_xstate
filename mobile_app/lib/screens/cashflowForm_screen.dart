@@ -113,9 +113,9 @@ class CashflowFormState extends State<CashflowForm> {
       homeInsp: entryInfo["homeInsp"],
       propMgmtSignUp: entryInfo["propMgmtSignUp"],
       bankFees: entryInfo["bankFees"],
-      propMgmtPerc: entryInfo["propMgmtPerc"],
-      vacancyLossPerc: entryInfo["vacancyLossPerc"],
-      capitalExpPerc: entryInfo["capitalExpPerc"],
+      propMgmtPerc: entryInfo["propMgmtPerc"] / 100,
+      vacancyLossPerc: entryInfo["vacancyLossPerc"] / 100,
+      capitalExpPerc: entryInfo["capitalExpPerc"] / 100,
     );
     newCF
         .getCashflow(); // calculate relevant cashflow properties based on form inputs
@@ -241,7 +241,7 @@ class CashflowFormState extends State<CashflowForm> {
                       },
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
-                          labelText: "Propertyh Mgmt Signup"),
+                          labelText: "Property Mgmt Signup"),
                       keyboardType: TextInputType.number,
                       controller:
                           propMgmtSignUpControll, // added controller to avoid input deletion on toggling
