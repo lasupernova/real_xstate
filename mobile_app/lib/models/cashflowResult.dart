@@ -185,6 +185,7 @@ class CashflowItem {
     _totalExpensesMonthly();
     _totalIncomeMonthly();
     _calculateCashflow();
+    _totalInvestment();
     _calculateCocRoi();
     _calculateRentToPrice();
     _calculateCapRate();
