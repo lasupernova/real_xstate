@@ -112,10 +112,11 @@ class CashflowItem {
   // potential vacancy losses and capital expenditures.
   // Calculations based on rental income [ rents ] and percentages from rents defined for each of these expenses.
   void _rentalAssocExpenses() {
-    double totalRents = rents.fold(
+    totalRents = rents.fold(
         0,
         (previous, current) =>
             previous + current); // sum all values in list together
+    print("TOTAL RENTS: $totalRents");
     propMgmt = totalRents * propMgmtPerc;
     vacancyLoss = totalRents * vacancyLossPerc;
     capitalExp = totalRents * capitalExpPerc;
@@ -146,6 +147,7 @@ class CashflowItem {
   void _totalIncomeMonthly() {
     monthlyNetOpIncomeReal = totalRents - monthlyNetOpCostsReal;
     monthlyNetOpIncomeHypo = totalRents - monthlyNetOpCostsHypo;
+    print(totalRents);
     print(
         "Net Income:$monthlyNetOpIncomeReal (real), $monthlyNetOpIncomeHypo (hypo)");
   }
