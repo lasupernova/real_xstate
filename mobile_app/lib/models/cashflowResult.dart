@@ -105,7 +105,6 @@ class CashflowItem {
         (interest * pow((1 + interest), term)) /
         (pow((1 + interest), term) - 1);
     mortgage = M;
-    print("MORTGAGE: $mortgage");
   }
 
   //  Calculates expenses that are based on total rental income, namely proeprty management costs,
@@ -116,11 +115,9 @@ class CashflowItem {
         0,
         (previous, current) =>
             previous + current); // sum all values in list together
-    print("TOTAL RENTS: $totalRents");
     propMgmt = totalRents * propMgmtPerc;
     vacancyLoss = totalRents * vacancyLossPerc;
     capitalExp = totalRents * capitalExpPerc;
-    print("Prop Mgmt: $propMgmt; Vacancy Loss: $vacancyLoss");
   }
 
 //  Calculates total monthly expenses (hypo or 'real'), including:
@@ -138,25 +135,18 @@ class CashflowItem {
     monthlyNetOpCostsHypo = propMgmt + totalCosts;
     monthlyExpensesReal = monthlyNetOpCostsReal + mortgage;
     monthlyExpensesHypo = monthlyNetOpCostsHypo + mortgage;
-    print(
-        "Net Op Costs:$monthlyNetOpCostsReal (real), $monthlyNetOpCostsHypo (hypo)");
-    print("Expenses:$monthlyExpensesReal (real), $monthlyExpensesHypo (hypo");
   }
 
   //  Returns monthly net operating income
   void _totalIncomeMonthly() {
     monthlyNetOpIncomeReal = totalRents - monthlyNetOpCostsReal;
     monthlyNetOpIncomeHypo = totalRents - monthlyNetOpCostsHypo;
-    print(totalRents);
-    print(
-        "Net Income:$monthlyNetOpIncomeReal (real), $monthlyNetOpIncomeHypo (hypo)");
   }
 
   //  Returns monthly cashflow
   void _calculateCashflow() {
     cashflowMonthlyReal = totalRents - monthlyExpensesReal;
     cashflowMonthlyHypo = totalRents - monthlyExpensesHypo;
-    print("Cashflow: $cashflowMonthlyReal (real), $cashflowMonthlyHypo (hypo)");
   }
 
   void _totalInvestment() {
@@ -164,18 +154,18 @@ class CashflowItem {
         downpaymentNum + legal + homeInsp + propMgmtSignUp + bankFees;
   }
 
-  // Calculates cash-on-cash-ROI (a percent value).
+  // Calculates cash-on-cash-ROI (a percent value -- calculated in fraction form --> multiply with 100 to get % form).
   void _calculateCocRoi() {
     cocROIReal = (cashflowMonthlyReal * 12) / totalInvestment;
     cocROIHypo = (cashflowMonthlyHypo * 12) / totalInvestment;
   }
 
-  // Calculates rent-to-price-ratio (a percent value).
+  // Calculates rent-to-price-ratio (a percent value -- calculated in fraction form --> multiply with 100 to get % form).
   void _calculateRentToPrice() {
     rentToPrice = totalRents / offer;
   }
 
-  // Calculates cap-rate (a percent value).
+  // Calculates cap-rate (a percent value -- calculated in fraction form --> multiply with 100 to get % form).
   // Calculated based on YEARLY mortgage and YEARLY cashflow
   void _calculateCapRate() {
     capRateReal = ((mortgage * 12) + (cashflowMonthlyReal * 12)) / offer;
@@ -201,16 +191,3 @@ class CashflowItem {
     inspect(this);
   }
 }
-
-// void main() {
-//   CashflowItem item_ = CashflowItem(
-//       offer: 100.000,
-//       downpayment: 25,
-//       interest: 4,
-//       term: 30,
-//       calcDate: DateTime.now(),
-//       rents: [800, 750],
-//       costs: [400, 250],
-//       );
-//   item_.getCashflow();
-// }
