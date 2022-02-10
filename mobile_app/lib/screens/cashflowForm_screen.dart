@@ -199,6 +199,10 @@ class CashflowFormState extends State<CashflowForm> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
+                          setState(() {
+                            // toggle accordion section open if no value was entered (for easier findability)
+                            closingCostsOpen = true;
+                          });
                           return 'Please enter a value';
                         }
                         return null;
@@ -217,6 +221,9 @@ class CashflowFormState extends State<CashflowForm> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
+                          setState(() {
+                            closingCostsOpen = true;
+                          });
                           return 'Please enter a value';
                         }
                         return null;
@@ -235,6 +242,9 @@ class CashflowFormState extends State<CashflowForm> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
+                          setState(() {
+                            closingCostsOpen = true;
+                          });
                           return 'Please enter a value';
                         }
                         return null;
@@ -253,6 +263,9 @@ class CashflowFormState extends State<CashflowForm> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
+                          setState(() {
+                            closingCostsOpen = true;
+                          });
                           return 'Please enter a value';
                         }
                         return null;
@@ -277,10 +290,16 @@ class CashflowFormState extends State<CashflowForm> {
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                       if (value == null || value.isEmpty) {
+                        setState(() {
+                          mortgageOpen = true;
+                        });
                         return 'Please enter a value';
                       }
                       if (double.parse(value) < 0 || double.parse(value) > 50) {
                         // check if number is in desired range (parse will work as non-numerical entry was checked above)
+                        setState(() {
+                          mortgageOpen = true;
+                        });
                         return 'Please enter a number of years between 0 and 50';
                       }
                       return null;
@@ -299,14 +318,23 @@ class CashflowFormState extends State<CashflowForm> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         // check sth was entered
+                        setState(() {
+                          mortgageOpen = true;
+                        });
                         return 'Please enter a value';
                       }
                       if (double.tryParse(value) == null) {
                         // check that entry is a number
+                        setState(() {
+                          mortgageOpen = true;
+                        });
                         return 'Please enter a valid number';
                       }
                       if (double.parse(value) < 0 ||
                           double.parse(value) > 100) {
+                        setState(() {
+                          mortgageOpen = true;
+                        });
                         // check if number is in desired range (parse will work as non-numerical entry was checked above)
                         return 'Please enter a number between 0 and 100';
                       }
@@ -326,6 +354,9 @@ class CashflowFormState extends State<CashflowForm> {
                       if (value == null ||
                           value.isEmpty ||
                           double.parse(value) < 0) {
+                        setState(() {
+                          mortgageOpen = true;
+                        });
                         return 'Please enter a value greater than 0';
                       }
                       return null;
@@ -344,6 +375,9 @@ class CashflowFormState extends State<CashflowForm> {
                       if (value == null ||
                           value.isEmpty ||
                           double.parse(value) < 0) {
+                        setState(() {
+                          mortgageOpen = true;
+                        });
                         return 'Please enter a value greater than 0';
                       }
                       // if (double.parse(value) > 0) {  // TODO: check that downpayment needs to be SMALLER than offer
@@ -380,6 +414,9 @@ class CashflowFormState extends State<CashflowForm> {
                               entryInfo: entryInfo,
                               mapKey: "rents",
                               label: "Rent",
+                              accordionOpenCallback: () => setState(() {
+                                incomeOpen = true;
+                              }),
                             ),
                             trailing: index + 1 == rentsList.length
                                 ? _addRemoveButton(true, index, rentsList)
@@ -407,6 +444,10 @@ class CashflowFormState extends State<CashflowForm> {
                             entryInfo: entryInfo,
                             mapKey: "costs",
                             label: "Cost",
+                            accordionOpenCallback: () => setState(() {
+                              print("RENTS!");
+                              recurringCostOpen = true;
+                            }),
                           ),
                           trailing: index + 1 == costsList.length
                               ? _addRemoveButton(true, index, costsList)
@@ -425,10 +466,16 @@ class CashflowFormState extends State<CashflowForm> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
+                          setState(() {
+                            rentAssocExpOpen = true;
+                          });
                           return 'Please enter a value';
                         }
                         if (double.parse(value) < 0 ||
                             double.parse(value) > 100) {
+                          setState(() {
+                            rentAssocExpOpen = true;
+                          });
                           return 'Percentage value needs to be between 0 and 100';
                         }
                         return null;
@@ -448,10 +495,16 @@ class CashflowFormState extends State<CashflowForm> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
+                          setState(() {
+                            rentAssocExpOpen = true;
+                          });
                           return 'Please enter a value';
                         }
                         if (double.parse(value) < 0 ||
                             double.parse(value) > 100) {
+                          setState(() {
+                            rentAssocExpOpen = true;
+                          });
                           return 'Percentage value needs to be between 0 and 100';
                         }
                         return null;
@@ -471,10 +524,16 @@ class CashflowFormState extends State<CashflowForm> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
+                          setState(() {
+                            rentAssocExpOpen = true;
+                          });
                           return 'Please enter a value';
                         }
                         if (double.parse(value) < 0 ||
                             double.parse(value) > 100) {
+                          setState(() {
+                            rentAssocExpOpen = true;
+                          });
                           return 'Percentage value needs to be between 0 and 100';
                         }
                         return null;
