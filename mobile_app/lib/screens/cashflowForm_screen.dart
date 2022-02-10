@@ -566,6 +566,7 @@ class CashflowFormState extends State<CashflowForm> {
                         duration: Duration(seconds: 1),
                       ),
                     );
+                    Navigator.of(context).pop();
                     // Navigator.of(context).pushNamed(
                     //     CfResultDetailsScreen.routeName,
                     //     arguments: dbID);
