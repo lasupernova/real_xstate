@@ -445,7 +445,6 @@ class CashflowFormState extends State<CashflowForm> {
                             mapKey: "costs",
                             label: "Cost",
                             accordionOpenCallback: () => setState(() {
-                              print("RENTS!");
                               recurringCostOpen = true;
                             }),
                           ),
