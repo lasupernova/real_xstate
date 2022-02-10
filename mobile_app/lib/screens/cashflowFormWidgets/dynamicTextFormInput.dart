@@ -5,11 +5,13 @@ class GenerateFieldDynamic extends StatefulWidget {
   Map entryInfo;
   String mapKey;
   String label;
+  Function accordionOpenCallback;
   GenerateFieldDynamic(
       {required this.index,
       required this.entryInfo,
       required this.mapKey,
       required this.label,
+      required this.accordionOpenCallback,
       Key? key})
       : super(key: key);
 
@@ -41,6 +43,7 @@ class _GenerateFieldDynamicState extends State<GenerateFieldDynamic> {
       // The validator receives the text that the user has entered.
       validator: (value) {
         if (value == null || value.isEmpty || double.parse(value) < 0) {
+          widget.accordionOpenCallback();
           return 'Please enter a value greater than 0';
         }
         // if (double.parse(value) > 0) {  // TODO: check that downpayment needs to be SMALLER than offer
