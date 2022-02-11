@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/screens/auth_screen.dart';
+import 'package:http/http.dart';
 
 class Authcard extends StatefulWidget {
   Authcard({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class Authcard extends StatefulWidget {
 }
 
 class _AuthcardState extends State<Authcard> {
-  final GlobalKey<FormState> _formkey = GlobalKey();
+  final GlobalKey<FormState> _formkeyAuth = GlobalKey();
   bool _isLoading = false;
   final _passwordController = TextEditingController();
   AuthMode _authMode = AuthMode.Login; // from enum in authScreen file
@@ -19,15 +20,16 @@ class _AuthcardState extends State<Authcard> {
   };
 
   void _submit() {
-    if (!_formkey.currentState!.validate()) {
+    print(_formkeyAuth.currentState);
+    if (!_formkeyAuth.currentState!.validate()) {
       return;
     }
-    _formkey.currentState!.save();
+    _formkeyAuth.currentState!.save();
     setState(() {
       _isLoading = true;
     });
     if (_authMode == AuthMode.Login) {
-      //log use rin
+      //log user in
     } else {
       //sign up new user
     }
@@ -63,6 +65,7 @@ class _AuthcardState extends State<Authcard> {
             BoxConstraints(maxHeight: _authMode == AuthMode.Signup ? 320 : 260),
         width: deviceSizde.width * 0.75,
         child: Form(
+          key: _formkeyAuth,
           child: SingleChildScrollView(
             child: Column(
               children: [
