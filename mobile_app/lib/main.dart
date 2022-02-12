@@ -15,6 +15,8 @@ import './screens/cashflowForm_screen.dart';
 import './screens/newPropertyForm_screen.dart';
 import './screens/mortgageCalculated_Screen.dart';
 import './providers/cashflow_list.dart';
+import './screens/auth_screen.dart';
+import './providers/auth.dart';
 
 // TO DO: create popup form screen for calculating cashflow
 
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (ctx) => PropertyList()),
         ChangeNotifierProvider(create: (ctx) => CashflowList()),
+        ChangeNotifierProvider(create: (ctx) => Auth())
       ],
       child: MaterialApp(
         // CupertinoApp
@@ -52,7 +55,7 @@ class MyApp extends StatelessWidget {
               bodyText1: TextStyle(fontSize: 11),
               bodyText2: TextStyle(fontSize: 9),
             )),
-        home: LandingPage(),
+        home: AuthScreen(), // LandingPage(),
         routes: {
           PropertyOverviewScreen.routeName: (ctx) => PropertyOverviewScreen(),
           CfResultDetailsScreen.routeName: (ctx) => CfResultDetailsScreen(),
