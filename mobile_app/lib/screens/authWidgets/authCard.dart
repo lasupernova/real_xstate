@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/screens/auth_screen.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/auth.dart';
 
 class Authcard extends StatefulWidget {
   Authcard({Key? key}) : super(key: key);
@@ -20,7 +23,6 @@ class _AuthcardState extends State<Authcard> {
   };
 
   void _submit() {
-    print(_formkeyAuth.currentState);
     if (!_formkeyAuth.currentState!.validate()) {
       return;
     }
@@ -31,7 +33,8 @@ class _AuthcardState extends State<Authcard> {
     if (_authMode == AuthMode.Login) {
       //log user in
     } else {
-      //sign up new user
+      Provider.of<Auth>(context, listen: false)
+          .signUp(_authData["email"]!, _authData["password"]!);
     }
     setState(() {
       _isLoading = false;
