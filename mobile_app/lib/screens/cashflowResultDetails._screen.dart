@@ -125,7 +125,11 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _monthly = !_monthly;
+                          });
+                        },
                         child: Text("Month"),
                         style: ButtonStyle(
                           elevation: MaterialStateProperty.all(0),
@@ -141,7 +145,11 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _monthly = !_monthly;
+                          });
+                        },
                         child: Text("Year"),
                         style: ButtonStyle(
                           elevation: MaterialStateProperty.all(0),
