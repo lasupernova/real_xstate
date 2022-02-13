@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../providers/cashflow_list.dart';
 import '../models/cashflowResult.dart';
 import '../widgets/cirleAvatarInfo.dart';
+import './cashflowResultDetailsWidgets/cashflowInfo.dart';
 
 // called from cashflowResultTile.dart
 class CfResultDetailsScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
   late final String cashflowID;
   late CashflowItem CF_item;
   bool _firstInit = true;
+  bool _monthly = true;
 
   @override
   void didChangeDependencies() {
@@ -116,148 +118,7 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                 SizedBox(
                   height: _screenheight * 0.03,
                 ),
-                Expanded(
-                  flex: 3,
-                  child: SingleChildScrollView(
-                    child: Container(
-                      width: _screenwidth * 0.9,
-                      decoration:
-                          BoxDecoration(border: Border.all(color: Colors.red)),
-                      child: Table(
-                        children: [
-                          TableRow(children: [
-                            Text("          "),
-                            Text(
-                              "Real",
-                              textScaleFactor: 1.7,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              "Hypo",
-                              textScaleFactor: 1.7,
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                          TableRow(children: [
-                            Text(
-                              "Income",
-                              textScaleFactor: 1.3,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(""),
-                            Text("")
-                          ]),
-                          TableRow(children: [
-                            Text("Net Operating"),
-                            Text(
-                              CF_item.monthlyNetOpIncomeReal.toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              CF_item.monthlyNetOpIncomeHypo.toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                          TableRow(children: [
-                            Text(
-                              "Expenses",
-                              textScaleFactor: 1.3,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(""),
-                            Text("")
-                          ]),
-                          TableRow(children: [
-                            Text("Net Operating"),
-                            Text(
-                              CF_item.monthlyNetOpCostsReal.toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              CF_item.monthlyNetOpCostsHypo.toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                          TableRow(children: [
-                            Text("Total Monthly (incl. mortgage)"),
-                            Text(
-                              CF_item.monthlyExpensesReal.toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              CF_item.monthlyExpensesHypo.toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                          TableRow(children: [
-                            Text(
-                              "Cashflow Stats",
-                              textScaleFactor: 1.3,
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(""),
-                            Text("")
-                          ]),
-                          TableRow(children: [
-                            Text("Cashflow"),
-                            Text(
-                              CF_item.cashflowMonthlyReal.toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              CF_item.cashflowMonthlyHypo.toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                          TableRow(children: [
-                            Text("coc ROI"),
-                            Text(
-                              (CF_item.cocROIReal * 100).toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              (CF_item.cocROIHypo * 100).toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                          TableRow(children: [
-                            Text("Rent-to-Price ratio"),
-                            Text(
-                              (CF_item.rentToPrice * 100).toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              (CF_item.rentToPrice * 100).toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                          TableRow(children: [
-                            Text("CAP Rate"),
-                            Text(
-                              (CF_item.capRateReal * 100).toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              (CF_item.capRateHypo * 100).toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                          TableRow(children: [
-                            Text("ROI"),
-                            Text(
-                              CF_item.rtiReal.toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              CF_item.rtiHypo.toStringAsFixed(2),
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                CashflowInfo(CF_item, _screenwidth, _monthly),
                 Expanded(
                   // added in order to restrict height of Expanded() widget above to desired heigth (defined via flex)
                   child: Row(
