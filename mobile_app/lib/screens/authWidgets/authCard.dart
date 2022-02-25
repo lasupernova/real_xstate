@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth.dart';
+import '../../models/httpException.dart';
 
 class Authcard extends StatefulWidget {
   Authcard({Key? key}) : super(key: key);
@@ -22,6 +23,22 @@ class _AuthcardState extends State<Authcard> {
     'password': '',
   };
 
+  void _showErrorDialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text("Oh Ohhhh..."),
+              content: Text(msg),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Okay"))
+              ],
+            ));
+  }
+
   void _submit() {
     if (!_formkeyAuth.currentState!.validate()) {
       return;
@@ -30,11 +47,36 @@ class _AuthcardState extends State<Authcard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      //log user in
-    } else {
-      Provider.of<Auth>(context, listen: false)
-          .signUp(_authData["email"]!, _authData["password"]!);
+    try {
+      if (_authMode == AuthMode.Login) {
+        Provider.of<Auth>(context, listen: false)
+            .logIn(_authData["email"]!, _authData["password"]!);
+      } else {
+        Provider.of<Auth>(context, listen: false)
+            .signUp(_authData["email"]!, _authData["password"]!);
+      }
+    } on HttpException catch (error) {
+      var errorMessage = "Authentication failed.";
+      if (error.toString().contains("EMAIL_EXISTS")) {
+        errorMessage = "This email address already exists!";
+      } else if (error.toString().contains("INVALID_EMAIL")) {
+        errorMessage = "Please enter a valid email address!";
+      } else if (error.toString().contains("WEAK_PASSWORD")) {
+        errorMessage = "Password must be at least 6 characters long!";
+      } else if (error.toString().contains("EMAIL_NOT_FOUND")) {
+        errorMessage =
+            "User with that email does not exist -- do a spell check :)";
+      } else if (error.toString().contains("INVALID_PASSWORD")) {
+        errorMessage = "Your password does not match -- do a spell check :)";
+      } else {
+        errorMessage = "$error";
+      }
+      _showErrorDialog(errorMessage);
+    } catch (error) {
+      print("RUNNING @@@@");
+      var errorMessage =
+          "Could not authenticate you. Please try again...(later)";
+      _showErrorDialog(errorMessage);
     }
     setState(() {
       _isLoading = false;

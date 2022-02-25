@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 
+import '../models/httpException.dart';
+
 class Auth with ChangeNotifier {
   late String _token;
   late DateTime _expiryDate;
@@ -22,6 +24,28 @@ class Auth with ChangeNotifier {
           "returnSecureToken": true,
         }));
     final info = jsonDecode(resp.body);
-    print(info);
+    // print(info);
+  }
+
+  Future<void> logIn(String email, String password) async {
+    final url = Uri.parse(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${dotenv.env['FIREBASE_API_KEY']}");
+    // print("URL: $url");  // uncomment for troubleshooting
+    try {
+      http.Response resp = await http.post(url,
+          body: json.encode({
+            "email": email,
+            "password": password,
+            "returnSecureToken": true,
+          }));
+      final info = jsonDecode(resp.body);
+      print(info);
+      if (info['error'] != null) {
+        throw HttpException(info['error']['message']);
+      }
+    } catch (error) {
+      print("RUNNING!");
+      throw error.toString();
+    }
   }
 }
