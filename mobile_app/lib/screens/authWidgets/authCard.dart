@@ -39,7 +39,7 @@ class _AuthcardState extends State<Authcard> {
             ));
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (!_formkeyAuth.currentState!.validate()) {
       return;
     }
@@ -49,10 +49,11 @@ class _AuthcardState extends State<Authcard> {
     });
     try {
       if (_authMode == AuthMode.Login) {
-        Provider.of<Auth>(context, listen: false)
+        print("LOG IN DART...");
+        await Provider.of<Auth>(context, listen: false)
             .logIn(_authData["email"]!, _authData["password"]!);
       } else {
-        Provider.of<Auth>(context, listen: false)
+        await Provider.of<Auth>(context, listen: false)
             .signUp(_authData["email"]!, _authData["password"]!);
       }
     } on HttpException catch (error) {
@@ -78,13 +79,13 @@ class _AuthcardState extends State<Authcard> {
           "Could not authenticate you. Please try again...(later)";
       _showErrorDialog(errorMessage);
     }
+    print("POST REQUEST FINIIIHSED --- authcard");
     setState(() {
       _isLoading = false;
     });
   }
 
   void _switchAuthMode() {
-    print("CURRENT AUTHMODE: $_authMode");
     if (_authMode == AuthMode.Login) {
       setState(() {
         _authMode = AuthMode.Signup;
@@ -94,6 +95,7 @@ class _AuthcardState extends State<Authcard> {
         _authMode = AuthMode.Login;
       });
     }
+    print("CURRENT AUTHMODE: $_authMode");
   }
 
   @override
