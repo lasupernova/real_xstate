@@ -1,0 +1,71 @@
+import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:convert';
+
+import '../models/httpException.dart';
+
+class Auth with ChangeNotifier {
+  String? _token;
+  DateTime _expiryDate = DateTime.now();
+  String? _userId;
+
+  // Auth(this._token, this._expiryDate, this._userId);
+
+  bool get isAuth {
+    return token != null; // use token-getter to check if _token is null
+  }
+
+  String? get token {
+    if (_expiryDate.isAfter(DateTime.now()) && _token != null) {
+      return _token;
+    }
+    return null;
+  }
+
+// REST API documentation from: l
+  Future<void> _authenticate(
+      String urlPath, String email, String password) async {
+    final url = Uri.parse(
+        "https://identitytoolkit.googleapis.com/v1/accounts:$urlPath?key=${dotenv.env['FIREBASE_API_KEY']}");
+    // print("URL: $url"); // uncomment for troubleshooting
+    try {
+      final resp = await http.post(
+        url,
+        body: json.encode(
+          {
+            "email": email,
+            "password": password,
+            "returnSecureToken": true,
+          },
+        ),
+      );
+      final info = jsonDecode(resp.body);
+      if (info['error'] != null) {
+        return Future.error(HttpException(info['error'][
+            'message'])); //TODO: figure out why return needs to be used and not 'throw" for HttpException does not work
+      }
+      _token = info['idToken'];
+      _userId = info['localId'];
+      _expiryDate = DateTime.now().add(
+        Duration(
+          seconds: int.parse(
+            info['expiresIn'],
+          ),
+        ),
+      );
+      notifyListeners(); // in order to trigger main page's Consumer
+      return info;
+    } on Exception catch (error) {
+      throw error.toString();
+    }
+  }
+
+  Future<void> signUp(String email, String password) async {
+    return _authenticate("signUp", email, password);
+  }
+
+  Future<void> logIn(String email, String password) async {
+    return _authenticate("signInWithPassword", email, password);
+  }
+}
