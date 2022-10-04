@@ -126,7 +126,7 @@ class LandingPage extends StatelessWidget {
               // ),
               ListTile(
                   leading: Icon(Icons.logout),
-                  title: Text("Logout"),
+                  title: Text("Logout!"),
                   onTap: () {
                     Navigator.of(context).pushNamed(AuthScreen.routeName);
                   }),
