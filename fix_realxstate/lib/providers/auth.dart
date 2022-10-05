@@ -23,7 +23,13 @@ class Auth with ChangeNotifier {
     return null;
   }
 
-// REST API documentation from: l
+  void deleteToken() {
+    // function that removes token for "logout" button, and notifies listeneer so that main page is recreated (back to auth page)
+    _token = null;
+    notifyListeners();
+  }
+
+// REST API documentation from: https://firebase.google.com/docs/reference/rest/auth
   Future<void> _authenticate(
       String urlPath, String email, String password) async {
     final url = Uri.parse(
@@ -41,6 +47,7 @@ class Auth with ChangeNotifier {
         ),
       );
       final info = jsonDecode(resp.body);
+      // print(info);  //uncomment for debugging
       if (info['error'] != null) {
         return Future.error(HttpException(info['error'][
             'message'])); //TODO: figure out why return needs to be used and not 'throw" for HttpException does not work
@@ -56,7 +63,7 @@ class Auth with ChangeNotifier {
       );
       notifyListeners(); // in order to trigger main page's Consumer
       return info;
-    } on Exception catch (error) {
+    } catch (error) {
       throw error.toString();
     }
   }
