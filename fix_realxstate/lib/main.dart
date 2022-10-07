@@ -31,9 +31,19 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           // ChangeNotifierProvider(create: (ctx) => PropertyList()),
-          ChangeNotifierProvider(create: (ctx) => CashflowList()),
-          ChangeNotifierProvider(create: (ctx) => PropertyList()),
-          ChangeNotifierProvider(create: (ctx) => Auth())
+          ChangeNotifierProvider(
+              create: (ctx) =>
+                  Auth()), // Note: Auth() needs to be provided first, in order to be able to use it in ChangeNotifierproxyProvider
+          ChangeNotifierProxyProvider<Auth, CashflowList>(
+            create: (ctx) => CashflowList(null, []),
+            update: (ctx, auth, previousCashflow) => CashflowList(auth.token,
+                previousCashflow == null ? [] : previousCashflow.entries),
+          ),
+          ChangeNotifierProxyProvider<Auth, PropertyList>(
+            create: (ctx) => PropertyList(null, []),
+            update: (ctx, auth, previousProperties) => PropertyList(auth.token,
+                previousProperties == null ? [] : previousProperties.entries),
+          ), //will be rebuild when auth changes, as auth is now a dependency of the proxy-provider
         ],
         child: Consumer<Auth>(
           builder: (ctx, authData, _) => MaterialApp(
