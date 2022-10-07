@@ -7,16 +7,21 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../models/cashflowResult.dart';
 
 class CashflowList with ChangeNotifier {
-  List<CashflowItem> _entries = [];
+  List<CashflowItem> entries = [];
 
   // var _showFavoritesOnly = false;
 
+  late final String? authToken;
+
+  CashflowList(this.authToken,
+      this.entries); // Cashflow Calcs will be shown in list based on token provided
+
   Future<void> getCFs() async {
     // TODO: implement _firstLoad check - in order to not load this every time that page is relaoaded (e.g. due to saving file)
-    _entries =
+    entries =
         []; // reset property list ,as properties will otherwise appear multiple times on screen (multiplied at every re-load)
-    final response =
-        await http.get(Uri.parse("${dotenv.env["FIREBASE_URL"]}cashflow.json"));
+    final response = await http.get(Uri.parse(
+        "${dotenv.env["FIREBASE_URL"]}cashflow.json?auth=$authToken"));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(
@@ -44,7 +49,7 @@ class CashflowList with ChangeNotifier {
           );
           currentCF
               .getCashflow(); // calculate properties that have not been saved in DB
-          _entries.add(currentCF);
+          entries.add(currentCF);
         });
       }
     }
@@ -59,15 +64,16 @@ class CashflowList with ChangeNotifier {
 
   List<CashflowItem> get fetchCFs {
     // for app-internal purposes
-    return [..._entries];
+    return [...entries];
   }
 
   CashflowItem findById(String id) {
-    return _entries.firstWhere((cashflow) => cashflow.id == id);
-    // return _entries.where((element) => false) Where((cashflow) => cashflow.id == id);
+    return entries.firstWhere((cashflow) => cashflow.id == id);
+    // return entries.where((element) => false) Where((cashflow) => cashflow.id == id);
   }
 
   Future<String> addCF(newProp) async {
+    //TODO: add authentication (?auth=...;) for ADDING cashflow too here (+ also for PropertyList)
     // UDES IN: screens/cashflowForm_screen.dart
     // print("Add funtions is running!!!");  \\ uncomment for troubleshooting
 
@@ -94,7 +100,7 @@ class CashflowList with ChangeNotifier {
     final id = info["name"]; // extract necessary info (here: DB ID)
     // prive new property with unique ID and add to properties list
     newProp.id = id;
-    _entries.add(newProp);
+    entries.add(newProp);
     notifyListeners();
     return id; // returning ID to direclty access new CF Results from cashflowForm_screen
   }
@@ -104,7 +110,7 @@ class CashflowList with ChangeNotifier {
     http.Response resp = await http.delete(url);
 
     if (resp.statusCode == 200) {
-      _entries.removeWhere((cashflow) => cashflow.id == id);
+      entries.removeWhere((cashflow) => cashflow.id == id);
       notifyListeners(); // NECESSARY! otherwise "dismissed Dismissible Error" will be thrown
     }
     return;

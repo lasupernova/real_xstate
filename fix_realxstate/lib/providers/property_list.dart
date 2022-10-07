@@ -7,16 +7,21 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import './property_item.dart';
 
 class PropertyList with ChangeNotifier {
-  List<PropertyItem> _entries = [];
+  List<PropertyItem> entries = [];
 
   // var _showFavoritesOnly = false;
 
+  late final String? authToken;
+
+  PropertyList(this.authToken,
+      this.entries); // Properties will be shown in list based on token provided
+
   Future<void> getProps() async {
     // TODO: implement _firstLoad check - in order to not load this every time that page is relaoaded (e.g. due to saving file)
-    _entries =
+    entries =
         []; // reset property list ,as properties will otherwise appear multiple times on screen (multiplied at every re-load)
-    final response = await http
-        .get(Uri.parse("${dotenv.env["FIREBASE_URL"]}properties.json"));
+    final response = await http.get(Uri.parse(
+        "${dotenv.env["FIREBASE_URL"]}properties.json?auth=$authToken"));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(
@@ -43,7 +48,7 @@ class PropertyList with ChangeNotifier {
                 ? propdata['brokeEven']
                 : false,
           );
-          _entries.add(currentProp);
+          entries.add(currentProp);
         });
       }
     }
@@ -58,11 +63,11 @@ class PropertyList with ChangeNotifier {
 
   List<PropertyItem> get fetchProperties {
     // for app-internal purposes
-    return [..._entries];
+    return [...entries];
   }
 
   PropertyItem findById(String id) {
-    return _entries.firstWhere((property) => property.id == id);
+    return entries.firstWhere((property) => property.id == id);
   }
 
   Future<void> addProperty(newProp) async {
@@ -82,7 +87,7 @@ class PropertyList with ChangeNotifier {
     final id = info["name"]; // extract necessary info (here: DB ID)
     // prive new property with unique ID and add to properties list
     newProp.id = id;
-    _entries.add(newProp);
+    entries.add(newProp);
     notifyListeners();
   }
 }
