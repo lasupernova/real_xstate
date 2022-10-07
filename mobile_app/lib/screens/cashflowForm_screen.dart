@@ -192,96 +192,96 @@ class CashflowFormState extends State<CashflowForm> {
           child: Column(
             children: <Widget>[
               CustomAccordion(
-                  screenWidth: _screenWidth,
-                  accordionOpen: closingCostsOpen,
-                  accordionChildren: [
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          setState(() {
-                            // toggle accordion section open if no value was entered (for easier findability)
-                            closingCostsOpen = true;
-                          });
-                          return 'Please enter a value';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration:
-                          const InputDecoration(labelText: "Legal Fees"),
-                      keyboardType: TextInputType.number,
-                      controller:
-                          legalControll, // added controller to avoid input deletion on toggling
-                      onSaved: (value) {
-                        entryInfo["legal"] = double.parse(value!);
-                      },
-                    ),
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          setState(() {
-                            closingCostsOpen = true;
-                          });
-                          return 'Please enter a value';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                          labelText: "Home Inspection Fees"),
-                      keyboardType: TextInputType.number,
-                      controller:
-                          homeInspControll, // added controller to avoid input deletion on toggling
-                      onSaved: (value) {
-                        entryInfo["homeInsp"] = double.parse(value!);
-                      },
-                    ),
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          setState(() {
-                            closingCostsOpen = true;
-                          });
-                          return 'Please enter a value';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                          labelText: "Property Mgmt Signup"),
-                      keyboardType: TextInputType.number,
-                      controller:
-                          propMgmtSignUpControll, // added controller to avoid input deletion on toggling
-                      onSaved: (value) {
-                        entryInfo["propMgmtSignUp"] = double.parse(value!);
-                      },
-                    ),
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          setState(() {
-                            closingCostsOpen = true;
-                          });
-                          return 'Please enter a value';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(labelText: "Bank Fees"),
-                      keyboardType: TextInputType.number,
-                      controller:
-                          bankControll, // added controller to avoid input deletion on toggling
-                      onSaved: (value) {
-                        entryInfo["bankFees"] = double.parse(value!);
-                      },
-                    ),
-                  ],
-                  accordionText: "Closing Costs",
-                  notifyParent: refreshClosingCostOpen),
+                screenWidth: _screenWidth,
+                accordionOpen: closingCostsOpen,
+                accordionChildren: [
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        setState(() {
+                          // toggle accordion section open if no value was entered (for easier findability)
+                          closingCostsOpen = true;
+                        });
+                        return 'Please enter a value';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(labelText: "Legal Fees"),
+                    keyboardType: TextInputType.number,
+                    controller:
+                        legalControll, // added controller to avoid input deletion on toggling
+                    onSaved: (value) {
+                      entryInfo["legal"] = double.parse(value!);
+                    },
+                  ),
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        setState(() {
+                          closingCostsOpen = true;
+                        });
+                        return 'Please enter a value';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                        labelText: "Home Inspection Fees"),
+                    keyboardType: TextInputType.number,
+                    controller:
+                        homeInspControll, // added controller to avoid input deletion on toggling
+                    onSaved: (value) {
+                      entryInfo["homeInsp"] = double.parse(value!);
+                    },
+                  ),
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        setState(() {
+                          closingCostsOpen = true;
+                        });
+                        return 'Please enter a value';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                        labelText: "Property Mgmt Signup"),
+                    keyboardType: TextInputType.number,
+                    controller:
+                        propMgmtSignUpControll, // added controller to avoid input deletion on toggling
+                    onSaved: (value) {
+                      entryInfo["propMgmtSignUp"] = double.parse(value!);
+                    },
+                  ),
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        setState(() {
+                          closingCostsOpen = true;
+                        });
+                        return 'Please enter a value';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(labelText: "Bank Fees"),
+                    keyboardType: TextInputType.number,
+                    controller:
+                        bankControll, // added controller to avoid input deletion on toggling
+                    onSaved: (value) {
+                      entryInfo["bankFees"] = double.parse(value!);
+                    },
+                  ),
+                ],
+                accordionText: "Closing Costs",
+                // notifyParent: refreshClosingCostOpen,
+              ),
               CustomAccordion(
                 screenWidth: _screenWidth,
                 accordionOpen: mortgageOpen,
@@ -395,7 +395,7 @@ class CashflowFormState extends State<CashflowForm> {
                   ),
                 ],
                 accordionText: "Mortgage Info",
-                notifyParent: refreshMortgageOpen,
+                // notifyParent: refreshMortgageOpen,
               ),
               CustomAccordion(
                 screenWidth: _screenWidth,
@@ -426,7 +426,7 @@ class CashflowFormState extends State<CashflowForm> {
                   )
                 ],
                 accordionText: "Income",
-                notifyParent: refreshIncomeOpen,
+                // notifyParent: refreshIncomeOpen,
               ),
               CustomAccordion(
                 screenWidth: _screenWidth,
@@ -455,102 +455,103 @@ class CashflowFormState extends State<CashflowForm> {
                       }),
                 ],
                 accordionText: "Recurring Costs",
-                notifyParent: refreshCostOpen,
+                // notifyParent: refreshCostOpen,
               ),
               CustomAccordion(
-                  screenWidth: _screenWidth,
-                  accordionOpen: rentAssocExpOpen,
-                  accordionChildren: [
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          setState(() {
-                            rentAssocExpOpen = true;
-                          });
-                          return 'Please enter a value';
-                        }
-                        if (double.parse(value) < 0 ||
-                            double.parse(value) > 100) {
-                          setState(() {
-                            rentAssocExpOpen = true;
-                          });
-                          return 'Percentage value needs to be between 0 and 100';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                          labelText: "Property Mgmt",
-                          helperText: "% from total rental income"),
-                      keyboardType: TextInputType.number,
-                      controller:
-                          propMgmtPercControll, // added controller to avoid input deletion on toggling
-                      onSaved: (value) {
-                        entryInfo["propMgmtPerc"] = double.parse(value!);
-                      },
-                    ),
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          setState(() {
-                            rentAssocExpOpen = true;
-                          });
-                          return 'Please enter a value';
-                        }
-                        if (double.parse(value) < 0 ||
-                            double.parse(value) > 100) {
-                          setState(() {
-                            rentAssocExpOpen = true;
-                          });
-                          return 'Percentage value needs to be between 0 and 100';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                          labelText: "Vacancy Loss",
-                          helperText: "% from total rental income"),
-                      keyboardType: TextInputType.number,
-                      controller:
-                          vacancyLossPercControll, // added controller to avoid input deletion on toggling
-                      onSaved: (value) {
-                        entryInfo["vacancyLossPerc"] = double.parse(value!);
-                      },
-                    ),
-                    TextFormField(
-                      // The validator receives the text that the user has entered.
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          setState(() {
-                            rentAssocExpOpen = true;
-                          });
-                          return 'Please enter a value';
-                        }
-                        if (double.parse(value) < 0 ||
-                            double.parse(value) > 100) {
-                          setState(() {
-                            rentAssocExpOpen = true;
-                          });
-                          return 'Percentage value needs to be between 0 and 100';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                          labelText: "Capital Expenditure",
-                          helperText: "% from total rental income"),
-                      keyboardType: TextInputType.number,
-                      controller:
-                          capitalEpxPercControll, // added controller to avoid input deletion on toggling
-                      onSaved: (value) {
-                        entryInfo["capitalExpPerc"] = double.parse(value!);
-                      },
-                    ),
-                  ],
-                  accordionText: "Rent Assocciated Expenses",
-                  notifyParent: refreshRentAssocExpOpen),
+                screenWidth: _screenWidth,
+                accordionOpen: rentAssocExpOpen,
+                accordionChildren: [
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        setState(() {
+                          rentAssocExpOpen = true;
+                        });
+                        return 'Please enter a value';
+                      }
+                      if (double.parse(value) < 0 ||
+                          double.parse(value) > 100) {
+                        setState(() {
+                          rentAssocExpOpen = true;
+                        });
+                        return 'Percentage value needs to be between 0 and 100';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                        labelText: "Property Mgmt",
+                        helperText: "% from total rental income"),
+                    keyboardType: TextInputType.number,
+                    controller:
+                        propMgmtPercControll, // added controller to avoid input deletion on toggling
+                    onSaved: (value) {
+                      entryInfo["propMgmtPerc"] = double.parse(value!);
+                    },
+                  ),
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        setState(() {
+                          rentAssocExpOpen = true;
+                        });
+                        return 'Please enter a value';
+                      }
+                      if (double.parse(value) < 0 ||
+                          double.parse(value) > 100) {
+                        setState(() {
+                          rentAssocExpOpen = true;
+                        });
+                        return 'Percentage value needs to be between 0 and 100';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                        labelText: "Vacancy Loss",
+                        helperText: "% from total rental income"),
+                    keyboardType: TextInputType.number,
+                    controller:
+                        vacancyLossPercControll, // added controller to avoid input deletion on toggling
+                    onSaved: (value) {
+                      entryInfo["vacancyLossPerc"] = double.parse(value!);
+                    },
+                  ),
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        setState(() {
+                          rentAssocExpOpen = true;
+                        });
+                        return 'Please enter a value';
+                      }
+                      if (double.parse(value) < 0 ||
+                          double.parse(value) > 100) {
+                        setState(() {
+                          rentAssocExpOpen = true;
+                        });
+                        return 'Percentage value needs to be between 0 and 100';
+                      }
+                      return null;
+                    },
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                        labelText: "Capital Expenditure",
+                        helperText: "% from total rental income"),
+                    keyboardType: TextInputType.number,
+                    controller:
+                        capitalEpxPercControll, // added controller to avoid input deletion on toggling
+                    onSaved: (value) {
+                      entryInfo["capitalExpPerc"] = double.parse(value!);
+                    },
+                  ),
+                ],
+                accordionText: "Rent Assocciated Expenses",
+                // notifyParent: refreshRentAssocExpOpen,
+              ),
               ElevatedButton(
                 onPressed: () {
                   // Validate returns true if the form is valid, or false otherwise.

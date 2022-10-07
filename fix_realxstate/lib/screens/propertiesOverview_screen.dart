@@ -19,7 +19,7 @@ class PropertyOverviewScreen extends StatelessWidget {
         // title: Text("Properties"),
         // centerTitle: true,
         title: Row(children: [
-          // added IconButtons() previosuly under "actions" to "title", for them to be centered in AppBar
+          // added IconButtons() previously under "actions" to "title", for them to be centered in AppBar
           IconButton(
             onPressed: () {
               Navigator.of(context).pushNamed(NewPropertyForm.routeName);
