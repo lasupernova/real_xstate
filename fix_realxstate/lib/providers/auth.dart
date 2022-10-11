@@ -8,7 +8,7 @@ import '../models/httpException.dart';
 class Auth with ChangeNotifier {
   String? _token;
   DateTime _expiryDate = DateTime.now();
-  String? _userId;
+  late String _userId;
 
   // Auth(this._token, this._expiryDate, this._userId);
 
@@ -21,6 +21,10 @@ class Auth with ChangeNotifier {
       return _token;
     }
     return null;
+  }
+
+  String get userID {
+    return _userId;
   }
 
   void deleteToken() {

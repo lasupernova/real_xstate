@@ -13,7 +13,9 @@ class PropertyList with ChangeNotifier {
 
   late final String? authToken;
 
-  PropertyList(this.authToken,
+  late final String? userID;
+
+  PropertyList(this.authToken, this.userID,
       this.entries); // Properties will be shown in list based on token provided
 
   Future<void> getProps() async {
@@ -21,7 +23,7 @@ class PropertyList with ChangeNotifier {
     entries =
         []; // reset property list ,as properties will otherwise appear multiple times on screen (multiplied at every re-load)
     final response = await http.get(Uri.parse(
-        "${dotenv.env["FIREBASE_URL"]}properties.json?auth=$authToken"));
+        "${dotenv.env["FIREBASE_URL"]}$userID/properties.json?auth=$authToken"));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(
@@ -75,7 +77,7 @@ class PropertyList with ChangeNotifier {
 
     // send new property to cloud DB and wait for identifier
     final url = Uri.parse(
-        "${dotenv.env["FIREBASE_URL"]}properties.json?auth=$authToken");
+        "${dotenv.env["FIREBASE_URL"]}$userID/properties.json?auth=$authToken");
     http.Response resp = await http.post(url,
         body: json.encode({
           "address": newProp.streetAddress,

@@ -35,13 +35,17 @@ class MyApp extends StatelessWidget {
               create: (ctx) =>
                   Auth()), // Note: Auth() needs to be provided first, in order to be able to use it in ChangeNotifierproxyProvider
           ChangeNotifierProxyProvider<Auth, CashflowList>(
-            create: (ctx) => CashflowList(null, []),
-            update: (ctx, auth, previousCashflow) => CashflowList(auth.token,
+            create: (ctx) => CashflowList(null, null, []),
+            update: (ctx, auth, previousCashflow) => CashflowList(
+                auth.token,
+                auth.userID,
                 previousCashflow == null ? [] : previousCashflow.entries),
           ),
           ChangeNotifierProxyProvider<Auth, PropertyList>(
-            create: (ctx) => PropertyList(null, []),
-            update: (ctx, auth, previousProperties) => PropertyList(auth.token,
+            create: (ctx) => PropertyList(null, null, []),
+            update: (ctx, auth, previousProperties) => PropertyList(
+                auth.token,
+                auth.userID,
                 previousProperties == null ? [] : previousProperties.entries),
           ), //will be rebuild when auth changes, as auth is now a dependency of the proxy-provider
         ],
