@@ -78,7 +78,8 @@ class CashflowList with ChangeNotifier {
     // print("Add funtions is running!!!");  \\ uncomment for troubleshooting
 
     // send new property to cloud DB and wait for identifier
-    final url = Uri.parse("${dotenv.env["FIREBASE_URL"]}cashflow.json");
+    final url =
+        Uri.parse("${dotenv.env["FIREBASE_URL"]}cashflow.json?auth=$authToken");
     http.Response resp = await http.post(url,
         body: json.encode({
           "offer": newProp.offer,
@@ -106,8 +107,11 @@ class CashflowList with ChangeNotifier {
   }
 
   Future<void> removeCashflow(id) async {
-    final url = Uri.parse("${dotenv.env["FIREBASE_URL"]}cashflow/$id.json");
+    final url = Uri.parse(
+        "${dotenv.env["FIREBASE_URL"]}cashflow/$id.json?auth=$authToken");
     http.Response resp = await http.delete(url);
+
+    print(resp);
 
     if (resp.statusCode == 200) {
       entries.removeWhere((cashflow) => cashflow.id == id);
