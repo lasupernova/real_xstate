@@ -74,7 +74,8 @@ class PropertyList with ChangeNotifier {
     // print("Add funtions is running!!!");  \\ uncomment for troubleshooting
 
     // send new property to cloud DB and wait for identifier
-    final url = Uri.parse("${dotenv.env["FIREBASE_URL"]}properties.json");
+    final url = Uri.parse(
+        "${dotenv.env["FIREBASE_URL"]}properties.json?auth=$authToken");
     http.Response resp = await http.post(url,
         body: json.encode({
           "address": newProp.streetAddress,
