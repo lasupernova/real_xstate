@@ -13,7 +13,9 @@ class CashflowList with ChangeNotifier {
 
   late final String? authToken;
 
-  CashflowList(this.authToken,
+  late final String? userID;
+
+  CashflowList(this.authToken, this.userID,
       this.entries); // Cashflow Calcs will be shown in list based on token provided
 
   Future<void> getCFs() async {
@@ -21,7 +23,7 @@ class CashflowList with ChangeNotifier {
     entries =
         []; // reset property list ,as properties will otherwise appear multiple times on screen (multiplied at every re-load)
     final response = await http.get(Uri.parse(
-        "${dotenv.env["FIREBASE_URL"]}cashflow.json?auth=$authToken"));
+        "${dotenv.env["FIREBASE_URL"]}$userID/cashflow.json?auth=$authToken"));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(
@@ -78,8 +80,8 @@ class CashflowList with ChangeNotifier {
     // print("Add funtions is running!!!");  \\ uncomment for troubleshooting
 
     // send new property to cloud DB and wait for identifier
-    final url =
-        Uri.parse("${dotenv.env["FIREBASE_URL"]}cashflow.json?auth=$authToken");
+    final url = Uri.parse(
+        "${dotenv.env["FIREBASE_URL"]}$userID/cashflow.json?auth=$authToken");
     http.Response resp = await http.post(url,
         body: json.encode({
           "offer": newProp.offer,
@@ -108,10 +110,8 @@ class CashflowList with ChangeNotifier {
 
   Future<void> removeCashflow(id) async {
     final url = Uri.parse(
-        "${dotenv.env["FIREBASE_URL"]}cashflow/$id.json?auth=$authToken");
+        "${dotenv.env["FIREBASE_URL"]}$userID/cashflow/$id.json?auth=$authToken");
     http.Response resp = await http.delete(url);
-
-    print(resp);
 
     if (resp.statusCode == 200) {
       entries.removeWhere((cashflow) => cashflow.id == id);
