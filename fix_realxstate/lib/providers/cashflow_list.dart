@@ -126,8 +126,16 @@ class CashflowList with ChangeNotifier {
   Future<void> toggleFaveStatus(id) async {
     final url = Uri.parse(
         "${dotenv.env["FIREBASE_URL"]}$userID/cashflow/$id.json?auth=$authToken");
-    http.Response resp =
-        await http.patch(url, body: json.encode({"favorite": true}));
+    CashflowItem currEntry = entries.firstWhere(
+        (cashflow) => cashflow.id == id); // select entry with passed id
+    print("BEFORE: ${currEntry.favorite}");
+    currEntry.favorite =
+        currEntry.favorite ? false : true; // toggle favorite status
+    print("AFTER: ${currEntry.favorite}");
+    http.Response resp = await http.patch(url,
+        body: json.encode({
+          "favorite": currEntry.favorite
+        })); // pass new favorite status to DB
 
     if (resp.statusCode == 200) {
       notifyListeners(); // NECESSARY! otherwise "dismissed Dismissible Error" will be thrown
