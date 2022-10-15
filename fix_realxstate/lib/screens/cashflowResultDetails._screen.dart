@@ -171,6 +171,11 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                     onPressed: () {
                       Provider.of<CashflowList>(context, listen: false)
                           .toggleFaveStatus(CF_item.id);
+                      setState(() {
+                        CF_item =
+                            Provider.of<CashflowList>(context, listen: false)
+                                .findById(cashflowID.toString());
+                      });
                     },
                     icon: CF_item.favorite == true
                         ? const Icon(Icons.star)
