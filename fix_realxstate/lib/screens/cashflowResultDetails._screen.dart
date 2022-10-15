@@ -169,9 +169,12 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                 ),
                 IconButton(
                     onPressed: () {
-                      print("Added to favorites");
+                      Provider.of<CashflowList>(context, listen: false)
+                          .toggleFaveStatus(CF_item.id);
                     },
-                    icon: Icon(Icons.star_border_outlined))
+                    icon: CF_item.favorite == true
+                        ? const Icon(Icons.star)
+                        : const Icon(Icons.star_border_outlined))
               ],
             ),
           ),
