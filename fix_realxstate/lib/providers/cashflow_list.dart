@@ -48,7 +48,9 @@ class CashflowList with ChangeNotifier {
               homeInsp: propdata['homeInsp'],
               propMgmtSignUp: propdata['propMgmtSignUp'],
               bankFees: propdata['bankFees'],
-              favorite: propdata['favorite'] ? propdata['favorite'] : false);
+              favorite: propdata.containsKey("favorite")
+                  ? propdata['favorite']
+                  : false);
           currentCF
               .getCashflow(); // calculate properties that have not been saved in DB
           entries.add(currentCF);
@@ -116,6 +118,18 @@ class CashflowList with ChangeNotifier {
 
     if (resp.statusCode == 200) {
       entries.removeWhere((cashflow) => cashflow.id == id);
+      notifyListeners(); // NECESSARY! otherwise "dismissed Dismissible Error" will be thrown
+    }
+    return;
+  }
+
+  Future<void> toggleFaveStatus(id) async {
+    final url = Uri.parse(
+        "${dotenv.env["FIREBASE_URL"]}$userID/cashflow/$id.json?auth=$authToken");
+    http.Response resp =
+        await http.patch(url, body: json.encode({"favorite": true}));
+
+    if (resp.statusCode == 200) {
       notifyListeners(); // NECESSARY! otherwise "dismissed Dismissible Error" will be thrown
     }
     return;
