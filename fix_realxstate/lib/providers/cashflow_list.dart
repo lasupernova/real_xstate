@@ -33,22 +33,22 @@ class CashflowList with ChangeNotifier {
         data.forEach((id, propdata) {
           // DB id is the key, data is the value
           CashflowItem currentCF = CashflowItem(
-            id: id,
-            offer: propdata['offer'],
-            downpayment: propdata['downpayment'],
-            interest: propdata['interest'],
-            term: propdata['term'],
-            rents: propdata['rents'],
-            costs: propdata['costs'],
-            calcDate: DateTime.parse(propdata['calcDate']),
-            propMgmtPerc: propdata['propMgmtPerc'],
-            vacancyLossPerc: propdata['vacancyLossPerc'],
-            capitalExpPerc: propdata['capitalExpPerc'],
-            legal: propdata['legal'],
-            homeInsp: propdata['homeInsp'],
-            propMgmtSignUp: propdata['propMgmtSignUp'],
-            bankFees: propdata['bankFees'],
-          );
+              id: id,
+              offer: propdata['offer'],
+              downpayment: propdata['downpayment'],
+              interest: propdata['interest'],
+              term: propdata['term'],
+              rents: propdata['rents'],
+              costs: propdata['costs'],
+              calcDate: DateTime.parse(propdata['calcDate']),
+              propMgmtPerc: propdata['propMgmtPerc'],
+              vacancyLossPerc: propdata['vacancyLossPerc'],
+              capitalExpPerc: propdata['capitalExpPerc'],
+              legal: propdata['legal'],
+              homeInsp: propdata['homeInsp'],
+              propMgmtSignUp: propdata['propMgmtSignUp'],
+              bankFees: propdata['bankFees'],
+              favorite: propdata['favorite'] ? propdata['favorite'] : false);
           currentCF
               .getCashflow(); // calculate properties that have not been saved in DB
           entries.add(currentCF);
@@ -98,6 +98,7 @@ class CashflowList with ChangeNotifier {
           "homeInsp": newProp.homeInsp,
           "propMgmtSignUp": newProp.propMgmtSignUp,
           "bankFees": newProp.bankFees,
+          "favorite": false
         }));
     final info = jsonDecode(resp.body); // decode request response body
     final id = info["name"]; // extract necessary info (here: DB ID)
