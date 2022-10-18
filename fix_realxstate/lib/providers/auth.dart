@@ -7,8 +7,9 @@ import '../models/httpException.dart';
 
 class Auth with ChangeNotifier {
   String? _token;
-  DateTime _expiryDate = DateTime.now();
-  late String _userId;
+  DateTime _expiryDate =
+      DateTime.now(); // not nullable in order to be able to use .isAfter() l.20
+  late String? _userId;
 
   // Auth(this._token, this._expiryDate, this._userId);
 
@@ -23,14 +24,8 @@ class Auth with ChangeNotifier {
     return null;
   }
 
-  String get userID {
+  String? get userID {
     return _userId;
-  }
-
-  void deleteToken() {
-    // function that removes token for "logout" button, and notifies listeneer so that main page is recreated (back to auth page)
-    _token = null;
-    notifyListeners();
   }
 
 // REST API documentation from: https://firebase.google.com/docs/reference/rest/auth
@@ -78,5 +73,13 @@ class Auth with ChangeNotifier {
 
   Future<void> logIn(String email, String password) async {
     return _authenticate("signInWithPassword", email, password);
+  }
+
+  void logout() {
+    // function that nulls relevant values for "logout" button, and notifies listeneer so that main page is recreated (back to auth page)
+    _token = null;
+    _userId = null;
+    _expiryDate = DateTime.now();
+    notifyListeners();
   }
 }

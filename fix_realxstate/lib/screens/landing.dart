@@ -128,7 +128,7 @@ class LandingPage extends StatelessWidget {
                   leading: Icon(Icons.logout),
                   title: Text("Logout!"),
                   onTap: () {
-                    Provider.of<Auth>(context, listen: false).deleteToken();
+                    Provider.of<Auth>(context, listen: false).logout();
                   }),
             ],
           ),
