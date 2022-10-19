@@ -10,6 +10,7 @@ import './screens/cashflowResultDetails._screen.dart';
 import './screens/cashflowForm_screen.dart';
 import './screens/newPropertyForm_screen.dart';
 import './screens/mortgageCalculated_Screen.dart';
+import './screens/splash_screen.dart';
 
 import './providers/auth.dart';
 import './providers/cashflow_list.dart';
@@ -70,7 +71,16 @@ class MyApp extends StatelessWidget {
                   bodyText1: TextStyle(fontSize: 11),
                   bodyText2: TextStyle(fontSize: 9),
                 )),
-            home: authData.isAuth ? LandingPage() : AuthScreen(),
+            home: authData.isAuth
+                ? LandingPage() // if already authenticated -> got o landing page
+                : FutureBuilder(
+                    // otherwise try autologin
+                    builder: (ctx, authLoginTryResult) => authLoginTryResult
+                                .connectionState ==
+                            ConnectionState.waiting
+                        ? SplashScreen() // while waiting for result of auto login show splash screen
+                        : AuthScreen(),
+                    future: authData.tryAutoLogin()),
             routes: {
               PropertyOverviewScreen.routeName: (ctx) =>
                   PropertyOverviewScreen(),
