@@ -166,7 +166,10 @@ class _AuthcardState extends State<Authcard> {
                 TextButton(
                     onPressed: _switchAuthMode,
                     child: Text(
-                        "Switch to ${_authMode == AuthMode.Login ? 'Signup' : 'Login'}"))
+                      "Switch to ${_authMode == AuthMode.Login ? 'Signup' : 'Login'}",
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onTertiary),
+                    ))
               ],
             ),
           ),
