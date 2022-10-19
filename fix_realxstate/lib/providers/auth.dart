@@ -115,13 +115,17 @@ class Auth with ChangeNotifier {
     return true;
   }
 
-  void logout() {
+  Future<void> logout() async {
+    // converted logout to async function in order to be able to create Future (Sharedpreferences) and use 'await'
     // function that nulls relevant values for "logout" button, and notifies listeneer so that main page is recreated (back to auth page)
     _token = null;
     _userId = null;
     _expiryDate = DateTime.now();
     _authTimer = null;
     notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    prefs
+        .clear(); // to selectively remove entries prefs.remove(<some_key>) can be used
   }
 
   void _autoLogout() {
