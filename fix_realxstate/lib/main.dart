@@ -55,12 +55,15 @@ class MyApp extends StatelessWidget {
             // CupertinoApp
             title: 'Real X State',
             theme: ThemeData(
-                colorScheme: ColorScheme.light().copyWith(
-                  primary: Colors.purple,
-                  secondary: Colors.amber,
+                colorScheme: ColorScheme.dark().copyWith(
+                  primary: Color.fromARGB(255, 49, 49, 49),
+                  secondary: Colors.blueGrey,
+                  onPrimary: Colors.white,
+                  onSecondary: Colors.black,
+                  onTertiary: Color.fromARGB(255, 156, 156, 156),
                 ),
                 textTheme: const TextTheme(
-                  headline6: TextStyle(fontSize: 17.0),
+                  headline6: TextStyle(fontSize: 17),
                   headline5: TextStyle(fontSize: 20),
                   subtitle1: TextStyle(fontSize: 15),
                   subtitle2: TextStyle(fontSize: 13),
