@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -10,6 +12,8 @@ class Auth with ChangeNotifier {
   DateTime _expiryDate =
       DateTime.now(); // not nullable in order to be able to use .isAfter() l.20
   late String? _userId;
+  Timer?
+      _authTimer; // timer to use for auto-logout --> after timer is up passed function (here: logout() ) is automatically called
 
   // Auth(this._token, this._expiryDate, this._userId);
 
@@ -60,6 +64,7 @@ class Auth with ChangeNotifier {
           ),
         ),
       );
+      _autoLogout(); // starts _authTimer for autologout on token expiration
       notifyListeners(); // in order to trigger main page's Consumer
       return info;
     } catch (error) {
@@ -80,6 +85,15 @@ class Auth with ChangeNotifier {
     _token = null;
     _userId = null;
     _expiryDate = DateTime.now();
+    _authTimer = null;
     notifyListeners();
+  }
+
+  void _autoLogout() {
+    if (_authTimer != null) {
+      _authTimer!.cancel();
+    }
+    final timeToLive = _expiryDate.difference(DateTime.now()).inSeconds;
+    _authTimer = Timer(Duration(seconds: timeToLive), logout);
   }
 }
