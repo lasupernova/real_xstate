@@ -51,12 +51,20 @@ class AuthScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      child: Text(
-                        'RealXState',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 50,
-                            fontWeight: FontWeight.normal),
+                      child: Container(
+                        height: deviceSize.height * 0.4,
+                        child: Align(
+                          // vertically aligns text
+                          child: Text(
+                            'RealXState',
+                            textAlign:
+                                TextAlign.center, // centers text horizontally
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 30,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ),
                       ),
                     ),
                   ),
