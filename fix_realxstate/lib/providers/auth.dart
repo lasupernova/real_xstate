@@ -67,7 +67,18 @@ class Auth with ChangeNotifier {
       );
       _autoLogout(); // starts _authTimer for autologout on token expiration
       notifyListeners(); // in order to trigger main page's Consumer
-      return info;
+
+      // collect userdata and persist on device
+      final prefs = await SharedPreferences
+          .getInstance(); // returns a Future, which will eventually return a Sharedpreferences instance -- after adding data to it
+      final userData = json.encode({
+        'token': _token,
+        'userID': _userId,
+        'expiryDate': _expiryDate.toIso8601String(),
+      });
+      prefs.setString("userData",
+          userData); // add info to persist like this; NOTE: comples data can be added via json.encode(''), as json data is finally always String data
+
     } catch (error) {
       throw error.toString();
     }
@@ -79,6 +90,29 @@ class Auth with ChangeNotifier {
 
   Future<void> logIn(String email, String password) async {
     return _authenticate("signInWithPassword", email, password);
+  }
+
+  Future<bool> tryAutoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey("userData")) {
+      return false;
+    }
+    final extractedUserData = json.decode(prefs.getString("userData")!) as Map<
+        String,
+        dynamic>; // add "!" in order to assure flutter that this variable is not null
+    final expiryDate =
+        DateTime.parse(extractedUserData["expiryDate"] as String);
+
+    if (expiryDate.isBefore(DateTime.now())) {
+      return false;
+    }
+
+    _userId = extractedUserData["userID"] as String?;
+    _token = extractedUserData["token"] as String;
+    _expiryDate = expiryDate;
+    notifyListeners();
+    _autoLogout();
+    return true;
   }
 
   void logout() {
