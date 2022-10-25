@@ -10,6 +10,10 @@ class CashflowInfo extends StatelessWidget {
 
   CashflowInfo(this.CF_item, this._screenwidth, this._monthly);
 
+  static const tableRowTextStyle = TextStyle(fontSize: 11);
+  static const tableRowHeaderStyle =
+      TextStyle(fontSize: 11, fontWeight: FontWeight.bold);
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -38,12 +42,16 @@ class CashflowInfo extends StatelessWidget {
                   "Income",
                   textScaleFactor: 1.3,
                   textAlign: TextAlign.center,
+                  style: tableRowTextStyle,
                 ),
                 Text(""),
                 Text("")
               ]),
               TableRow(children: [
-                Text("Net Operating"),
+                const Text(
+                  "Net Operating",
+                  style: tableRowTextStyle,
+                ),
                 Text(
                   _monthly
                       ? CF_item.monthlyNetOpIncomeReal.toStringAsFixed(2)
@@ -59,17 +67,21 @@ class CashflowInfo extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ]),
-              TableRow(children: [
+              const TableRow(children: [
                 Text(
                   "Expenses",
                   textScaleFactor: 1.3,
                   textAlign: TextAlign.center,
+                  style: tableRowTextStyle,
                 ),
                 Text(""),
                 Text("")
               ]),
               TableRow(children: [
-                Text("Net Operating"),
+                const Text(
+                  "Net Operating",
+                  style: tableRowTextStyle,
+                ),
                 Text(
                   _monthly
                       ? CF_item.monthlyNetOpCostsReal.toStringAsFixed(2)
@@ -84,7 +96,10 @@ class CashflowInfo extends StatelessWidget {
                 ),
               ]),
               TableRow(children: [
-                Text("Total Monthly (incl. mortgage)"),
+                const Text(
+                  "Total Monthly (incl. mortgage)",
+                  style: tableRowTextStyle,
+                ),
                 Text(
                   _monthly
                       ? CF_item.monthlyExpensesReal.toStringAsFixed(2)
@@ -98,17 +113,21 @@ class CashflowInfo extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ]),
-              TableRow(children: [
+              const TableRow(children: [
                 Text(
                   "Cashflow Stats",
                   textScaleFactor: 1.3,
                   textAlign: TextAlign.center,
+                  style: tableRowTextStyle,
                 ),
                 Text(""),
                 Text("")
               ]),
               TableRow(children: [
-                Text("Cashflow"),
+                const Text(
+                  "Cashflow",
+                  style: tableRowTextStyle,
+                ),
                 Text(
                   _monthly
                       ? CF_item.cashflowMonthlyReal.toStringAsFixed(2)
@@ -123,7 +142,10 @@ class CashflowInfo extends StatelessWidget {
                 ),
               ]),
               TableRow(children: [
-                Text("coc ROI"),
+                const Text(
+                  "coc ROI",
+                  style: tableRowTextStyle,
+                ),
                 Text(
                   (CF_item.cocROIReal * 100).toStringAsFixed(2),
                   textAlign: TextAlign.center,
@@ -134,7 +156,10 @@ class CashflowInfo extends StatelessWidget {
                 ),
               ]),
               TableRow(children: [
-                Text("Rent-to-Price ratio"),
+                const Text(
+                  "Rent-to-Price ratio",
+                  style: tableRowTextStyle,
+                ),
                 Text(
                   (CF_item.rentToPrice * 100).toStringAsFixed(2),
                   textAlign: TextAlign.center,
@@ -145,7 +170,10 @@ class CashflowInfo extends StatelessWidget {
                 ),
               ]),
               TableRow(children: [
-                Text("CAP Rate"),
+                const Text(
+                  "CAP Rate",
+                  style: tableRowTextStyle,
+                ),
                 Text(
                   (CF_item.capRateReal * 100).toStringAsFixed(2),
                   textAlign: TextAlign.center,
@@ -156,7 +184,10 @@ class CashflowInfo extends StatelessWidget {
                 ),
               ]),
               TableRow(children: [
-                Text("ROI"),
+                const Text(
+                  "ROI",
+                  style: tableRowTextStyle,
+                ),
                 Text(
                   CF_item.rtiReal.toStringAsFixed(2),
                   textAlign: TextAlign.center,

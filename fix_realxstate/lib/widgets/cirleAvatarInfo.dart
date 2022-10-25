@@ -28,7 +28,7 @@ class CircleAvatarInfo extends StatelessWidget {
                 text2,
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.onPrimary,
-                    fontSize: 8),
+                    fontSize: 11),
               ),
             ],
           ),
