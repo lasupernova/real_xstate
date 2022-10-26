@@ -341,7 +341,8 @@ class CashflowFormState extends State<CashflowForm> {
                       return null;
                     },
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(labelText: "Interest"),
+                    decoration: const InputDecoration(
+                        labelText: "Interest", helperText: "in %"),
                     keyboardType: TextInputType.number,
                     controller: interestControll,
                     onSaved: (value) {
@@ -362,7 +363,7 @@ class CashflowFormState extends State<CashflowForm> {
                       return null;
                     },
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(labelText: "Offer"),
+                    decoration: const InputDecoration(labelText: "Offer"),
                     keyboardType: TextInputType.number,
                     controller: offerControll,
                     onSaved: (value) {
@@ -386,7 +387,8 @@ class CashflowFormState extends State<CashflowForm> {
                       return null;
                     },
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(labelText: "Downpayment"),
+                    decoration: const InputDecoration(
+                        labelText: "Downpayment", helperText: "in %"),
                     keyboardType: TextInputType.number,
                     controller: downpaymentControll,
                     onSaved: (value) {
