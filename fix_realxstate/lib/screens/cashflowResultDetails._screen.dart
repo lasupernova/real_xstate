@@ -88,8 +88,13 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
               ),
               // const Spacer(),
               Row(children: [
-                CircleAvatarInfo(
-                    text1: CF_item.term.toString(), text2: "years"),
+                TextButton(
+                  onPressed: () {
+                    print("CLICKED!!!");
+                  },
+                  child: CircleAvatarInfo(
+                      text1: CF_item.term.toString(), text2: "years"),
+                ),
                 const Spacer(),
                 CircleAvatarInfo(
                     text1: CF_item.interest.toString(), text2: "%"),
