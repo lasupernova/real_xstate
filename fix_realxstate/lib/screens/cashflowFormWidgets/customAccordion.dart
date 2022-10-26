@@ -5,12 +5,14 @@ class CustomAccordion extends StatefulWidget {
   bool accordionOpen;
   List<Widget> accordionChildren;
   String accordionText;
+  Function notifyParent;
 
   CustomAccordion(
       {required this.screenWidth,
       required this.accordionOpen,
       required this.accordionChildren,
       required this.accordionText,
+      required this.notifyParent,
       Key? key})
       : super(key: key);
 
@@ -43,6 +45,7 @@ class _CustomAccordionState extends State<CustomAccordion> {
                 onPressed: () {
                   setState(() {
                     widget.accordionOpen = !widget.accordionOpen;
+                    widget.notifyParent(widget.accordionOpen);
                   });
                 },
                 icon: widget.accordionOpen
