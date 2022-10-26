@@ -107,11 +107,11 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                     text2: "down"),
               ]),
               ListTile(
-                leading: Icon(Icons.attach_money),
+                leading: const Icon(Icons.attach_money),
                 title: Text(
                   CF_item.mortgage.toStringAsFixed(2),
                   style:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 subtitle: const Text(
                   "Monthly Mortgage",
