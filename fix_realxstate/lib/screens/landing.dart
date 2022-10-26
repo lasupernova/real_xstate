@@ -69,7 +69,9 @@ class LandingPage extends StatelessWidget {
                         child: CashflowResultTile(
                           name: allCFs[index].id,
                           ROI: DateTime.now(),
-                          cashflow: 0.98,
+                          cashflow: allCFs[index]
+                              .cashflowMonthlyReal
+                              .toStringAsFixed(0),
                           worth: false,
                         ),
                       ),
