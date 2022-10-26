@@ -191,6 +191,7 @@ class CashflowItem {
     _calculateCocRoi();
     _calculateRentToPrice();
     _calculateCapRate();
+    _calculateRTI();
     inspect(this);
   }
 }

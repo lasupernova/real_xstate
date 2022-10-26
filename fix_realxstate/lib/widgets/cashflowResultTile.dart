@@ -9,7 +9,7 @@ import '../providers/cashflow_list.dart';
 class CashflowResultTile extends StatelessWidget {
   final String name;
   final DateTime ROI;
-  final double cashflow;
+  final String cashflow;
   final bool worth;
 
   CashflowResultTile(

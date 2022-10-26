@@ -35,7 +35,7 @@ class CashflowFormState extends State<CashflowForm> {
   final _formKey = GlobalKey<
       FormState>(); // GLobalKeys are rarely used,only when interaction with widget from inside code is necessary --> here: Form needs to be submitted/validated etc, function within code needs access to widget Form()
   final _imageUrlController =
-      TextEditingController(); // usuallyh not needed when using Form(), BUT: here image textinput should be used prior to any action that Form() takes, as image should be displyed in Container() above
+      TextEditingController(); // usually not needed when using Form(), BUT: here image textinput should be used prior to any action that Form() takes, as image should be displyed in Container() above
   Map entryInfo = {};
   static List<String> rentsList = [""];
   static List<String> costsList = [""];
@@ -280,7 +280,7 @@ class CashflowFormState extends State<CashflowForm> {
                   ),
                 ],
                 accordionText: "Closing Costs",
-                // notifyParent: refreshClosingCostOpen,
+                notifyParent: refreshClosingCostOpen,
               ),
               CustomAccordion(
                 screenWidth: _screenWidth,
@@ -341,7 +341,8 @@ class CashflowFormState extends State<CashflowForm> {
                       return null;
                     },
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(labelText: "Interest"),
+                    decoration: const InputDecoration(
+                        labelText: "Interest", helperText: "in %"),
                     keyboardType: TextInputType.number,
                     controller: interestControll,
                     onSaved: (value) {
@@ -362,7 +363,7 @@ class CashflowFormState extends State<CashflowForm> {
                       return null;
                     },
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(labelText: "Offer"),
+                    decoration: const InputDecoration(labelText: "Offer"),
                     keyboardType: TextInputType.number,
                     controller: offerControll,
                     onSaved: (value) {
@@ -386,7 +387,8 @@ class CashflowFormState extends State<CashflowForm> {
                       return null;
                     },
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(labelText: "Downpayment"),
+                    decoration: const InputDecoration(
+                        labelText: "Downpayment", helperText: "in %"),
                     keyboardType: TextInputType.number,
                     controller: downpaymentControll,
                     onSaved: (value) {
@@ -395,7 +397,7 @@ class CashflowFormState extends State<CashflowForm> {
                   ),
                 ],
                 accordionText: "Mortgage Info",
-                // notifyParent: refreshMortgageOpen,
+                notifyParent: refreshMortgageOpen,
               ),
               CustomAccordion(
                 screenWidth: _screenWidth,
@@ -426,7 +428,7 @@ class CashflowFormState extends State<CashflowForm> {
                   )
                 ],
                 accordionText: "Income",
-                // notifyParent: refreshIncomeOpen,
+                notifyParent: refreshIncomeOpen,
               ),
               CustomAccordion(
                 screenWidth: _screenWidth,
@@ -455,7 +457,7 @@ class CashflowFormState extends State<CashflowForm> {
                       }),
                 ],
                 accordionText: "Recurring Costs",
-                // notifyParent: refreshCostOpen,
+                notifyParent: refreshCostOpen,
               ),
               CustomAccordion(
                 screenWidth: _screenWidth,
@@ -550,7 +552,7 @@ class CashflowFormState extends State<CashflowForm> {
                   ),
                 ],
                 accordionText: "Rent Assocciated Expenses",
-                // notifyParent: refreshRentAssocExpOpen,
+                notifyParent: refreshRentAssocExpOpen,
               ),
               ElevatedButton(
                 onPressed: () {

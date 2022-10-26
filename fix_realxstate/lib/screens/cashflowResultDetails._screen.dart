@@ -88,8 +88,13 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
               ),
               // const Spacer(),
               Row(children: [
-                CircleAvatarInfo(
-                    text1: CF_item.term.toString(), text2: "years"),
+                TextButton(
+                  onPressed: () {
+                    print("CLICKED!!!");
+                  },
+                  child: CircleAvatarInfo(
+                      text1: CF_item.term.toString(), text2: "years"),
+                ),
                 const Spacer(),
                 CircleAvatarInfo(
                     text1: CF_item.interest.toString(), text2: "%"),
@@ -107,11 +112,11 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                     text2: "down"),
               ]),
               ListTile(
-                leading: Icon(Icons.attach_money),
+                leading: const Icon(Icons.attach_money),
                 title: Text(
                   CF_item.mortgage.toStringAsFixed(2),
                   style:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 subtitle: const Text(
                   "Monthly Mortgage",
