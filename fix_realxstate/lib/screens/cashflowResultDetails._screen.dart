@@ -10,6 +10,7 @@ import '../providers/cashflow_list.dart';
 import '../models/cashflowResult.dart';
 import '../widgets/cirleAvatarInfo.dart';
 import './cashflowInfo.dart';
+import './cashflowResultsWidgets/mortgageDetailsTemplate.dart';
 
 // called from cashflowResultTile.dart
 class CfResultDetailsScreen extends StatefulWidget {
@@ -90,7 +91,13 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
               Row(children: [
                 TextButton(
                   onPressed: () {
-                    print("CLICKED!!!");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MortgageDetailScreen(
+                                CF_item: CF_item,
+                              )),
+                    );
                   },
                   child: CircleAvatarInfo(
                       text1: CF_item.term.toString(), text2: "years"),
