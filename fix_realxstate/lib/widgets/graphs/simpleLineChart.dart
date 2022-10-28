@@ -46,7 +46,7 @@ class SimpleLineChart extends StatelessWidget {
 /// Sample linear data type.
 class MortgageSeries {
   final int year;
-  final int sales;
+  final double sales;
 
   MortgageSeries({
     required this.year,
