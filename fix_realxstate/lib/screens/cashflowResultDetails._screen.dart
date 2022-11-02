@@ -103,8 +103,24 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                       text1: CF_item.term.toString(), text2: "years"),
                 ),
                 const Spacer(),
-                CircleAvatarInfo(
-                    text1: CF_item.interest.toString(), text2: "%"),
+                TextButton(
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => (AlertDialog(
+                      title: Text("Interest"),
+                      content: Text("${CF_item.interest.toString()}% (annual)"),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Go Back'))
+                      ],
+                    )),
+                  ),
+                  child: CircleAvatarInfo(
+                      text1: CF_item.interest.toString(), text2: "%"),
+                ),
                 const Spacer(),
                 CircleAvatarInfo(
                     text1: CF_item.offer < 10000
