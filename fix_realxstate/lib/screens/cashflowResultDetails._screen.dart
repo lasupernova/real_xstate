@@ -122,17 +122,60 @@ class _CfResultDetailsScreenState extends State<CfResultDetailsScreen> {
                       text1: CF_item.interest.toString(), text2: "%"),
                 ),
                 const Spacer(),
-                CircleAvatarInfo(
-                    text1: CF_item.offer < 10000
-                        ? "\$${(CF_item.offer).toString().split(".")[0]}"
-                        : CF_item.offer < 1000000
-                            ? "\$${(CF_item.offer / 1000).toString()}k"
-                            : "\$${(CF_item.offer / 1000000).toString()}M",
-                    text2: "offer"),
+                TextButton(
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => (AlertDialog(
+                      title: Text("Closing Cost"),
+                      content: Text("""
+TOTAL: \$${(CF_item.downpaymentNum + CF_item.bankFees + CF_item.legal + CF_item.homeInsp).toInt().toString()}
+
+Downpayment: \$${CF_item.downpaymentNum.toInt().toString()}
+
+Bank fees: \$${CF_item.bankFees.toInt().toString()}
+
+Legal fees: \$${CF_item.legal.toInt().toString()}
+
+Home Insp. fees: \$${CF_item.homeInsp.toInt().toString()}
+
+                      """),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Close'))
+                      ],
+                    )),
+                  ),
+                  child: CircleAvatarInfo(
+                      text1: CF_item.offer < 10000
+                          ? "\$${(CF_item.offer).toString().split(".")[0]}"
+                          : CF_item.offer < 1000000
+                              ? "\$${(CF_item.offer / 1000).toString()}k"
+                              : "\$${(CF_item.offer / 1000000).toString()}M",
+                      text2: "offer"),
+                ),
                 const Spacer(),
-                CircleAvatarInfo(
-                    text1: "${CF_item.downpayment.toString()} %",
-                    text2: "down"),
+                TextButton(
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => (AlertDialog(
+                      title: Text("Interest"),
+                      content: Text("${CF_item.interest.toString()}% (annual)"),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Go Back'))
+                      ],
+                    )),
+                  ),
+                  child: CircleAvatarInfo(
+                      text1: "${CF_item.downpayment.toString()} %",
+                      text2: "down"),
+                ),
               ]),
               ListTile(
                 leading: const Icon(Icons.attach_money),
