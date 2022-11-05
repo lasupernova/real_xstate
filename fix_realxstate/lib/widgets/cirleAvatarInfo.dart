@@ -34,7 +34,7 @@ class CircleAvatarInfo extends StatelessWidget {
           ),
         ),
       ),
-      maxRadius: MediaQuery.of(context).size.width * 0.1,
+      maxRadius: MediaQuery.of(context).size.width * 0.09,
     );
   }
 }

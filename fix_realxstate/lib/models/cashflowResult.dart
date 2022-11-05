@@ -181,6 +181,18 @@ class CashflowItem {
     rtiHypo = totalInvestment / (cashflowMonthlyHypo * 12);
   }
 
+// Calculates remaining balance over the years of the term
+// NOTE: interest used needs to be monthly interest (fraction)
+  Map<dynamic, dynamic> calculateAmortization() {
+    Map remainingBalance = {};
+    for (var i = term; i >= 0; i--) {
+      double monthlyInterest = interest / 100 / 12;
+      remainingBalance[(i - term).abs()] = ((mortgage / monthlyInterest) *
+          (1 - 1 / pow((1 + monthlyInterest), (i * 12))));
+    }
+    return remainingBalance;
+  }
+
   void getCashflow() {
     _calculateMortgage(offer, downpayment, interest, term);
     _rentalAssocExpenses();
