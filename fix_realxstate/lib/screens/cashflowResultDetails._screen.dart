@@ -161,14 +161,15 @@ Home Insp. fees: \$${CF_item.homeInsp.toInt().toString()}
                   onPressed: () => showDialog(
                     context: context,
                     builder: (context) => (AlertDialog(
-                      title: Text("Interest"),
-                      content: Text("${CF_item.interest.toString()}% (annual)"),
+                      title: Text("Downpayment"),
+                      content: Text(
+                          "\$${CF_item.downpaymentNum.toInt().toString()}"),
                       actions: [
                         ElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text('Go Back'))
+                            child: Text('Close'))
                       ],
                     )),
                   ),
