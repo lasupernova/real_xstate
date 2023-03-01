@@ -42,7 +42,9 @@ dependencies:
   shared_preferences: ^2.0.15
   charts_flutter: ^0.12.0
 
-dev_dependencies:
+
+# dependencies only needed durihng development, that should not end up in final app
+dev_dependencies:  
   flutter_test:
     sdk: flutter
 
