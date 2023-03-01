@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.fix_realxstate">
+    package="com.example.fix_realxstate">  // if changing thepackege here, make sure to also change in debug manifest, in MainActivity.java + build.gradle
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="fix_realxstate"
-        android:name="${applicationName}"
+        android:label="RealXstate"
+        android:name="${applicationName}"  // internal identifier --> do not change
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
