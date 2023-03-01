@@ -54,14 +54,21 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-  flutter_launcher_icons: ^0.12.0
+  flutter_launcher_icons: ^0.11.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+# add icons for flutter 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "dev_assets/realxstate_icon.jpg"
+  adaptive_icon_background: "#191919"
+  adaptive_icon_foreground: "dev_assets/realxstate_icon.jpg"
+
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
